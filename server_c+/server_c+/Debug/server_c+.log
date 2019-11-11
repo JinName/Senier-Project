@@ -1,0 +1,5 @@
+﻿  main.cpp
+  NetworkSession.cpp
+D:\Code Workspace\Senier-Project\server_c+\server_c+\NetworkSession.cpp(17,1): error C4996:  'WSASocketA': Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  코드를 생성하고 있습니다...
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\winsock2.h(3416): message :  'WSASocketA' 선언을 참조하십시오.

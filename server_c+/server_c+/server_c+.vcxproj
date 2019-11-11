@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="NetworkSession.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
