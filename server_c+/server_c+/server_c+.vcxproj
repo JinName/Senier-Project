@@ -123,13 +123,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
+    <ClCompile Include="SessionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientSession.h" />
     <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="NetworkSession.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SessionManager.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
