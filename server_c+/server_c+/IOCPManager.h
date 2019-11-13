@@ -21,8 +21,8 @@ public:
 	bool		CloseIOCPServer();	// close iocp server	
 
 	// get
-	HANDLE		GetCompletionPort()		{ return mCP; }
-	int			GetThreadCount()		{ return mThreadCount; }
+	HANDLE		GetCPHandle()		{ return mCP; }
+	int			GetThreadCount()	{ return mThreadCount; }
 };
 
 extern IOCPManager* GIocpManager;	// extern - for global freq

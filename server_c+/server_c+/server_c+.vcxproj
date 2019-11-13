@@ -128,6 +128,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
     <ClCompile Include="SessionManager.cpp" />
+    <ClCompile Include="TemplateSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSession.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TemplateSingleton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

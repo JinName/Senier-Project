@@ -26,7 +26,7 @@ bool IOCPManager::InitIOCPServer()
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return false;
 
-	// create completion port
+	// create completion port in first time
 	mCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 
 	// except for create completion port
