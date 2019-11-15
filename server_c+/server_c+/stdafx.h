@@ -5,6 +5,8 @@
 #include <process.h>
 #include <WinSock2.h>
 
+#include <map>
+
 #include <iostream>
 using namespace std;
 

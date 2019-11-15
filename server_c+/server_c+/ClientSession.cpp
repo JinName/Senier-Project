@@ -7,6 +7,15 @@ ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock)
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));	// use memset to initialize sockaddr_in value
 }
 
+/*
+함수명 : OnConnect()
+
+인자값 :
+1) SOCKADDR_IN* addr : 클라이언트 주소
+
+기능 : 전달받은 클라이언트 주소를 저장,
+	   전달받은 주소에 대한 클라이언트가 존재하는지 확인.
+*/
 bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 {
 	// setting socket I/O mode - not 0 : nonblocking mode / 0 : blocking mode
@@ -48,11 +57,25 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	// GSessionManager->IncreaseClientCount();
 }
 
+/*
+함수명 : IsConnected()
+
+인자값 :
+
+기능 : 클라이언트의 연결상태 확인.
+*/
 bool ClientSession::IsConnected()
 {
 	return mIsConnected;
 }
 
+/*
+함수명 : Recv()
+
+인자값 :
+
+기능 : 클라이언트가 전송한 데이터 수신.
+*/
 bool ClientSession::Recv()
 {
 	// except error
@@ -83,6 +106,15 @@ bool ClientSession::Recv()
 	return true;
 }
 
+/*
+함수명 : Send()
+
+인자값 :
+1) const char* buf : 전송할 버퍼
+2) int len : 전송할 버퍼길이
+
+기능 : 인자로 전달받은 버퍼를 클라이언트에 전송
+*/
 bool ClientSession::Send(const char* buf, int len)
 {
 	// except error
@@ -114,6 +146,13 @@ bool ClientSession::Send(const char* buf, int len)
 	return true;
 }
 
+/*
+함수명 : DisConnect()
+
+인자값 :
+
+기능 : 접속 종료된 SOCKET 삭제
+*/
 bool ClientSession::DisConnect()
 {
 	if (!IsConnected())

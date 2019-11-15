@@ -39,6 +39,9 @@ struct stOverlapped : public OVERLAPPED
 // Recv() : recv transfered data by client
 // Send() : send to client by server
 // Disconnect() : disconnect client
+// ----- 기능설명 -----
+// 해당 클래스는 클라이언트에 대해 직접적인 CONNECT, DISCONNECT 기능을 수행하는 것이 아니다.
+// CONNECT, DISCONNECT 이 후 접속한 클라이언트에 해당하는 소켓정보를 관리하기 위한 클래스.
 class ClientSession
 {
 private:
@@ -56,5 +59,7 @@ public:
 	bool			Recv();							// recv data by client
 	bool			Send(const char* buf, int len);	// send data to client
 	bool			DisConnect();					// disconnect
+
+	SOCKET			GetSocket() { return mSocket; }	// return socket
 };
 

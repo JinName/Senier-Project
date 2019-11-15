@@ -20,6 +20,8 @@ public:
 	bool		StartIOCPThread();	// start iocp worker thread
 	bool		CloseIOCPServer();	// close iocp server	
 
+	bool		AcceptLoop();		// accept loop
+
 	// get
 	HANDLE		GetCPHandle()		{ return mCP; }
 	int			GetThreadCount()	{ return mThreadCount; }
