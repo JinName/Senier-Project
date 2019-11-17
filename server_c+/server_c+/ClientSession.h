@@ -54,12 +54,17 @@ public:
 	ClientSession(SOCKET sock);
 	~ClientSession() {}
 
-	bool			OnConnect(SOCKADDR_IN* addr);	// do connect client
-	bool			IsConnected(); 					// return client is connected
-	bool			Recv();							// recv data by client
-	bool			Send(const char* buf, int len);	// send data to client
-	bool			DisConnect();					// disconnect
+	bool			OnConnect(SOCKADDR_IN* addr);			// do connect client	
+	bool			DisConnect();							// disconnect
 
-	SOCKET			GetSocket() { return mSocket; }	// return socket
+	// const function
+	// const 선언된 함수는 이 함수 내에서 멤버변수의 값을 수정하지 않는다는 의미를 가지며,
+	// const 로 선언된 해당 객체에선 const 함수만 부를 수 있게되고,
+	// 다른 멤버함수들은 멤버변수 값 수정의 가능성을 가지고 있기때문에 error 를 발생시킨다.
+	bool			IsConnected() const;					// return client is connected
+	bool			Recv() const;							// recv data by client
+	bool			Send(const char* buf, int len) const;	// send data to client
+
+	SOCKET			GetSocket() { return mSocket; }			// return socket
 };
 

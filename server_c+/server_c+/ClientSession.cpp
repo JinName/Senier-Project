@@ -37,6 +37,11 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	}
 
 	// connect socket to I/O completion port
+	// 세번째 인자인 CompletionKey 를 통해 원하는 변수를 넘길경우,
+	// GetQueuedCompletionStatus() 에서 세번째 인자를 통해 해당 CompletionKey 를 넘겨받을 수 있다.
+	// 아래 코드에서는 this 를 통해 ClientSession 객체의 포인터를 넘겨주어
+	// 해당 소캣에 I/O 작업이 일어날 경우,
+	// GetQueuedCompletionStatus() 을 통해 해당 클라이언트 객체의 포인터를 넘겨받을 수 있다.
 	HANDLE hCP = CreateIoCompletionPort((HANDLE)mSocket, GIocpManager->GetCPHandle(), (ULONG_PTR)this, 0);
 
 	// except error for cp handle
@@ -64,7 +69,7 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 
 기능 : 클라이언트의 연결상태 확인.
 */
-bool ClientSession::IsConnected()
+bool ClientSession::IsConnected() const
 {
 	return mIsConnected;
 }
@@ -76,7 +81,7 @@ bool ClientSession::IsConnected()
 
 기능 : 클라이언트가 전송한 데이터 수신.
 */
-bool ClientSession::Recv()
+bool ClientSession::Recv() const
 {
 	// except error
 	if (!IsConnected())
@@ -115,7 +120,7 @@ bool ClientSession::Recv()
 
 기능 : 인자로 전달받은 버퍼를 클라이언트에 전송
 */
-bool ClientSession::Send(const char* buf, int len)
+bool ClientSession::Send(const char* buf, int len) const
 {
 	// except error
 	if (!IsConnected())

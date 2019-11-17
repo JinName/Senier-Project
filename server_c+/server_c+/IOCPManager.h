@@ -1,17 +1,10 @@
 #pragma once
 #include "stdafx.h"
+#include "SessionManager.h"
+#include "ClientSession.h"
 
 class IOCPManager
 {
-private:
-	HANDLE		mCP;				// handle - for completion port
-	int			mThreadCount;		// count of WorkerThread = sysinfo.dwNumberOfProcessors * 2
-
-	SOCKET		mListenSocket;		// socket - for listen
-
-	// static function - must private.. not to public
-	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port
-
 public:
 	IOCPManager();
 	~IOCPManager();
@@ -25,6 +18,18 @@ public:
 	// get
 	HANDLE		GetCPHandle()		{ return mCP; }
 	int			GetThreadCount()	{ return mThreadCount; }
+
+private:
+	HANDLE		mCP;				// handle - for completion port
+	int			mThreadCount;		// count of WorkerThread = sysinfo.dwNumberOfProcessors * 2
+
+	SOCKET		mListenSocket;		// socket - for listen
+
+	// static function - must private.. not to public
+	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port
+
+	static bool	ReceiveCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred);
+	static bool	SendCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred);
 };
 
 extern IOCPManager* GIocpManager;	// extern - for global freq
