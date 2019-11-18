@@ -2,6 +2,9 @@
 
 #include "stdafx.h"
 
+class ClientSession;
+class SessionManager;
+
 // enum I/O type
 enum IOType
 {
@@ -20,13 +23,12 @@ overlapped 구조체 변수를 넣어주는건 현재 완료된 입출력 정보를 얻어 낼때 사용 된�
 */
 struct stOverlapped : public OVERLAPPED
 {
-	stOverlapped(const ClientSession* client, IOType ioType) : mSessionObject(client), mIOType(ioType)
+	stOverlapped(IOType ioType) : mIOType(ioType)
 	{
 		// init
+		memset(mBuffer, 0, MAX_BUFSIZE);
 		memset(&mWSABuf, 0, sizeof(WSABUF));
 	}
-
-	const ClientSession*	mSessionObject;
 	IOType					mIOType;
 	WSABUF					mWSABuf;
 	char					mBuffer[MAX_BUFSIZE];
@@ -62,7 +64,7 @@ public:
 	// const 로 선언된 해당 객체에선 const 함수만 부를 수 있게되고,
 	// 다른 멤버함수들은 멤버변수 값 수정의 가능성을 가지고 있기때문에 error 를 발생시킨다.
 	bool			IsConnected() const;					// return client is connected
-	bool			Recv() const;							// recv data by client
+	bool			Recv(stOverlapped* overlapped) const;							// recv data by client
 	bool			Send(const char* buf, int len) const;	// send data to client
 
 	SOCKET			GetSocket() { return mSocket; }			// return socket

@@ -2,7 +2,7 @@
 
 IOCPManager* GIocpManager = nullptr;
 
-IOCPManager::IOCPManager() : mThreadCount(2)
+IOCPManager::IOCPManager() : mCP(NULL), mThreadCount(2), mListenSocket(NULL)
 {
 }
 
@@ -37,7 +37,7 @@ bool IOCPManager::InitIOCPServer()
 	}
 
 	// create socket for listen
-	mListenSocket = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+	mListenSocket = WSASocket(PF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	// except for create listening socket
 	if (mListenSocket == NULL)
@@ -110,19 +110,21 @@ bool IOCPManager::AcceptLoop()
 		return false;
 	}
 
+	SOCKADDR_IN clientaddr;
+	int addrlen = sizeof(clientaddr);
+
 	// accept loop
 	while (true)
 	{
-		SOCKET acceptedSock = accept(mListenSocket, NULL, NULL);
+		SOCKET acceptedSock = WSAAccept(mListenSocket, (struct sockaddr*)&clientaddr, &addrlen, NULL, NULL);
+
 		if (acceptedSock == INVALID_SOCKET)
 		{
 			printf_s("accept: invalid socket\n");
 			continue;
 		}
-
-		SOCKADDR_IN clientaddr;
-		int addrlen = sizeof(clientaddr);
-		getpeername(acceptedSock, (SOCKADDR*)& clientaddr, &addrlen);
+		
+		//getpeername(acceptedSock, (SOCKADDR*)& clientaddr, &addrlen);
 
 		// 소켓 정보 구조체 할당과 초기화
 		ClientSession* client = GSessionManager->CreateClientSession(acceptedSock);
@@ -134,6 +136,10 @@ bool IOCPManager::AcceptLoop()
 			client->DisConnect();
 			GSessionManager->DeleteClientSession(client);
 		}
+
+		//stOverlapped* recvOV = new stOverlapped(IO_RECV);
+
+		client->Recv(NULL);
 	}
 
 	return true;
@@ -192,7 +198,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 
 		case IO_RECV:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 RECV 일 경우 수행할 함수
-			//completionOK = ReceiveCompletion(client, overlapped, dwBytesTransferred);
+			completionOK = ReceiveCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		default:
@@ -218,16 +224,19 @@ bool IOCPManager::ReceiveCompletion(const ClientSession* client, stOverlapped* o
 		return false;
 	}
 
-	bool sendRe = client->Send(overlapped->mBuffer, dwBytesTransferred);
+	// echo back
+	// bool sendRe = client->Send(overlapped->mBuffer, dwBytesTransferred);
 
-	delete overlapped;
+	// echo back 이후 overlapped 구조체는 사용하지 않고,
+	// recv 함수에서 WSARecv() 를 통해 새로운 구조체 정보를 가져옴
+	// delete overlapped;
 
-	if (!sendRe)
-	{
-		cout << "send fail..." << endl;
-	}
+	//if (!sendRe)
+	//{
+	//	cout << "send fail..." << endl;
+	//}
 
-	return client->Recv();
+	return client->Recv(overlapped);
 }
 
 bool IOCPManager::SendCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred)

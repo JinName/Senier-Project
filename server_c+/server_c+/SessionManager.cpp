@@ -2,8 +2,9 @@
 
 SessionManager* GSessionManager = nullptr;
 
-SessionManager::SessionManager()
+SessionManager::SessionManager() : mClientCount(0)
 {
+	InitializeCriticalSection(&CS);
 }
 
 SessionManager::~SessionManager()

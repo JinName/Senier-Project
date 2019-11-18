@@ -56,5 +56,8 @@
     <ClInclude Include="TemplateSingleton.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="PacketList.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -59,7 +59,7 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 
 	cout << " Client Connected: IP = " << inet_ntoa(mClientAddr.sin_addr) << " PORT = " << ntohs(mClientAddr.sin_port) << endl;
 
-	// GSessionManager->IncreaseClientCount();
+	GSessionManager->IncreaseClientCount();
 }
 
 /*
@@ -81,18 +81,24 @@ bool ClientSession::IsConnected() const
 
 기능 : 클라이언트가 전송한 데이터 수신.
 */
-bool ClientSession::Recv() const
+bool ClientSession::Recv(stOverlapped* overlapped) const
 {
 	// except error
 	if (!IsConnected())
 		return false;
 
-	// create overlapped struct for recv
-	stOverlapped* recvOV = new stOverlapped(this, IO_RECV);
+	stOverlapped* recvOV = overlapped;
 
-	// setting for recv
+	if (recvOV == nullptr)
+	{
+		recvOV = new stOverlapped(IO_RECV);
+		memset(recvOV, 0, sizeof(stOverlapped));
+	}
+
+	recvOV->mIOType = IO_RECV;
+
 	DWORD flags = 0;
-	DWORD recvBytes = 0;
+	DWORD recvBytes = 0;	
 	recvOV->mWSABuf.buf = recvOV->mBuffer;
 	recvOV->mWSABuf.len = MAX_BUFSIZE;
 
@@ -101,12 +107,12 @@ bool ClientSession::Recv() const
 	{
 		if (WSAGetLastError() != WSA_IO_PENDING)
 		{
-			cout << "recv error.." << endl;
+			cout << "recv error.. : " << WSAGetLastError() << endl;
 			return false;
 		}
 	}
 
-	cout << "Recv Message : " << endl;
+	cout << "Recv Message : " << recvOV->mWSABuf.buf << endl;
 
 	return true;
 }
@@ -127,7 +133,7 @@ bool ClientSession::Send(const char* buf, int len) const
 		return false;
 
 	// create overlapped struct for send
-	stOverlapped* sendOV = new stOverlapped(this, IO_SEND);
+	stOverlapped* sendOV = new stOverlapped(IO_SEND);
 	
 	// setting for send
 	memcpy_s(sendOV->mBuffer, MAX_BUFSIZE, buf, len);
@@ -175,7 +181,7 @@ bool ClientSession::DisConnect()
 
 	cout << " Client Disconnected: IP = " << inet_ntoa(mClientAddr.sin_addr) << " PORT = " << ntohs(mClientAddr.sin_port) << endl;
 
-	//GSessionManager->DecreaseClientCount();
+	GSessionManager->DecreaseClientCount();
 
 	closesocket(mSocket);
 
