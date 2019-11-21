@@ -5,6 +5,8 @@
 ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock)
 {
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));	// use memset to initialize sockaddr_in value
+	memset(&mRecvOverlapped, 0, sizeof(SOVERLAPPED));
+	memset(&mSendOverlapped, 0, sizeof(SOVERLAPPED));
 }
 
 /*
@@ -79,31 +81,22 @@ bool ClientSession::IsConnected() const
 
 인자값 :
 
-기능 : 클라이언트가 전송한 데이터 수신.
+기능 : 클라이언트가 전송한 데이터 수신요청
 */
-bool ClientSession::Recv(stOverlapped* overlapped) const
+bool ClientSession::Recv(SOVERLAPPED* overlapped)
 {
 	// except error
 	if (!IsConnected())
 		return false;
 
-	stOverlapped* recvOV = overlapped;
-
-	if (recvOV == nullptr)
-	{
-		recvOV = new stOverlapped(IO_RECV);
-		memset(recvOV, 0, sizeof(stOverlapped));
-	}
-
-	recvOV->mIOType = IO_RECV;
-
 	DWORD flags = 0;
-	DWORD recvBytes = 0;	
-	recvOV->mWSABuf.buf = recvOV->mBuffer;
-	recvOV->mWSABuf.len = MAX_BUFSIZE;
+	DWORD recvBytes = 0;
+	mRecvOverlapped.mWSABuf.buf = mRecvOverlapped.mBuffer;
+	mRecvOverlapped.mWSABuf.len = MAX_BUFSIZE;
+	mRecvOverlapped.mIOType = IOTYPE::IO_RECV;
 
 	// WSARecv : WSA_IO_PENDING - success message
-	if (SOCKET_ERROR == WSARecv(mSocket, &recvOV->mWSABuf, 1, &recvBytes, &flags, recvOV, NULL))
+	if (SOCKET_ERROR == WSARecv(mSocket, &mRecvOverlapped.mWSABuf, 1, &recvBytes, &flags, (LPWSAOVERLAPPED)&mRecvOverlapped, NULL))
 	{
 		if (WSAGetLastError() != WSA_IO_PENDING)
 		{
@@ -112,7 +105,8 @@ bool ClientSession::Recv(stOverlapped* overlapped) const
 		}
 	}
 
-	cout << "Recv Message : " << recvOV->mWSABuf.buf << endl;
+	// cout << "Recv Message : " << recvOV->mWSABuf.buf << endl;
+	// cout << "Recv Bytes : " << recvBytes << endl;
 
 	return true;
 }
@@ -126,14 +120,14 @@ bool ClientSession::Recv(stOverlapped* overlapped) const
 
 기능 : 인자로 전달받은 버퍼를 클라이언트에 전송
 */
-bool ClientSession::Send(const char* buf, int len) const
+bool ClientSession::Send(const char* buf, int len)
 {
 	// except error
 	if (!IsConnected())
 		return false;
 
 	// create overlapped struct for send
-	stOverlapped* sendOV = new stOverlapped(IO_SEND);
+	SOVERLAPPED* sendOV = new SOVERLAPPED();
 	
 	// setting for send
 	memcpy_s(sendOV->mBuffer, MAX_BUFSIZE, buf, len);

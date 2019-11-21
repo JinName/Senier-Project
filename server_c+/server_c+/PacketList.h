@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-enum PROTOCOL
+enum class PROTOCOL
 {
 	// CHAT
 	TEST_CHAT

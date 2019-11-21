@@ -23,7 +23,7 @@ using namespace std;
 //}
 
 // enum I/O type
-enum IOType
+enum class IOTYPE
 {
 	IO_NONE,
 	IO_SEND,
@@ -38,16 +38,15 @@ enum IOType
 WSABUF 는WSASend 나WSARecv 함수의 인자로 전달되는 버퍼에 사용되는 구조체 이기에 포함 되고
 overlapped 구조체 변수를 넣어주는건 현재 완료된 입출력 정보를 얻어 낼때 사용 된다.
 */
-struct stOverlapped : public OVERLAPPED
+typedef struct sOverlappedSocket : public OVERLAPPED
 {
-	stOverlapped(IOType ioType) : mIOType(ioType)
+	sOverlappedSocket()
 	{
 		// init
-		memset(&mBuffer, 0, MAX_BUFSIZE);
+		memset(mBuffer, 0, MAX_BUFSIZE);
 		memset(&mWSABuf, 0, sizeof(WSABUF));
 	}
-
-	IOType					mIOType;
+	IOTYPE					mIOType;
 	WSABUF					mWSABuf;
 	char					mBuffer[MAX_BUFSIZE];
-};
+} SOVERLAPPED;

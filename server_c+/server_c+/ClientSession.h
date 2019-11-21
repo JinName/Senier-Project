@@ -6,7 +6,7 @@ class ClientSession;
 class SessionManager;
 
 // enum I/O type
-enum IOType
+enum class IOTYPE
 {
 	IO_NONE,
 	IO_SEND,
@@ -21,18 +21,26 @@ enum IOType
 WSABUF 는WSASend 나WSARecv 함수의 인자로 전달되는 버퍼에 사용되는 구조체 이기에 포함 되고
 overlapped 구조체 변수를 넣어주는건 현재 완료된 입출력 정보를 얻어 낼때 사용 된다.
 */
-struct stOverlapped : public OVERLAPPED
+/*
+이 구조체를 사용하는 곳에서 overlapped 초기화를 위해
+memset 을 사용하여 해당 구조체를 초기화 시킬 경우,
+해당 구조체 내의 멤버변수들 모두 값이 초기화 되기 때문에
+OVERLAPPED 구조체를 상속받는 형태보다
+자신이 사용할 구조체를 만들고 그 안에 OVERLAPPED 변수를 가지고 있는 형태가 
+범용적인 측면에서 좋다고 생각된다.
+*/
+typedef struct sOverlappedSocket : public OVERLAPPED
 {
-	stOverlapped(IOType ioType) : mIOType(ioType)
+	sOverlappedSocket()
 	{
 		// init
 		memset(mBuffer, 0, MAX_BUFSIZE);
 		memset(&mWSABuf, 0, sizeof(WSABUF));
 	}
-	IOType					mIOType;
+	IOTYPE					mIOType;
 	WSABUF					mWSABuf;
 	char					mBuffer[MAX_BUFSIZE];
-};
+} SOVERLAPPED;
 
 // client session class
 // ----- METHOD -----
@@ -52,6 +60,9 @@ private:
 
 	SOCKADDR_IN		mClientAddr;	// client address
 
+	SOVERLAPPED		mRecvOverlapped;// overlapped for recv
+	SOVERLAPPED		mSendOverlapped;// overlapped for send
+
 public:
 	ClientSession(SOCKET sock);
 	~ClientSession() {}
@@ -64,8 +75,8 @@ public:
 	// const 로 선언된 해당 객체에선 const 함수만 부를 수 있게되고,
 	// 다른 멤버함수들은 멤버변수 값 수정의 가능성을 가지고 있기때문에 error 를 발생시킨다.
 	bool			IsConnected() const;					// return client is connected
-	bool			Recv(stOverlapped* overlapped) const;							// recv data by client
-	bool			Send(const char* buf, int len) const;	// send data to client
+	bool			Recv(SOVERLAPPED* overlapped);	// recv data by client
+	bool			Send(const char* buf, int len);	// send data to client
 
 	SOCKET			GetSocket() { return mSocket; }			// return socket
 };

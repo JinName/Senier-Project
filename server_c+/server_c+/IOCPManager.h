@@ -28,8 +28,8 @@ private:
 	// static function - must private.. not to public
 	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port
 
-	static bool	ReceiveCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred);
-	static bool	SendCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred);
+	static bool	ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
+	static bool	SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 };
 
 extern IOCPManager* GIocpManager;	// extern - for global freq

@@ -10,19 +10,27 @@ void TCPClient::Init()
 void TCPClient::Update()
 {
 	// overlapped
-	stOverlapped* overlapped = new stOverlapped(IO_RECV);
+	SOVERLAPPED* overlapped = new SOVERLAPPED();
 
-	memset(overlapped, 0, sizeof(stOverlapped));
+	memset(overlapped, 0, sizeof(SOVERLAPPED));
 
 	DWORD flags = 0;
 	DWORD sendBytes = 0;
+	overlapped->mIOType = IOTYPE::IO_RECV;
+
+	SCHAT sChat;
+	memset(&sChat, 0, sizeof(SCHAT));
+	sChat.mHead.mCmd = (UCHAR)PROTOCOL::TEST_CHAT;
+	sChat.mHead.mDataSize = sizeof(SCHAT);
 
 	char msg[MAX_MSG_LEN] = "";
 	while (true)
 	{
+		//gets_s(sChat.buf, MAX_MSG_LEN);
 		gets_s(msg, MAX_MSG_LEN);
 
 		// str copy
+		//memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, (char*)&sChat, sizeof(sChat));
 		memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, msg, sizeof(msg));
 
 		cout << overlapped->mBuffer << endl;

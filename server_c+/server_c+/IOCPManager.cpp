@@ -137,7 +137,7 @@ bool IOCPManager::AcceptLoop()
 			GSessionManager->DeleteClientSession(client);
 		}
 
-		//stOverlapped* recvOV = new stOverlapped(IO_RECV);
+		//SOVERLAPPED* recvOV = new SOVERLAPPED(IO_RECV);
 
 		client->Recv(NULL);
 	}
@@ -155,7 +155,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	while (true)
 	{
 		DWORD dwBytesTransferred;	// 전송받을 데이터
-		stOverlapped* overlapped = nullptr;
+		SOVERLAPPED* overlapped = nullptr;
 		ClientSession* client = nullptr;
 
 		int ret = GetQueuedCompletionStatus(hCP, &dwBytesTransferred, (PULONG_PTR)&client, (LPOVERLAPPED*)&overlapped, -1);
@@ -191,12 +191,12 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 
 		switch (overlapped->mIOType)
 		{
-		case IO_SEND:
+		case IOTYPE::IO_SEND:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 SEND 일 경우 수행할 함수
 			//completionOK = SendCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
-		case IO_RECV:
+		case IOTYPE::IO_RECV:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 RECV 일 경우 수행할 함수
 			completionOK = ReceiveCompletion(client, overlapped, dwBytesTransferred);
 			break;
@@ -216,7 +216,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	return 0;
 }
 
-bool IOCPManager::ReceiveCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred)
+bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
 	{
@@ -239,7 +239,7 @@ bool IOCPManager::ReceiveCompletion(const ClientSession* client, stOverlapped* o
 	return client->Recv(overlapped);
 }
 
-bool IOCPManager::SendCompletion(const ClientSession* client, stOverlapped* overlapped, DWORD dwBytesTransferred)
+bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
 	{

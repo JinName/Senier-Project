@@ -85,7 +85,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -127,6 +127,7 @@
     <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
+    <ClCompile Include="PacketProc.cpp" />
     <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="TemplateSingleton.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="NetworkSession.h" />
     <ClInclude Include="PacketList.h" />
+    <ClInclude Include="PacketProc.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="stdafx.h" />
