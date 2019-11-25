@@ -83,7 +83,7 @@ bool ClientSession::IsConnected() const
 
 기능 : 클라이언트가 전송한 데이터 수신요청
 */
-bool ClientSession::Recv(SOVERLAPPED* overlapped)
+bool ClientSession::Recv()
 {
 	// except error
 	if (!IsConnected())
@@ -107,7 +107,7 @@ bool ClientSession::Recv(SOVERLAPPED* overlapped)
 
 	// cout << "Recv Message : " << recvOV->mWSABuf.buf << endl;
 	// cout << "Recv Bytes : " << recvBytes << endl;
-
+	
 	return true;
 }
 

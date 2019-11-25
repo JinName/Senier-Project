@@ -27,11 +27,11 @@ void TCPClient::Update()
 	while (true)
 	{
 		//gets_s(sChat.buf, MAX_MSG_LEN);
-		gets_s(msg, MAX_MSG_LEN);
+		gets_s(sChat.buf, MAX_MSG_LEN);
 
 		// str copy
 		//memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, (char*)&sChat, sizeof(sChat));
-		memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, msg, sizeof(msg));
+		memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, (void*)&sChat, sizeof(SCHAT));
 
 		cout << overlapped->mBuffer << endl;
 

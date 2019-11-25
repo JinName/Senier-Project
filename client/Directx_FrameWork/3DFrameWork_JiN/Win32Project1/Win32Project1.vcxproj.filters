@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="DXClass">
+      <UniqueIdentifier>{17041943-0f22-468f-819b-011066f13c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager">
+      <UniqueIdentifier>{b217d22c-08fa-4e36-854e-d3ddb043b252}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase">
+      <UniqueIdentifier>{3147e9f8-9b55-466b-b135-9f86aebd4700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Scene">
+      <UniqueIdentifier>{4766e3ed-d322-49cc-a4af-94e8a6d98993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity">
+      <UniqueIdentifier>{a1a5f971-3eab-4539-9729-8544bdfb3ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Map">
+      <UniqueIdentifier>{99c8222c-36db-4a79-99f1-7939ef8e783a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Map\Tiles">
+      <UniqueIdentifier>{427f2b1b-162b-44d2-9c20-daf497f64558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Map\Background">
+      <UniqueIdentifier>{5057e0dd-8a8f-4ea3-b3f5-2af287bd728a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Character">
+      <UniqueIdentifier>{a805c2b0-ff8f-47b6-9a69-96639712b7a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Character\Tiger">
+      <UniqueIdentifier>{7caa58e5-3e7f-4f12-a5ca-b77644af7487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Character\2D_Aru">
+      <UniqueIdentifier>{15d060b7-4550-4c4d-a1d3-387d39417d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\CollisionManager">
+      <UniqueIdentifier>{d05a1a32-a6ec-4013-acce-8a6b2aca64d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\MapManager">
+      <UniqueIdentifier>{71af010f-b79e-4ec6-b8f3-29cec38ccccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\CollisionManager\Collider">
+      <UniqueIdentifier>{6d4cb28a-8d84-4c63-814b-4c1ae8c9079b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Monster">
+      <UniqueIdentifier>{6190d18a-fb2c-478f-8a58-cc2fadf24f26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Character\2D_Aru\FireBall">
+      <UniqueIdentifier>{e747d230-eaba-4489-b704-45c1f7598454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Character\Health">
+      <UniqueIdentifier>{56b21a0b-0c1f-429d-9203-bf34c9ad3d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\UI_Manager">
+      <UniqueIdentifier>{9467c7d4-e4b4-48e4-af75-c174074c925a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Scene\Stage">
+      <UniqueIdentifier>{b2fb0e1b-ef64-4790-9447-a9c619c0f4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Scene\Title">
+      <UniqueIdentifier>{656ae734-0f51-40d5-8da7-7d8ed74fb42b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\ButtonManager">
+      <UniqueIdentifier>{d3707066-64e3-4b75-8252-caa9fded948f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameManager\ButtonManager\Button">
+      <UniqueIdentifier>{038430e5-d530-4c94-8277-91f0a97feb24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Scene\GameOver">
+      <UniqueIdentifier>{aa0c60d7-526f-4692-92b2-d59ffb530831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Entity\Potion">
+      <UniqueIdentifier>{c56d75f2-3f88-42db-9f88-83dce7e6e023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameBase\Scene\GameClear">
+      <UniqueIdentifier>{8ca54286-f375-4365-bfa7-b1eb224f7935}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DSetup.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="WinSetup.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBase.cpp">
+      <Filter>GameBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Meshes.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>GameBase\Entity\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiger.cpp">
+      <Filter>GameBase\Entity\Character\Tiger</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectInput.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>DXClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Aru.cpp">
+      <Filter>GameBase\Entity\Character\2D_Aru</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>GameBase\Entity\Map\Tiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>GameBase\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>GameBase\Entity\Map\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>GameManager\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MapManager.cpp">
+      <Filter>GameManager\MapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="2DBoxCollider.cpp">
+      <Filter>GameManager\CollisionManager\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>GameBase\Entity\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>GameBase\Entity\Character\2D_Aru\FireBall</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
+      <Filter>GameBase\Entity\Character\Health</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>GameManager\UI_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>GameBase\Scene\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>GameBase\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonManager.cpp">
+      <Filter>GameManager\ButtonManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicButton.cpp">
+      <Filter>GameManager\ButtonManager\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>GameBase\Scene\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="Potion.cpp">
+      <Filter>GameBase\Entity\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="GameClear.cpp">
+      <Filter>GameBase\Scene\GameClear</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DSetup.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="WinSetup.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBase.h">
+      <Filter>GameBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Meshes.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>GameBase\Entity\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiger.h">
+      <Filter>GameBase\Entity\Character\Tiger</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectInput.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="WinConfigure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>DXClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Aru.h">
+      <Filter>GameBase\Entity\Character\2D_Aru</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>GameBase\Entity\Map\Tiles</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>GameBase\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>GameBase\Entity\Map\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>GameManager\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MapManager.h">
+      <Filter>GameManager\MapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="2DBoxCollider.h">
+      <Filter>GameManager\CollisionManager\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>GameBase\Entity\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>GameBase\Entity\Character\2D_Aru\FireBall</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
+      <Filter>GameBase\Entity\Character\Health</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>GameManager\UI_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>GameBase\Scene\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>GameBase\Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonManager.h">
+      <Filter>GameManager\ButtonManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicButton.h">
+      <Filter>GameManager\ButtonManager\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>GameBase\Scene\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="Potion.h">
+      <Filter>GameBase\Entity\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="GameClear.h">
+      <Filter>GameBase\Scene\GameClear</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Win32Project1.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

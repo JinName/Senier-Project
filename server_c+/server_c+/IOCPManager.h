@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "SessionManager.h"
 #include "ClientSession.h"
+#include "PacketProc.h"
 
 class IOCPManager
 {
@@ -11,6 +12,7 @@ public:
 
 	bool		InitIOCPServer();	// initialize
 	bool		StartIOCPThread();	// start iocp worker thread
+	bool		StartPacketProcessThread();	// start packet process thread
 	bool		CloseIOCPServer();	// close iocp server	
 
 	bool		AcceptLoop();		// accept loop
@@ -26,7 +28,8 @@ private:
 	SOCKET		mListenSocket;		// socket - for listen
 
 	// static function - must private.. not to public
-	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port
+	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port	
+	static unsigned int WINAPI PacketProcessThread(LPVOID lpParam);
 
 	static bool	ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 	static bool	SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);

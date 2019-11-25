@@ -2,18 +2,23 @@
 #include "ClientSession.h"
 #include "SessionManager.h"
 #include "IOCPManager.h"
+#include "PacketProc.h"
 
 int main()
 {
 	/// Global Managers
 	GSessionManager = new SessionManager;
 	GIocpManager = new IOCPManager;
+	PacketProc::GetInstance();
 
 
 	if (GIocpManager->InitIOCPServer() == false)
 		return -1;
 
 	if (GIocpManager->StartIOCPThread() == false)
+		return -1;
+
+	if (GIocpManager->StartPacketProcessThread() == false)
 		return -1;
 
 	cout << "Start IOCP Server..." << endl;

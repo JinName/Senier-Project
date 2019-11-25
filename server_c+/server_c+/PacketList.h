@@ -5,11 +5,14 @@
 enum class PROTOCOL
 {
 	// CHAT
-	TEST_CHAT
+	TEST_CHAT,
 	
 	// LOGIN
 
 	// PLAY
+
+	// default
+	NONE
 };
 
 typedef struct sPacket_Head
@@ -27,4 +30,11 @@ struct SCHAT
 {
 	SHEAD mHead;
 	char buf[MAX_MSG_LEN];
+};
+
+struct SCHARACTER
+{
+	SHEAD mHead;
+	float mPosX;
+	float mPosY;
 };

@@ -18,13 +18,29 @@ template < typename T >
 class TemplateSingleton
 {
 protected:
-	TemplateSingleton();
-	~TemplateSingleton();
+	TemplateSingleton() {}
+	~TemplateSingleton() {}
 
 public:
-	static T* GetInstance();
-	static void DestroyInstance();
+	static T* GetInstance()
+	{
+		if (m_pInstance == NULL)
+			m_pInstance = new T;
+
+		return m_pInstance;
+	}
+	static void DestroyInstance()
+	{
+		if (m_pInstance)
+		{
+			delete m_pInstance;
+			m_pInstance = NULL;
+		}
+	}
 
 private:
 	static T* m_pInstance;
 };
+
+template < typename T >
+T* TemplateSingleton<T>::m_pInstance = NULL;

@@ -1,1 +1,4 @@
-﻿  TCPClient.vcxproj -> D:\Code Workspace\Senier-Project\client\TCPClient\x64\Debug\TCPClient.exe
+﻿  TCPClient.cpp
+D:\Code Workspace\Senier-Project\client\TCPClient\TCPClient\TCPClient.cpp(83,1): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1831): message : 'inet_addr' 선언을 참조하십시오.
+  TCPClient.vcxproj -> D:\Code Workspace\Senier-Project\client\TCPClient\x64\Debug\TCPClient.exe

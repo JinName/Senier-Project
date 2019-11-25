@@ -93,6 +93,24 @@ bool IOCPManager::StartIOCPThread()
 	return true;
 }
 
+bool IOCPManager::StartPacketProcessThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, PacketProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hPacketThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Packet Thread Thread" << endl;
+
+	CloseHandle(hPacketThread);
+}
+
 bool IOCPManager::CloseIOCPServer()
 {
 	// close handle and socket
@@ -139,7 +157,7 @@ bool IOCPManager::AcceptLoop()
 
 		//SOVERLAPPED* recvOV = new SOVERLAPPED(IO_RECV);
 
-		client->Recv(NULL);
+		client->Recv();
 	}
 
 	return true;
@@ -216,6 +234,16 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	return 0;
 }
 
+unsigned int WINAPI IOCPManager::PacketProcessThread(LPVOID lpParam)
+{
+	while (true)
+	{
+		PacketProc::GetInstance()->ProcessAllQueue();
+	}
+
+	return 0;
+}
+
 bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
@@ -224,19 +252,11 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 		return false;
 	}
 
-	// echo back
-	// bool sendRe = client->Send(overlapped->mBuffer, dwBytesTransferred);
+	// 완료된 recv 에 대한 처리 부분 ////////////////////////
+	PacketProc::GetInstance()->Enqueue(client, overlapped->mBuffer);
+	/////////////////////////////////////////////////////////
 
-	// echo back 이후 overlapped 구조체는 사용하지 않고,
-	// recv 함수에서 WSARecv() 를 통해 새로운 구조체 정보를 가져옴
-	// delete overlapped;
-
-	//if (!sendRe)
-	//{
-	//	cout << "send fail..." << endl;
-	//}
-
-	return client->Recv(overlapped);
+	return client->Recv();
 }
 
 bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)

@@ -16,4 +16,4 @@ using namespace std;
 #define BLOG_SIZE		5
 #define MAX_MSG_LEN		256
 #define LOCAL_IP		"127.0.0.1"
-#define MAX_BUFSIZE		4096
+#define MAX_BUFSIZE		1024

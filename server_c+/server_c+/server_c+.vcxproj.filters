@@ -30,10 +30,10 @@
     <ClCompile Include="ClientSession.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TemplateSingleton.cpp">
+    <ClCompile Include="PacketProc.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="PacketProc.cpp">
+    <ClCompile Include="MatchManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,9 +50,6 @@
     <ClInclude Include="SessionManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ClientSession.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -63,6 +60,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="PacketProc.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

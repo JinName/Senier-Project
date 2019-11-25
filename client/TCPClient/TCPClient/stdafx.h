@@ -9,7 +9,7 @@ using namespace std;
 #define MAX_MSG_LEN   256
 //#define SERVER_IP     "192.168.34.50"//辑滚 IP 林家
 #define SERVER_IP     "127.0.0.1"//辑滚 IP 林家
-#define MAX_BUFSIZE   4096
+#define MAX_BUFSIZE   1024
 
 #pragma comment(lib, "ws2_32.lib")
 

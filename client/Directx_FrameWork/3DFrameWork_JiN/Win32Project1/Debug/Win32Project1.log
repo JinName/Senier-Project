@@ -1,0 +1,6 @@
+﻿  WinSetup.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\winsetup.cpp(57): warning C4996: 'freopen': This function or variable may be unsafe. Consider using freopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(240): note: 'freopen' 선언을 참조하십시오.
+  Win32Project1.vcxproj -> C:\Users\seungwon\Desktop\WorkSpace\d3d_framework\3DFrameWork_JiN\Debug\Win32Project1.exe
+  Win32Project1.vcxproj -> C:\Users\seungwon\Desktop\WorkSpace\d3d_framework\3DFrameWork_JiN\Debug\Win32Project1.pdb (Full PDB)

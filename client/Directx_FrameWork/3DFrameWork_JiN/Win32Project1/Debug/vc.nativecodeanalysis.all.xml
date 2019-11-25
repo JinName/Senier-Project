@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft directx sdk (june 2010)\include\</FILEPATH>
+      <FILENAME>dinput.h</FILENAME>
+      <LINE>4321</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>'joyConfigChanged'에 대한 주석이 일치하지 않습니다. 이 인스턴스에는 주석 없음이(가) 있습니다. c:\program files (x86)\windows kits\8.1\include\um\joystickapi.h(444)을(를) 참조하십시오. </DESCRIPTION>
+    <FUNCTION>joyConfigChanged</FUNCTION>
+    <DECORATED>joyConfigChanged@4</DECORATED>
+    <FUNCLINE>4321</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>aru.cpp</FILENAME>
+      <LINE>91</LINE>
+      <COLUMN>33</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>'GetTickCount64'을(를) 'GetTickCount' 대신 사용하십시오. 이유: GetTickCount overflows roughly every 49 days.  Code that does not take that into account can loop indefinitely.  GetTickCount64 operates on 64 bit values and does not have that problem</DESCRIPTION>
+    <FUNCTION>CAru::Gravity</FUNCTION>
+    <DECORATED>?Gravity@CAru@@QAEXXZ</DECORATED>
+    <FUNCLINE>89</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>aru.cpp</FILENAME>
+      <LINE>281</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>'GetTickCount64'을(를) 'GetTickCount' 대신 사용하십시오. 이유: GetTickCount overflows roughly every 49 days.  Code that does not take that into account can loop indefinitely.  GetTickCount64 operates on 64 bit values and does not have that problem</DESCRIPTION>
+    <FUNCTION>CAru::Init</FUNCTION>
+    <DECORATED>?Init@CAru@@QAEXPAUIDirect3DDevice9@@@Z</DECORATED>
+    <FUNCLINE>238</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>sprite.cpp</FILENAME>
+      <LINE>42</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>'GetTickCount64'을(를) 'GetTickCount' 대신 사용하십시오. 이유: GetTickCount overflows roughly every 49 days.  Code that does not take that into account can loop indefinitely.  GetTickCount64 operates on 64 bit values and does not have that problem</DESCRIPTION>
+    <FUNCTION>CSprite::Create_Sprite</FUNCTION>
+    <DECORATED>?Create_Sprite@CSprite@@QAEJPAUIDirect3DDevice9@@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@HHHK@Z</DECORATED>
+    <FUNCLINE>25</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>sprite.cpp</FILENAME>
+      <LINE>85</LINE>
+      <COLUMN>36</COLUMN>
+    </SFA>
+    <DEFECTCODE>28159</DEFECTCODE>
+    <DESCRIPTION>'GetTickCount64'을(를) 'GetTickCount' 대신 사용하십시오. 이유: GetTickCount overflows roughly every 49 days.  Code that does not take that into account can loop indefinitely.  GetTickCount64 operates on 64 bit values and does not have that problem</DESCRIPTION>
+    <FUNCTION>CSprite::Animation_Frame</FUNCTION>
+    <DECORATED>?Animation_Frame@CSprite@@QAEXXZ</DECORATED>
+    <FUNCLINE>81</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>winsetup.cpp</FILENAME>
+      <LINE>58</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>반환 값이 무시되었습니다. 'freopen'.</DESCRIPTION>
+    <FUNCTION>CWinSetup::initWindow</FUNCTION>
+    <DECORATED>?initWindow@CWinSetup@@QAE_NXZ</DECORATED>
+    <FUNCLINE>55</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\seungwon\desktop\workspace\d3d_framework\3dframework_jin\win32project1\</FILEPATH>
+      <FILENAME>main.cpp</FILENAME>
+      <LINE>4</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>'WinMain'에 대한 주석이 일치하지 않습니다. 이 인스턴스에는 주석 없음이(가) 있습니다. c:\program files (x86)\windows kits\8.1\include\um\winbase.h(905)을(를) 참조하십시오. </DESCRIPTION>
+    <FUNCTION>WinMain</FUNCTION>
+    <DECORATED>WinMain@16</DECORATED>
+    <FUNCLINE>4</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

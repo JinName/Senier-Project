@@ -126,18 +126,18 @@
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
     <ClCompile Include="PacketProc.cpp" />
     <ClCompile Include="SessionManager.cpp" />
-    <ClCompile Include="TemplateSingleton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="IOCPManager.h" />
+    <ClInclude Include="MatchManager.h" />
     <ClInclude Include="NetworkSession.h" />
     <ClInclude Include="PacketList.h" />
     <ClInclude Include="PacketProc.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TemplateSingleton.h" />
