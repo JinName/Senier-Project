@@ -88,6 +88,12 @@
     <Filter Include="GameBase\Scene\GameClear">
       <UniqueIdentifier>{8ca54286-f375-4365-bfa7-b1eb224f7935}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{f4f35e96-d3b2-4178-a64f-2391ef068a52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\NetworkHeader">
+      <UniqueIdentifier>{79917158-e76d-4368-b843-521e6da15b56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -188,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="GameClear.cpp">
       <Filter>GameBase\Scene\GameClear</Filter>
+    </ClCompile>
+    <ClCompile Include="Network.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +304,15 @@
     </ClInclude>
     <ClInclude Include="GameClear.h">
       <Filter>GameBase\Scene\GameClear</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkHeader.h">
+      <Filter>Network\NetworkHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketList.h">
+      <Filter>Network\NetworkHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

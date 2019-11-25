@@ -96,7 +96,7 @@ void CAru::Gravity()
 
 	if (!isVertical)
 	{
-		velocity += 0.0098f * (float)TempTime / 60.0f;
+		velocity += 0.0098f * (float)TempTime / 60.0f * 2.0f;
 		m_fGravity_Accel = velocity * (float)TempTime * m_fCharacter_mass;
 		m_vPos.y = m_vPos.y + m_fGravity_Accel;
 	}
@@ -259,7 +259,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_bHP_isFull = true;
 	m_iJump = 0;
 	m_fSpeed = 3.0f;
-	m_fJump_Power = 6.2f;
+	m_fJump_Power = 3.5f;
 	m_fGravity_Accel = 0.0f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
