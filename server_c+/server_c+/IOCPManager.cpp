@@ -111,6 +111,24 @@ bool IOCPManager::StartPacketProcessThread()
 	CloseHandle(hPacketThread);
 }
 
+bool IOCPManager::StartMatchProcessThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hMatchThread = (HANDLE)_beginthreadex(NULL, 0, MatchProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hMatchThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Match Thread Thread" << endl;
+
+	CloseHandle(hMatchThread);
+}
+
 bool IOCPManager::CloseIOCPServer()
 {
 	// close handle and socket
@@ -211,7 +229,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		{
 		case IOTYPE::IO_SEND:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 SEND 일 경우 수행할 함수
-			//completionOK = SendCompletion(client, overlapped, dwBytesTransferred);
+			completionOK = SendCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		case IOTYPE::IO_RECV:
@@ -223,12 +241,12 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 			break;
 		}
 
-		if (!completionOK)
-		{
-			cout << "Completion Error..." << endl;
-			client->DisConnect();
-			GSessionManager->DeleteClientSession(client);
-		}
+		//if (!completionOK)
+		//{
+		//	cout << "Completion Error..." << endl;
+		//	client->DisConnect();
+		//	GSessionManager->DeleteClientSession(client);
+		//}
 	}
 	
 	return 0;
@@ -238,7 +256,17 @@ unsigned int WINAPI IOCPManager::PacketProcessThread(LPVOID lpParam)
 {
 	while (true)
 	{
-		PacketProc::GetInstance()->ProcessAllQueue();
+		PacketManager::GetInstance()->ProcessAllQueue();
+	}
+
+	return 0;
+}
+
+unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
+{
+	while (true)
+	{
+		MatchManager::GetInstance()->ProcessMatchList();
 	}
 
 	return 0;
@@ -253,7 +281,7 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 	}
 
 	// 완료된 recv 에 대한 처리 부분 ////////////////////////
-	PacketProc::GetInstance()->Enqueue(client, overlapped->mBuffer);
+	PacketManager::GetInstance()->Enqueue(client, overlapped->mBuffer);
 	/////////////////////////////////////////////////////////
 
 	return client->Recv();
@@ -270,11 +298,12 @@ bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped,
 	/// 전송 다 되었는지 확인하는 것 처리..
 	if (overlapped->mWSABuf.len != dwBytesTransferred)
 	{
-		delete overlapped;
+		//delete overlapped;
+		cout << "send() isn't complete.." << endl;
 		return false;
 	}
 
-	delete overlapped;
+	//delete overlapped;
 
 	return true;
 }

@@ -1,1 +1,59 @@
 #include "MatchManager.h"
+
+MatchManager::MatchManager()
+{
+	InitializeCriticalSection(&mCS);
+}
+
+MatchManager::~MatchManager()
+{
+	DeleteCriticalSection(&mCS);
+}
+
+bool MatchManager::Push_Back(ClientSession* client)
+{
+	if (client == nullptr)
+	{
+		cout << "MatchManager::Push_Back - client is nullptr.." << endl;
+		return false;
+	}
+
+	EnterCS();
+	mMatchWaitList.push_back(client);
+	LeaveCS();
+
+	return true;
+}
+
+void MatchManager::ProcessMatchList()
+{
+	// 대기 리스트에 두명 이상이 존재할 경우
+	// 먼저 들어온 순으로 앞에서부터 매칭 -> 게임시작
+	if (mMatchWaitList.size() >= 2)
+	{
+		// 자원 변경점을 thread-safe 하게 설계한다.
+		// start Critical Section
+		EnterCS();
+		// player 1
+		ClientSession* player1 = mMatchWaitList.front();
+		mMatchWaitList.pop_front();
+
+		// player 2
+		ClientSession* player2 = mMatchWaitList.front();
+		mMatchWaitList.pop_front();
+		LeaveCS();
+		// end Critical Section
+
+		SGAMESTART sGamestart;
+		sGamestart.mStart = true;
+
+		bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&sGamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+		bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&sGamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+
+		if (player1_result && player2_result)
+		{
+			player1->Send();
+			player2->Send();
+		}			
+	}
+}

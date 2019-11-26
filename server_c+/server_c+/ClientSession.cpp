@@ -66,9 +66,6 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 
 /*
 함수명 : IsConnected()
-
-인자값 :
-
 기능 : 클라이언트의 연결상태 확인.
 */
 bool ClientSession::IsConnected() const
@@ -78,9 +75,6 @@ bool ClientSession::IsConnected() const
 
 /*
 함수명 : Recv()
-
-인자값 :
-
 기능 : 클라이언트가 전송한 데이터 수신요청
 */
 bool ClientSession::Recv()
@@ -113,32 +107,20 @@ bool ClientSession::Recv()
 
 /*
 함수명 : Send()
-
-인자값 :
-1) const char* buf : 전송할 버퍼
-2) int len : 전송할 버퍼길이
-
 기능 : 인자로 전달받은 버퍼를 클라이언트에 전송
 */
-bool ClientSession::Send(const char* buf, int len)
+bool ClientSession::Send()
 {
 	// except error
 	if (!IsConnected())
 		return false;
-
-	// create overlapped struct for send
-	SOVERLAPPED* sendOV = new SOVERLAPPED();
-	
-	// setting for send
-	memcpy_s(sendOV->mBuffer, MAX_BUFSIZE, buf, len);
 	
 	DWORD flags = 0;
 	DWORD sendBytes = 0;
-	sendOV->mWSABuf.buf = sendOV->mBuffer;
-	sendOV->mWSABuf.len = len;
+	mSendOverlapped.mIOType = IOTYPE::IO_SEND;
 
 	// WSASend : WSA_IO_PENDING - success message
-	if (WSASend(mSocket, &sendOV->mWSABuf, 1, &sendBytes, flags, sendOV, NULL) == SOCKET_ERROR)
+	if (WSASend(mSocket, &mSendOverlapped.mWSABuf, 1, &sendBytes, flags, (LPOVERLAPPED)&mSendOverlapped, NULL) == SOCKET_ERROR)
 	{
 		if (WSAGetLastError() != WSA_IO_PENDING)
 		{
@@ -146,16 +128,13 @@ bool ClientSession::Send(const char* buf, int len)
 			return false;
 		}
 	}
-	cout << "send massage : " << endl;
+	//cout << "send massage : " << endl;
 
 	return true;
 }
 
 /*
 함수명 : DisConnect()
-
-인자값 :
-
 기능 : 접속 종료된 SOCKET 삭제
 */
 bool ClientSession::DisConnect()
@@ -180,6 +159,19 @@ bool ClientSession::DisConnect()
 	closesocket(mSocket);
 
 	mIsConnected = false;
+
+	return true;
+}
+
+bool ClientSession::SetSendOverlapped(char* buffer)
+{
+	if (buffer == nullptr)
+	{
+		return false;
+	}
+
+	mSendOverlapped.mWSABuf.len = sizeof(buffer);
+	mSendOverlapped.mWSABuf.buf = mSendOverlapped.mBuffer;
 
 	return true;
 }

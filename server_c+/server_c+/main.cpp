@@ -2,14 +2,16 @@
 #include "ClientSession.h"
 #include "SessionManager.h"
 #include "IOCPManager.h"
-#include "PacketProc.h"
+#include "PacketManager.h"
+#include "MatchManager.h"
 
 int main()
 {
 	/// Global Managers
 	GSessionManager = new SessionManager;
 	GIocpManager = new IOCPManager;
-	PacketProc::GetInstance();
+	PacketManager::GetInstance();
+	MatchManager::GetInstance();
 
 
 	if (GIocpManager->InitIOCPServer() == false)
@@ -19,6 +21,9 @@ int main()
 		return -1;
 
 	if (GIocpManager->StartPacketProcessThread() == false)
+		return -1;
+
+	if (GIocpManager->StartMatchProcessThread() == false)
 		return -1;
 
 	cout << "Start IOCP Server..." << endl;
@@ -31,6 +36,8 @@ int main()
 
 	cout << "End IOCP Server..." << endl;
 
+	MatchManager::DestroyInstance();
+	PacketManager::DestroyInstance();
 	delete GIocpManager;
 	delete GSessionManager;
 

@@ -76,8 +76,13 @@ public:
 	// 다른 멤버함수들은 멤버변수 값 수정의 가능성을 가지고 있기때문에 error 를 발생시킨다.
 	bool			IsConnected() const;					// return client is connected
 	bool			Recv();									// recv data by client
-	bool			Send(const char* buf, int len);	// send data to client
+	bool			Send();									// send data to client
 
 	SOCKET			GetSocket() { return mSocket; }			// return socket
+
+	SOVERLAPPED		GetRecvOverlapped() { return mRecvOverlapped; }
+	SOVERLAPPED		GetSendOverlapped() { return mSendOverlapped; }
+
+	bool			SetSendOverlapped(char* buffer);
 };
 
