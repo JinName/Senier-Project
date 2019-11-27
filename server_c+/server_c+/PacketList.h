@@ -34,10 +34,10 @@ enum class PROTOCOL
 	// LOGIN
 
 	// MATCH
-	MATCH_RQ, MATCH_RP,
+	MATCH_RQ, MATCH_RP, GAMESTART_CM,
 
 	// PLAY
-	GAMESTART_CM,
+	MOVE_RQ,
 
 	// default
 	NONE
@@ -59,9 +59,9 @@ struct SCHAT
 	char buf[MAX_MSG_LEN];
 };
 
-struct SGAMEREADY
+struct SMATCH
 {
-	bool mReady;
+	bool mInMatch;
 };
 
 struct SGAMESTART

@@ -65,7 +65,7 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 	return (PROTOCOL)head.mCmd;
 }
 
-bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD bufferSize, PROTOCOL protocol)
+bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD dataBufferSize, PROTOCOL protocol)
 {
 	if (client == nullptr)
 	{
@@ -79,9 +79,9 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD buff
 	// set header
 	SHEAD head;
 	head.mCmd = (unsigned char)protocol;
-	head.mDataSize = bufferSize;
+	head.mDataSize = sizeof(SHEAD) + dataBufferSize;
 
-	memcpy(p, &head, sizeof(SHEAD));
+	memcpy(p, (char*)&head, sizeof(SHEAD));
 	memcpy(p + sizeof(SHEAD), data, sizeof(data));
 
 	// set send overlapped
@@ -96,8 +96,14 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 	case PROTOCOL::TEST_CHAT:
 		SCHAT chat;
-		memcpy(&chat, pack.mBuffer, sizeof(SCHAT));
+		memcpy(&chat, pack.mBuffer + sizeof(SHEAD), sizeof(SCHAT));
 		cout << "Message From Client : " << chat.buf << endl;
+		break;
+
+	case PROTOCOL::MATCH_RQ:
+		SMATCH match;
+		memcpy(&match, pack.mBuffer + sizeof(SHEAD), sizeof(SMATCH));
+		cout << "Match Request From Client..." << match.mInMatch << endl;
 		break;
 	default:
 		break;

@@ -1,6 +1,8 @@
 #pragma once
 #include <assert.h>
 #include <iostream>
+//#define WIN32_LEAN_AND_MEAN
+#include <WinSock2.h>
 #include <Windows.h>
 #include <mmsystem.h>
 #include <d3dx9.h>
@@ -8,16 +10,20 @@
 #include <strsafe.h>
 #pragma warning( default : 4996 )
 
+#include <stdlib.h>
+#include <process.h>
+
 #include <list>
 #include <stdio.h>
 #include <iostream>
 #include <ctime>
 using namespace std;
 
-
+#pragma comment(lib, "ws2_32.lib")
 #pragma comment(lib, "winmm.lib")
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
+
 
 
 #define SAFE_RELEASE(p) { if ( (p) ) { (p)->Release(); (p) = 0; } }

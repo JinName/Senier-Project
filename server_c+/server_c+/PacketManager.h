@@ -40,7 +40,7 @@ public:
 	void ProcessAllQueue();		// 모든 패킷이 Queue 에서 전부 빠질 때까지 패킷처리를 계속함
 
 	// Send 패킷생성
-	bool MakeSendPacket(ClientSession* client, char* buffer, DWORD bufferSize, PROTOCOL protocol);
+	bool MakeSendPacket(ClientSession* client, char* buffer, DWORD dataBufferSize, PROTOCOL protocol);
 
 	// 패킷분석
 	PROTOCOL ParsingPacket(ClientPacket pack);		// HEAD 를 분리하여 패킷 정보를 분석 -> 어떤 프로토콜을 실행해야하는지 판단	

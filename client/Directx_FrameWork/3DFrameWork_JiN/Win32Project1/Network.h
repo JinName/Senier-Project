@@ -1,13 +1,10 @@
 #pragma once
 #include "NetworkHeader.h"
 #include "PacketList.h"
+#include "TemplateSingleton.h"
 
-class Network
+class Network : public TemplateSingleton<Network>
 {
-private:
-	WSADATA m_WsaData;
-	SOCKET m_ClientSocket;
-
 public:
 	void Init();
 	void Update();
@@ -19,9 +16,18 @@ public:
 	// 연결 시도
 	void Connect(short _portNum);
 
-	void Threading();
+	void Run();
+
+	//void Threading();
 
 	// 패킷 전송
-	bool SendPacket(char* _buffer);
+	bool SendPacket(char* _buffer, DWORD _bufferSize);
+
+private:
+	WSADATA m_WsaData;
+	SOCKET m_ClientSocket;
+
+	//static unsigned int WINAPI RecvThread(LPVOID lpParam);
 };
 
+Network* TemplateSingleton<Network>::m_pInstance = NULL;

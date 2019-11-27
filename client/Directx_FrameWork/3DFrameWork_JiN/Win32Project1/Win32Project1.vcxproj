@@ -55,8 +55,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -106,6 +107,7 @@
     <ClCompile Include="Meshes.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Potion.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -144,10 +146,12 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="NetworkHeader.h" />
     <ClInclude Include="PacketList.h" />
+    <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Potion.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="TemplateSingleton.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tiger.h" />
     <ClInclude Include="Tile.h" />

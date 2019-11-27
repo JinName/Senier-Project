@@ -94,6 +94,9 @@
     <Filter Include="Network\NetworkHeader">
       <UniqueIdentifier>{79917158-e76d-4368-b843-521e6da15b56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\PacketManager">
+      <UniqueIdentifier>{bb7e3810-b6f1-49b9-afb2-34c3245c38ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketManager.cpp">
+      <Filter>Network\PacketManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="PacketList.h">
       <Filter>Network\NetworkHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="TemplateSingleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketManager.h">
+      <Filter>Network\PacketManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

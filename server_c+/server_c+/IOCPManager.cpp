@@ -281,7 +281,7 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 	}
 
 	// 완료된 recv 에 대한 처리 부분 ////////////////////////
-	PacketManager::GetInstance()->Enqueue(client, overlapped->mBuffer);
+	PacketManager::GetInstance()->Enqueue(client, client->GetRecvOverlapped().mWSABuf.buf);	
 	/////////////////////////////////////////////////////////
 
 	return client->Recv();

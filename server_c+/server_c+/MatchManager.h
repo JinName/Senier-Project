@@ -39,3 +39,4 @@ private:
 	CRITICAL_SECTION mCS;
 };
 
+MatchManager* TemplateSingleton<MatchManager>::m_pInstance = NULL;

@@ -2,7 +2,7 @@
 #include "IOCPManager.h"
 #include "SessionManager.h"
 
-ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock)
+ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock), mRoomNum(-1)
 {
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));	// use memset to initialize sockaddr_in value
 	memset(&mRecvOverlapped, 0, sizeof(SOVERLAPPED));

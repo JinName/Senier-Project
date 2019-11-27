@@ -1,18 +1,11 @@
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
-#include <process.h>
-#include <WinSock2.h>
-#include <iostream>
-using namespace std;
+#include "Header.h"
 
 #define PORT_NUM      10200
 #define MAX_MSG_LEN   256
 //#define SERVER_IP     "192.168.34.50"//辑滚 IP 林家
 #define SERVER_IP     "127.0.0.1"//辑滚 IP 林家
 #define MAX_BUFSIZE   1024
-
-#pragma comment(lib, "ws2_32.lib")
 
 // enum I/O type
 enum class IOTYPE

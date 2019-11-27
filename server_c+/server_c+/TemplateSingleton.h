@@ -12,7 +12,6 @@ CObject::GetInstance()->method();
 */
 
 #pragma once
-#include "stdafx.h"
 
 template < typename T >
 class TemplateSingleton

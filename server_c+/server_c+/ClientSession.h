@@ -63,6 +63,8 @@ private:
 	SOVERLAPPED		mRecvOverlapped;// overlapped for recv
 	SOVERLAPPED		mSendOverlapped;// overlapped for send
 
+	// game information
+	int				mRoomNum;		// -1 : not in game
 public:
 	ClientSession(SOCKET sock);
 	~ClientSession() {}

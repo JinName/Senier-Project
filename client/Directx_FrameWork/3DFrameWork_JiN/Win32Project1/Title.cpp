@@ -1,5 +1,6 @@
 #include "Title.h"
-
+#include "Network.h"
+#include "PacketList.h"
 
 
 CTitle::CTitle()
@@ -24,7 +25,24 @@ void CTitle::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 		long x, y, z;
 		CInput::Get_Instance()->GetMouseRelativePosition(x, y, z);
 		if (Button_GameStart.On_Click(x, y))
-		{
+		{			
+			// make packet
+			SHEAD head;
+			head.mCmd = (unsigned char)PROTOCOL::MATCH_RQ;
+			head.mDataSize = sizeof(SHEAD) + sizeof(SMATCH);
+
+			SMATCH match;
+			match.mInMatch = true;
+
+			char buffer[MAX_BUFSIZE];
+			int bufferSize = head.mDataSize;
+			memset(buffer, 0, MAX_BUFSIZE);
+			memcpy(buffer, (char*)&head, sizeof(SHEAD));
+			memcpy(buffer + sizeof(SHEAD), (char*)&match, sizeof(SMATCH));
+
+			// send packet
+			Network::GetInstance()->SendPacket(buffer, bufferSize);
+
 			m_bGameStart = true;
 		}
 
