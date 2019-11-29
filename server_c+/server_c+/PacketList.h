@@ -28,6 +28,9 @@ CM, NF  : 반드시 클라이언트만 받는다. (분산서버 예외)
 
 enum class PROTOCOL
 {
+	// default
+	NONE,
+
 	// CHAT
 	TEST_CHAT,
 	
@@ -37,16 +40,13 @@ enum class PROTOCOL
 	MATCH_RQ, MATCH_RP, GAMESTART_CM,
 
 	// PLAY
-	MOVE_RQ,
-
-	// default
-	NONE
+	MOVE_RQ	
 };
 
 typedef struct sPacket_Head
 {
 	UCHAR mCmd;
-	DWORD mDataSize;	
+	DWORD mPacketSize;
 } SHEAD;
 
 typedef struct sPacket_Tail
@@ -71,6 +71,7 @@ struct SGAMESTART
 
 struct SCHARACTER
 {
+	bool mAttack;
 	float mPosX;
 	float mPosY;
 };

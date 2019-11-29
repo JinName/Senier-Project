@@ -17,25 +17,30 @@ template < typename T >
 class TemplateSingleton
 {
 protected:
-	TemplateSingleton() {}
+	TemplateSingleton() : m_bClean(false) {}
 	~TemplateSingleton() {}
+
+	bool m_bClean;
 
 public:
 	static T* GetInstance()
 	{
 		if (m_pInstance == NULL)
 			m_pInstance = new T;
+		atexit(DestroyInstance);
 
 		return m_pInstance;
 	}
 	static void DestroyInstance()
 	{
 		if (m_pInstance)
-		{
+		{			
 			delete m_pInstance;
 			m_pInstance = NULL;
 		}
 	}
+
+	bool GetClean() { return m_bClean; }
 
 private:
 	static T* m_pInstance;

@@ -170,7 +170,7 @@ bool ClientSession::SetSendOverlapped(char* buffer)
 		return false;
 	}
 
-	mSendOverlapped.mWSABuf.len = sizeof(buffer);
+	mSendOverlapped.mWSABuf.len = MAX_BUFSIZE;
 	mSendOverlapped.mWSABuf.buf = mSendOverlapped.mBuffer;
 
 	return true;

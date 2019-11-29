@@ -85,6 +85,8 @@ public:
 	SOVERLAPPED		GetRecvOverlapped() { return mRecvOverlapped; }
 	SOVERLAPPED		GetSendOverlapped() { return mSendOverlapped; }
 
+	char*			GetSendOverlappedBuffer() { return mSendOverlapped.mBuffer; }
+
 	bool			SetSendOverlapped(char* buffer);
 };
 

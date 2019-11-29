@@ -2,8 +2,8 @@
 
 CWinSetup::CWinSetup()
 	:m_hWnd(NULL),
-	m_hInst(NULL),
-	m_game(NULL)
+	m_hInst(NULL)
+	//m_game(NULL)
 {
 	// 윈도우 크기 설정
 	m_rc = { 0, 0, 640, 480 };
@@ -11,11 +11,11 @@ CWinSetup::CWinSetup()
 
 CWinSetup::CWinSetup(HINSTANCE hInstance)
 	:m_hWnd(NULL),
-	m_hInst(hInstance),
-	m_game(NULL)
+	m_hInst(hInstance)
+	//m_game(NULL)
 {
 	// 윈도우 크기 설정
-	m_rc = { 0, 0, 960, 720 };	
+	m_rc = { 0, 0, 960, 720 };
 }
 
 // 변수값의 변화를 반영하기 위한 MsgProc - 일반 멤버변수에 접근 가능
@@ -24,9 +24,10 @@ LRESULT WINAPI CWinSetup::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	switch (msg)
 	{
 	case WM_DESTROY:
-		m_game->Cleanup();
-		delete m_game;
-		m_game = NULL;
+		g_pGameManager->Cleanup();
+		delete g_pGameManager;
+		g_pGameManager = NULL;
+
 		PostQuitMessage(0);
 		return 0;
 
@@ -53,8 +54,8 @@ LRESULT WINAPI CWinSetup::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 bool CWinSetup::initWindow()
 {
-	AllocConsole();
-	freopen("CONOUT$", "wt", stdout);
+	//AllocConsole();
+	//freopen("CONOUT$", "wt", stdout);
 
 	m_wc =
 	{
@@ -89,10 +90,10 @@ VOID CWinSetup::Init()
 	// 키보드 생성
 	CInput::Get_Instance()->InitDirectInput(m_hInst, m_hWnd);
 
-	m_game = new CGameManager(m_hInst, m_hWnd);
+	g_pGameManager = new CGameManager(m_hInst, m_hWnd);
 
 	// D3D 초기화
-	m_game->Initialize();
+	g_pGameManager->Initialize();
 }
 
 
@@ -111,9 +112,9 @@ void CWinSetup::MsgLoop()
 		}
 		else
 		{
-			m_game->Update();
-			if (m_game != NULL)
-				m_game->Render();
+			g_pGameManager->Update();
+			if (g_pGameManager != NULL)
+				g_pGameManager->Render();
 		}
 	}
 

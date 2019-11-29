@@ -1,15 +1,3 @@
-﻿  Network.cpp
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Network.cpp(83,1): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
-  Title.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1831): message : 'inet_addr' 선언을 참조하십시오.
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1831): message : C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(23,5): warning C4305: '인수': 'unsigned long'에서 'unsigned char'(으)로 잘립니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(23,48): warning C4309: '인수': 상수 값이 잘립니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(27,36): warning C4244: '인수': 'long'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(27,33): warning C4244: '인수': 'long'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(49,31): warning C4244: '인수': 'long'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  main.cpp
-  코드를 생성하고 있습니다...
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(49,28): warning C4244: '인수': 'long'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Title.cpp(49,28): warning C4244: C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+﻿  main.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
   Win32Project1.vcxproj -> D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe

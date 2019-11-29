@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-
+CGameManager* g_pGameManager = NULL;
 
 CGameManager::CGameManager()
 {
@@ -21,6 +21,9 @@ CGameManager::~CGameManager()
 
 void CGameManager::Initialize()
 {
+	m_pGameBase = new CTitle;
+	m_pGameBase->InitD3D(m_hWnd);
+
 	// 카메라 초기화
 	m_Camera.InitCamera(m_pGameBase->GetDevice());
 }
@@ -74,4 +77,15 @@ void CGameManager::Render()
 void CGameManager::Cleanup()
 {
 	m_pGameBase->Cleanup();
+}
+
+bool CGameManager::GameStart()
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	m_pGameBase->Set_GameStart(true);
 }

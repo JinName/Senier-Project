@@ -25,7 +25,7 @@ private:
 
 	// 게임 정보 - Game->Update(), Game->Rneder()
 	//CD3DSetup *m_temp;
-	CGameManager *m_game;
+	//CGameManager *m_game;
 
 public:
 	CWinSetup();

@@ -27,7 +27,11 @@ protected:
 public:	
 	CGameBase();
 	~CGameBase() {};
-	
+
+	// set
+	void Set_GameStart(bool _bGameStart) { m_bGameStart = _bGameStart; }	
+
+	// get
 	int Get_GameScene_Num() { return m_iGameScene_Num; }
 	bool Get_Change_GameStart() { return m_bGameStart; }
 	bool Get_Change_GameOver() { return m_bGameOver; }

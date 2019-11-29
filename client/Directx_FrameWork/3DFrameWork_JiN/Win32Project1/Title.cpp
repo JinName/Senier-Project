@@ -26,24 +26,14 @@ void CTitle::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->GetMouseRelativePosition(x, y, z);
 		if (Button_GameStart.On_Click(x, y))
 		{			
-			// make packet
-			SHEAD head;
-			head.mCmd = (unsigned char)PROTOCOL::MATCH_RQ;
-			head.mDataSize = sizeof(SHEAD) + sizeof(SMATCH);
-
+			// 보내려는 구조체 생성, 값 설정
 			SMATCH match;
-			match.mInMatch = true;
+			match.mInMatch = true;		
 
-			char buffer[MAX_BUFSIZE];
-			int bufferSize = head.mDataSize;
-			memset(buffer, 0, MAX_BUFSIZE);
-			memcpy(buffer, (char*)&head, sizeof(SHEAD));
-			memcpy(buffer + sizeof(SHEAD), (char*)&match, sizeof(SMATCH));
+			// 서버에 패킷전송
+			Network::GetInstance()->SendPacket(PROTOCOL::MATCH_RQ, (char*)&match, sizeof(SMATCH));
 
-			// send packet
-			Network::GetInstance()->SendPacket(buffer, bufferSize);
-
-			m_bGameStart = true;
+			//m_bGameStart = true;
 		}
 
 		if (Button_Exit.On_Click(x, y))

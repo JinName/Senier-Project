@@ -74,12 +74,12 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD data
 	}
 
 	// make packet
-	char* p = client->GetSendOverlapped().mBuffer;
+	char* p = client->GetSendOverlappedBuffer();
 
 	// set header
 	SHEAD head;
 	head.mCmd = (unsigned char)protocol;
-	head.mDataSize = sizeof(SHEAD) + dataBufferSize;
+	head.mPacketSize = sizeof(SHEAD) + dataBufferSize;
 
 	memcpy(p, (char*)&head, sizeof(SHEAD));
 	memcpy(p + sizeof(SHEAD), data, sizeof(data));
@@ -103,7 +103,12 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	case PROTOCOL::MATCH_RQ:
 		SMATCH match;
 		memcpy(&match, pack.mBuffer + sizeof(SHEAD), sizeof(SMATCH));
-		cout << "Match Request From Client..." << match.mInMatch << endl;
+		if (match.mInMatch == true)
+		{
+			MatchManager::GetInstance()->Push_Back(pack.mSession);
+		}
+		
+		//cout << "Match Request From Client..." << match.mInMatch << endl;
 		break;
 	default:
 		break;

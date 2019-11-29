@@ -25,8 +25,12 @@ public:
 
 	void Initialize();
 
+	bool GameStart();
+
 	void Update();
 	void Render();
 	void Cleanup();
 };
+
+extern CGameManager* g_pGameManager;
 

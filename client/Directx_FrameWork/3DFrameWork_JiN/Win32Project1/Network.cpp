@@ -1,10 +1,12 @@
 #include "Network.h"
+#include "PacketManager.h"
+
+SOCKET Network::m_ClientSocket = NULL;
 
 void Network::Init()
 {
 	WSAStartup(MAKEWORD(2, 2), &m_WsaData);//윈속 초기화
 	Set_TCPSocket();
-	Connect(PORT_NUM);
 }
 
 void Network::Update()
@@ -85,15 +87,55 @@ void Network::Connect(short _portNum)
 
 	if (connect(m_ClientSocket, (struct sockaddr*) & servAddr, sizeof(servAddr)) == SOCKET_ERROR)
 		perror("connect() error");
-
-	//Threading();
 }
 
 void Network::Run()
 {
 	Init();
-	Set_TCPSocket();
 	Connect(PORT_NUM);
+
+	StartRecvThread();
+	StartPacketProcessThread();
+}
+
+bool Network::StartRecvThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hRecvThread = (HANDLE)_beginthreadex(NULL, 0, RecvThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hRecvThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Recv Thread Thread" << endl;
+
+	CloseHandle(hRecvThread);
+
+	return true;
+}
+
+bool Network::StartPacketProcessThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, PacketProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hPacketThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Packet Thread Thread" << endl;
+
+	CloseHandle(hPacketThread);
+
+	return true;
 }
 
 //void Network::Threading()
@@ -120,13 +162,65 @@ void Network::Run()
 //	closesocket(sock);
 //}
 
-bool Network::SendPacket(char* _buffer, DWORD _bufferSize)
+bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize)
 {
-	if (SOCKET_ERROR == send(m_ClientSocket, _buffer, _bufferSize, 0))
+	// [헤드] 구조체 생성
+	SHEAD head;
+	head.mCmd = (unsigned char)_protocol;
+	head.mPacketSize = sizeof(SHEAD) + _dataSize;
+
+	// [헤드] + [데이터] 조립
+	char buffer[MAX_BUFSIZE];
+	int bufferSize = head.mPacketSize;
+	memset(buffer, 0, MAX_BUFSIZE);
+	memcpy(buffer, (char*)&head, sizeof(SHEAD));
+	memcpy(buffer + sizeof(SHEAD), _data, _dataSize);
+
+	// 완성된 패킷 전송
+	if (SOCKET_ERROR == send(m_ClientSocket, buffer, bufferSize, 0))
 	{
 		cout << "send packet error.." << endl;
 		return false;
 	}
 
 	return true;
+}
+
+unsigned int WINAPI Network::RecvThread(LPVOID lpParam)
+{
+	while (true)
+	{
+		char recvBuffer[MAX_BUFSIZE];
+		memset(recvBuffer, 0, MAX_BUFSIZE);
+
+		if (SOCKET_ERROR == recv(m_ClientSocket, recvBuffer, MAX_BUFSIZE, 0))
+		{
+			cout << "send packet error.." << endl;
+			return false;
+		}
+
+		if (PacketManager::GetInstance()->GetClean() == true)
+		{
+			return 0;
+		}
+		else
+		{
+			PacketManager::GetInstance()->Enqueue(recvBuffer);
+		}		
+	}
+}
+
+unsigned int WINAPI Network::PacketProcessThread(LPVOID lpParam)
+{
+	while (true)
+	{
+		if (PacketManager::GetInstance()->GetClean() == true)
+		{
+			return 0;			
+		}
+		else
+		{
+			PacketManager::GetInstance()->ProcessAllQueue();
+		}
+	}
 }

@@ -18,6 +18,15 @@ bool MatchManager::Push_Back(ClientSession* client)
 		return false;
 	}
 
+	// 같은 클라이언트가 중복해서 매칭패킷을 보낼경우
+	std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
+
+	if (iter != mMatchWaitList.end())
+	{
+		cout << "This Client Already in Match.." << endl;
+		return false;
+	}
+
 	EnterCS();
 	mMatchWaitList.push_back(client);
 	LeaveCS();

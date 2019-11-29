@@ -5,6 +5,7 @@
 #include "PacketList.h"
 #include "TemplateSingleton.h"
 #include "ClientSession.h"
+#include "MatchManager.h"
 
 struct ClientPacket
 {

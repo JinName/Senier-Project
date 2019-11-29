@@ -109,6 +109,8 @@ bool IOCPManager::StartPacketProcessThread()
 	cout << "Created Packet Thread Thread" << endl;
 
 	CloseHandle(hPacketThread);
+
+	return true;
 }
 
 bool IOCPManager::StartMatchProcessThread()

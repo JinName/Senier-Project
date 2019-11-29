@@ -19,15 +19,23 @@ public:
 	void Run();
 
 	//void Threading();
+	bool StartRecvThread();
+	bool StartPacketProcessThread();
+
+	// get
+	SOCKET GetSocket() { return m_ClientSocket; }
 
 	// 패킷 전송
-	bool SendPacket(char* _buffer, DWORD _bufferSize);
+	bool SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize);
+
+
 
 private:
 	WSADATA m_WsaData;
-	SOCKET m_ClientSocket;
+	static SOCKET m_ClientSocket;
 
-	//static unsigned int WINAPI RecvThread(LPVOID lpParam);
+	static unsigned int WINAPI RecvThread(LPVOID lpParam);
+	static unsigned int WINAPI PacketProcessThread(LPVOID lpParam);
 };
 
-Network* TemplateSingleton<Network>::m_pInstance = NULL;
+//Network* TemplateSingleton<Network>::m_pInstance = NULL;
