@@ -10,7 +10,7 @@
 
 내가 아닌 다른 사람이 행동했다고 '통보'가 오는것이 있고
 자의에 상관없이 서버로 부터의 데이터 수정 '명령'이 있습니다.
-('명령'은..예를 들자면.. 남이 날 때려서 HP를 수정해야 한다든지 이런거..)
+('명령' : 남이 날 때려서 HP를 수정해야 한다 -> 클라이언트에 명령프로토콜전송)
 
 기본적으로 이 4가지에서 파생되거나, 의미가 혼합됩니다.
 - Request, Reply, Notify, Command(compulsion)
@@ -67,11 +67,13 @@ struct SMATCH
 struct SGAMESTART
 {
 	bool mStart;
+	int mPlayerIndex;	// 0 : 1p, 1 : 2p
 };
 
 struct SCHARACTER
 {
 	bool mAttack;
+	bool mDamaged;
 	float mPosX;
 	float mPosY;
 };

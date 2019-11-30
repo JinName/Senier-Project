@@ -19,17 +19,19 @@ bool MatchManager::Push_Back(ClientSession* client)
 	}
 
 	// 같은 클라이언트가 중복해서 매칭패킷을 보낼경우
-	std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
+	//std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
 
-	if (iter != mMatchWaitList.end())
-	{
-		cout << "This Client Already in Match.." << endl;
-		return false;
-	}
+	//if (iter != mMatchWaitList.end())
+	//{
+	//	cout << "This Client Already in Match.." << endl;
+	//	return false;
+	//}
 
 	EnterCS();
 	mMatchWaitList.push_back(client);
 	LeaveCS();
+
+	cout << "Match Packet Push Back()" << endl;
 
 	return true;
 }
@@ -53,11 +55,16 @@ void MatchManager::ProcessMatchList()
 		LeaveCS();
 		// end Critical Section
 
-		SGAMESTART sGamestart;
-		sGamestart.mStart = true;
+		SGAMESTART player1_Gamestart;
+		player1_Gamestart.mStart = true;
+		player1_Gamestart.mPlayerIndex = 0; // 1p
 
-		bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&sGamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
-		bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&sGamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+		SGAMESTART player2_Gamestart;
+		player2_Gamestart.mStart = true;
+		player2_Gamestart.mPlayerIndex = 1; // 2p
+
+		bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+		bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
 
 		if (player1_result && player2_result)
 		{

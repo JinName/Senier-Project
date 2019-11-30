@@ -67,11 +67,13 @@ struct SMATCH
 struct SGAMESTART
 {
 	bool mStart;
+	int mPlayerIndex;	// 0 : 1p, 1 : 2p
 };
 
 struct SCHARACTER
 {
 	bool mAttack;
+	bool mDamaged;
 	float mPosX;
 	float mPosY;
 };

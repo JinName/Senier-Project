@@ -17,7 +17,7 @@ private:
 	int m_iStageNum;
 
 	CBackground m_Background;
-	CAru m_Player;
+	CAru m_Player[2];
 	CMonster m_Monster[4];
 	CPotion m_Potion[3];
 

@@ -39,7 +39,7 @@ void PacketManager::ProcessAllQueue()
 		mRecvBufferQueue.pop();
 		LeaveCS();
 
-		bool result = ProcessPacket(buffer);
+		bool result = ProcessPacket(buffer);		
 	}
 }
 
@@ -62,6 +62,9 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		
 		if (gamestart.mStart == true)
 			g_pGameManager->GameStart();
+
+		delete recvBuffer;
+
 		break;
 	default:
 		break;

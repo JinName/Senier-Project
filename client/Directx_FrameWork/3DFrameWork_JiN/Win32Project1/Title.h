@@ -10,6 +10,8 @@ class CTitle : public CGameBase
 private:
 	CBasicButton Button_GameStart;
 	CBasicButton Button_Exit;
+
+	bool m_bOnClick;
 public:
 	CTitle();
 	~CTitle();

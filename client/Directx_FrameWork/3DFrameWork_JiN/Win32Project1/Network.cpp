@@ -190,8 +190,8 @@ unsigned int WINAPI Network::RecvThread(LPVOID lpParam)
 {
 	while (true)
 	{
-		char recvBuffer[MAX_BUFSIZE];
-		memset(recvBuffer, 0, MAX_BUFSIZE);
+		char* recvBuffer = new char[MAX_BUFSIZE];
+		//memset(recvBuffer, 0, MAX_BUFSIZE);
 
 		if (SOCKET_ERROR == recv(m_ClientSocket, recvBuffer, MAX_BUFSIZE, 0))
 		{

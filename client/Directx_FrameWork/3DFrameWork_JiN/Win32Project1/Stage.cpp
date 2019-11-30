@@ -18,10 +18,10 @@ bool CStage::GameClear()
 
 bool CStage::GameOver()
 {
-	if (m_Player.Get_HP() == 0)
+	if (m_Player[0].Get_HP() == 0)
 		return true;
 
-	if (m_Player.Get_Position().y > WND_HEIGHT + m_fBunziHeight)
+	if (m_Player[0].Get_Position().y > WND_HEIGHT + m_fBunziHeight)
 		return true;
 
 	return false;
@@ -166,10 +166,10 @@ void CStage::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 	Create_Potion(_pDevice);
 
 	// player initialize
-	m_Player.Init(_pDevice);
+	m_Player[0].Init(_pDevice);
 
 	// ui initialize
-	m_UIMnger.Init(_pDevice, m_Player.Get_HP());
+	m_UIMnger.Init(_pDevice, m_Player[0].Get_HP());
 }
 
 void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
@@ -184,16 +184,17 @@ void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 	Update_Potion();
 
 	// FireBall 생성을 위해 디바이스 필요
-	m_Player.Update(_pDevice);
+	m_Player[0].Update(_pDevice);
+	m_Player[1].Update(_pDevice);	// 2p
 
 	// UI 업데이트
-	m_UIMnger.Update(m_Player.Get_HP());
+	m_UIMnger.Update(m_Player[0].Get_HP());
 
 	// 매 프래임 마다 충돌체크할 것들
-	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player);
-	m_CollisionMngr.CharAttack_Monster_Check(m_Player.Get_FireBall_List(), m_Monster_List);
-	m_CollisionMngr.Charater_Monster_Check(m_Player, m_Monster_List);
-	m_CollisionMngr.Charater_Potion_Check(m_Player, m_Potion_List);
+	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[0]);
+	m_CollisionMngr.CharAttack_Monster_Check(m_Player[0].Get_FireBall_List(), m_Monster_List);
+	m_CollisionMngr.Charater_Monster_Check(m_Player[0], m_Monster_List);
+	m_CollisionMngr.Charater_Potion_Check(m_Player[0], m_Potion_List);
 
 	// GameOver
 	if (GameOver())
@@ -214,7 +215,7 @@ void CStage::OnRender(LPDIRECT3DDEVICE9 _pDevice)
 	// Monster
 	Render_Monster();
 
-	m_Player.Render();
+	m_Player[0].Render();
 
 	m_UIMnger.Render();
 }
@@ -231,5 +232,5 @@ void CStage::OnCleanup(LPDIRECT3DDEVICE9 _pDevice)
 	// Potion
 	Clean_Potion();
 
-	m_Player.Clean();
+	m_Player[0].Clean();
 }
