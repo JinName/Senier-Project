@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <list>
 
+#include "TemplateSingleton.h"
 #include "ClientSession.h"
 
 typedef struct sInGameRoom
@@ -17,13 +18,28 @@ typedef struct sInGameRoom
 대전 중인 ClientSession 정보를 관리하며
 Send() / Recv() 시에 상대방에게 정보를 보내기위해 주로 사용한다.
 */
-class InGameManager
+class InGameManager : public TemplateSingleton<InGameManager>
 {
 public:
+	InGameManager();
+	~InGameManager();
+
+	void Init();
+	void Clean();
+
 	bool InGame(ClientSession* player1, ClientSession* player2);
 	bool OutGame(int roomNum);
 
+	ClientSession* GetEnemyClient(ClientSession* player);
+
+	void EnterCS() { EnterCriticalSection(&mCS); }
+	void LeaveCS() { LeaveCriticalSection(&mCS); }
 private:
 	std::list<SINGAMEROOM> mInGameRoomList;
+
+	int mRoomCount;
+	int mLastRoomNum;
+
+	CRITICAL_SECTION mCS;
 };
 

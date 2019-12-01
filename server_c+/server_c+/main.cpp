@@ -36,8 +36,13 @@ int main()
 
 	cout << "End IOCP Server..." << endl;
 
-	MatchManager::DestroyInstance();
-	PacketManager::DestroyInstance();
+	// clean
+	MatchManager::GetInstance()->Clean();
+	PacketManager::GetInstance()->Clean();
+
+	// destroy singleton
+	MatchManager::GetInstance()->DestroyInstance();
+	PacketManager::GetInstance()->DestroyInstance();
 	delete GIocpManager;
 	delete GSessionManager;
 

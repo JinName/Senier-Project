@@ -31,6 +31,9 @@ public:
 	PacketManager();
 	~PacketManager();
 
+	void Init();
+	void Clean();
+
 	// 해당 클래스는 싱글톤, 또는 전역으로 사용될 목적이기에
 	// thread-safe 하게 설계되어야한다.
 	// 따라서 CRITICAL_SECTION 등의 처리가 필수적이다.

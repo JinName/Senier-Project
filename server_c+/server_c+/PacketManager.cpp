@@ -10,6 +10,21 @@ PacketManager::~PacketManager()
 	DeleteCriticalSection(&mCS);
 }
 
+void PacketManager::Init()
+{
+	InitializeCriticalSection(&mCS);
+}
+
+void PacketManager::Clean()
+{
+	while (!mBufferQueue.empty())
+	{
+		mBufferQueue.pop();
+	}
+
+	DeleteCriticalSection(&mCS);
+}
+
 bool PacketManager::Enqueue(ClientSession* client, char* buffer)
 {
 	if (buffer == nullptr)

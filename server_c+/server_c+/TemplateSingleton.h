@@ -25,6 +25,7 @@ public:
 	{
 		if (m_pInstance == NULL)
 			m_pInstance = new T;
+		atexit(DestroyInstance);
 
 		return m_pInstance;
 	}
@@ -36,6 +37,9 @@ public:
 			m_pInstance = NULL;
 		}
 	}
+
+	virtual void Init() = 0;
+	virtual void Clean() = 0;
 
 private:
 	static T* m_pInstance;

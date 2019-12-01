@@ -10,6 +10,18 @@ MatchManager::~MatchManager()
 	DeleteCriticalSection(&mCS);
 }
 
+void MatchManager::Init()
+{
+	InitializeCriticalSection(&mCS);
+}
+
+void MatchManager::Clean()
+{
+	mMatchWaitList.clear();
+
+	DeleteCriticalSection(&mCS);
+}
+
 bool MatchManager::Push_Back(ClientSession* client)
 {
 	if (client == nullptr)
@@ -68,6 +80,10 @@ void MatchManager::ProcessMatchList()
 
 		if (player1_result && player2_result)
 		{
+			// 클라이언트 -> InGameRoom 과정 추가 필요
+
+
+			// Send Game Start Packet
 			player1->Send();
 			player2->Send();
 		}			

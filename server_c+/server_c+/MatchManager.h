@@ -17,6 +17,9 @@ class MatchManager : public TemplateSingleton<MatchManager>
 public:
 	MatchManager();
 	~MatchManager();
+
+	void Init() override;
+	void Clean() override;
 	
 	// push back to list for wait play
 	bool Push_Back(ClientSession* client);
