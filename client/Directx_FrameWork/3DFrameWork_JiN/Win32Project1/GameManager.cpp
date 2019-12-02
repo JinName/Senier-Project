@@ -10,6 +10,7 @@ CGameManager::CGameManager()
 CGameManager::CGameManager(HINSTANCE _hInstance, HWND _hWnd)
 	:m_hWnd(_hWnd)
 	,m_hInstance(_hInstance)
+	,m_iPlayerIndex(-1)
 {
 	m_pGameBase = new CTitle;
 	m_pGameBase->InitD3D(m_hWnd);
@@ -37,7 +38,8 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CStage;
-		m_pGameBase->InitD3D(m_hWnd);
+		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->InitD3D(m_hWnd);		
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == TITLE && m_pGameBase->Get_Exit())
 	{
@@ -49,6 +51,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CGameOver;
+		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == STAGE && m_pGameBase->Get_Change_Clear())
@@ -57,6 +60,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CGameClear;
+		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == GAMEOVER && m_pGameBase->Get_Change_Restart())
@@ -65,6 +69,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CStage;
+		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 }
@@ -79,7 +84,7 @@ void CGameManager::Cleanup()
 	m_pGameBase->Cleanup();
 }
 
-bool CGameManager::GameStart()
+bool CGameManager::GameStart(int _iPlayerIndex)
 {
 	if (m_pGameBase == NULL)
 	{
@@ -87,5 +92,47 @@ bool CGameManager::GameStart()
 		return false;
 	}
 
+	m_iPlayerIndex = _iPlayerIndex;
 	m_pGameBase->Set_GameStart(true);
+}
+
+bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	CStage* stage = (CStage*)m_pGameBase;
+	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
+
+	if (_sCharPacket.mLeft == true)
+	{
+		player->Do_Left();
+	}
+	else if (_sCharPacket.mRight == true)
+	{
+		player->Do_Right();
+	}
+
+	if (_sCharPacket.mKeyDownSpace == true)
+	{
+		player->Do_Jump();
+	}
+
+	if (_sCharPacket.mKeyDownSpace == false)
+	{
+		player->Do_Not_Jump();
+	}
+
+	if (_sCharPacket.mAttack == true)
+	{
+		player->Do_Attack();
+	}
+
+	if (_sCharPacket.mCharState == CHARACTER_STATE::STAND)
+	{
+		player->Do_Stand();
+	}
 }

@@ -1,4 +1,6 @@
 #include "PacketManager.h"
+#include "MatchManager.h"
+#include "InGameManager.h"
 
 PacketManager::PacketManager()
 {
@@ -100,7 +102,7 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD data
 	memcpy(p + sizeof(SHEAD), data, sizeof(data));
 
 	// set send overlapped
-	client->SetSendOverlapped(p);
+	client->SetSendOverlapped();
 
 	return true;
 }
@@ -125,7 +127,12 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		
 		//cout << "Match Request From Client..." << match.mInMatch << endl;
 		break;
-	default:
+
+	case PROTOCOL::MOVE_RQ:
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCHARACTER));
+		enemyPlayer->Send();
+
 		break;
 	}
 }

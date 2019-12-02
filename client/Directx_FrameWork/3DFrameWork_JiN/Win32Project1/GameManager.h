@@ -6,6 +6,7 @@
 #include "Title.h"
 #include "GameOver.h"
 #include "GameClear.h"
+#include "PacketList.h"
 
 class CGameManager
 {
@@ -17,6 +18,8 @@ private:
 
 	HWND m_hWnd;
 	HINSTANCE m_hInstance;
+
+	int m_iPlayerIndex;
 	
 public:
 	CGameManager();
@@ -25,11 +28,13 @@ public:
 
 	void Initialize();
 
-	bool GameStart();
+	bool GameStart(int _iPlayerIndex);
 
 	void Update();
 	void Render();
 	void Cleanup();
+
+	bool SetPlayerState(SCHARACTER _sCharPacket);
 };
 
 extern CGameManager* g_pGameManager;

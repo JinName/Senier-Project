@@ -60,17 +60,29 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		SGAMESTART gamestart;
 		memcpy(&gamestart, recvBuffer + sizeof(SHEAD), sizeof(SGAMESTART));
 		
+		Network::GetInstance()->SetPlayerIndex(gamestart.mPlayerIndex);
+
 		if (gamestart.mStart == true)
-			g_pGameManager->GameStart();
-
-		delete recvBuffer;
+			g_pGameManager->GameStart(gamestart.mPlayerIndex);			
 
 		break;
-	default:
-		break;
+
+	case PROTOCOL::MOVE_RQ:
+		SCHARACTER enemyChar;
+		memcpy(&enemyChar, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+
+		g_pGameManager->SetPlayerState(enemyChar);
+
+		break;	
 	}
 
+	//delete recvBuffer;
+
 	return true;
+}
+
+void PacketManager::Init()
+{
 }
 
 void PacketManager::Clean()

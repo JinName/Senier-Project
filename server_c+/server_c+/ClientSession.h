@@ -87,6 +87,7 @@ public:
 
 	char*			GetSendOverlappedBuffer() { return mSendOverlapped.mBuffer; }
 
-	bool			SetSendOverlapped(char* buffer);
+	bool			SetSendOverlapped();
+	bool			SetSendOverlapped(char* buffer, int bufferSize);
 };
 

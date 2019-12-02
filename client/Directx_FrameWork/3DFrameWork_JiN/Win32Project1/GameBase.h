@@ -20,6 +20,8 @@ protected:
 
 	int m_iGameScene_Num;
 
+	int m_iPlayerIndex;
+
 protected:
 	// 위치 셋팅 - 월드 좌표 변환
 	void SetPosition(float _fx, float _fy, float _fz);
@@ -29,6 +31,7 @@ public:
 	~CGameBase() {};
 
 	// set
+	void Set_PlayerIndex(int _iPlayerIndex) { m_iPlayerIndex = _iPlayerIndex; }
 	void Set_GameStart(bool _bGameStart) { m_bGameStart = _bGameStart; }	
 
 	// get

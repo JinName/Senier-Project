@@ -163,13 +163,22 @@ bool ClientSession::DisConnect()
 	return true;
 }
 
-bool ClientSession::SetSendOverlapped(char* buffer)
+bool ClientSession::SetSendOverlapped()
+{
+	mSendOverlapped.mWSABuf.len = MAX_BUFSIZE;
+	mSendOverlapped.mWSABuf.buf = mSendOverlapped.mBuffer;
+
+	return true;
+}
+
+bool ClientSession::SetSendOverlapped(char* buffer, int bufferSize)
 {
 	if (buffer == nullptr)
 	{
 		return false;
 	}
 
+	memcpy(mSendOverlapped.mBuffer, buffer, bufferSize);
 	mSendOverlapped.mWSABuf.len = MAX_BUFSIZE;
 	mSendOverlapped.mWSABuf.buf = mSendOverlapped.mBuffer;
 

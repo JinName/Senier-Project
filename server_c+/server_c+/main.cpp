@@ -4,15 +4,16 @@
 #include "IOCPManager.h"
 #include "PacketManager.h"
 #include "MatchManager.h"
+#include "InGameManager.h"
 
 int main()
 {
-	/// Global Managers
+	/// Global Managers initialize
 	GSessionManager = new SessionManager;
 	GIocpManager = new IOCPManager;
-	PacketManager::GetInstance();
-	MatchManager::GetInstance();
-
+	PacketManager::GetInstance()->Init();
+	MatchManager::GetInstance()->Init();
+	InGameManager::GetInstance()->Init();
 
 	if (GIocpManager->InitIOCPServer() == false)
 		return -1;
@@ -37,10 +38,12 @@ int main()
 	cout << "End IOCP Server..." << endl;
 
 	// clean
+	InGameManager::GetInstance()->Clean();
 	MatchManager::GetInstance()->Clean();
 	PacketManager::GetInstance()->Clean();
 
 	// destroy singleton
+	InGameManager::GetInstance()->DestroyInstance();
 	MatchManager::GetInstance()->DestroyInstance();
 	PacketManager::GetInstance()->DestroyInstance();
 	delete GIocpManager;

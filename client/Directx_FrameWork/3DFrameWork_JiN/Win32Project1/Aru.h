@@ -3,6 +3,8 @@
 #include "Character.h"
 #include "Sprite.h"
 #include "FireBall.h"
+#include "PacketList.h"
+#include "Network.h"
 
 enum{ STAND, UP, DOWN, LEFT, ATTACK };
 
@@ -141,5 +143,13 @@ public:
 	void Update(LPDIRECT3DDEVICE9 _pDevice);
 	void Render();
 	void Clean();
+
+	// do Function
+	void Do_Stand();
+	void Do_Attack();
+	void Do_Left();
+	void Do_Right();
+	void Do_Jump();
+	void Do_Not_Jump();
 };
 

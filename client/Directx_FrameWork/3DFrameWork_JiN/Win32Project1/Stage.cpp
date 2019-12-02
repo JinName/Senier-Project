@@ -167,9 +167,12 @@ void CStage::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 
 	// player initialize
 	m_Player[0].Init(_pDevice);
+	m_Player[1].Init(_pDevice);
+	m_Player[1].Set_Position(400.0f, 100.0f, 0.0f);
+	m_Player[m_iPlayerIndex].SetIsPlayer(true);
 
 	// ui initialize
-	m_UIMnger.Init(_pDevice, m_Player[0].Get_HP());
+	m_UIMnger.Init(_pDevice, m_Player[m_iPlayerIndex].Get_HP());
 }
 
 void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
@@ -216,6 +219,7 @@ void CStage::OnRender(LPDIRECT3DDEVICE9 _pDevice)
 	Render_Monster();
 
 	m_Player[0].Render();
+	m_Player[1].Render();
 
 	m_UIMnger.Render();
 }
@@ -233,4 +237,5 @@ void CStage::OnCleanup(LPDIRECT3DDEVICE9 _pDevice)
 	Clean_Potion();
 
 	m_Player[0].Clean();
+	m_Player[1].Clean();
 }

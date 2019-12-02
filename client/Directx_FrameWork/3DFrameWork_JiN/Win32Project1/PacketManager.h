@@ -2,6 +2,7 @@
 #include "NetworkHeader.h"
 #include "PacketList.h"
 #include "TemplateSingleton.h"
+#include "Network.h"
 #include <queue>
 
 class PacketManager : public TemplateSingleton<PacketManager>
@@ -16,7 +17,8 @@ public:
 
 	bool ProcessPacket(char* recvBuffer);
 
-	void Clean();
+	void Init() override;
+	void Clean() override;
 
 	// 편의를 위한 CRITICAL_SECTION 함수
 	void EnterCS() { EnterCriticalSection(&mCS); }

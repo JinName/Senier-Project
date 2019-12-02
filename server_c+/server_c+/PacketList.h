@@ -40,7 +40,12 @@ enum class PROTOCOL
 	MATCH_RQ, MATCH_RP, GAMESTART_CM,
 
 	// PLAY
-	MOVE_RQ	
+	MOVE_RQ
+};
+
+enum class CHARACTER_STATE
+{
+	STAND, UP, DOWN, LEFT, RIGHT
 };
 
 typedef struct sPacket_Head
@@ -72,8 +77,17 @@ struct SGAMESTART
 
 struct SCHARACTER
 {
-	bool mAttack;
-	bool mDamaged;
+	SCHARACTER() : mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false) {}
+
+	int mPlayerIndex;
+
 	float mPosX;
 	float mPosY;
+	CHARACTER_STATE mCharState;
+
+	bool mLeft;
+	bool mRight;
+	bool mKeyDownSpace;
+	bool mAttack;
+	bool mDamaged;
 };

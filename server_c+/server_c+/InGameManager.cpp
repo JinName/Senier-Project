@@ -115,5 +115,5 @@ ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
 		++begin_iter;
 	}
 
-	return;
+	return enemyClient;
 }

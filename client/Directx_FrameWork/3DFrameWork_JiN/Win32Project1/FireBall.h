@@ -41,7 +41,8 @@ public:
 
 	// 미리 로드해놓은 스프라이트 셋팅
 	void Set_Sprite(CSprite &_normalSprite, CSprite &_hitSprite);
-	void Init(LPDIRECT3DDEVICE9 _pDevice, D3DXVECTOR3 _vPos, int _iDirection);
+	void Init(D3DXVECTOR3 _vPos, int _iDirection);	// 일반 초기화
+	void Init(LPDIRECT3DDEVICE9 _pDevice, D3DXVECTOR3 _vPos, int _iDirection);	// 충돌범위 그리는용도
 	void Update(); // 업데이트 함수에 캐릭터 상태를 받아오게끔, 발사 위치, 방향 등 설정
 	void Render();
 	void Clean();

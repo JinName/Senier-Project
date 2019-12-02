@@ -1,4 +1,5 @@
 #include "MatchManager.h"
+#include "InGameManager.h"
 
 MatchManager::MatchManager()
 {
@@ -81,7 +82,7 @@ void MatchManager::ProcessMatchList()
 		if (player1_result && player2_result)
 		{
 			// 클라이언트 -> InGameRoom 과정 추가 필요
-
+			InGameManager::GetInstance()->InGame(player1, player2);
 
 			// Send Game Start Packet
 			player1->Send();
