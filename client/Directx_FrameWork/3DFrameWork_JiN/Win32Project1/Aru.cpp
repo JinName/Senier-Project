@@ -318,6 +318,9 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 
 	m_FireBall.Create_Sprite(_pDevice, L"2D_Sprites\\fireball.png", 576, 96, 6, NULL);
 	m_FireBall_Hit.Create_Sprite(_pDevice, L"2D_Sprites\\fireball_hit.png", 576, 64, 9, NULL);
+
+	m_bAnyKeyDown = false;
+	sCharPacket.mPlayerIndex = Network::GetInstance()->GetPlayerIndex();
 }
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
@@ -391,22 +394,20 @@ void CAru::Clean()
 
 VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 {
-	// char info packet
-	SCHARACTER sCharPacket;
-	sCharPacket.mPlayerIndex = Network::GetInstance()->GetPlayerIndex();
+	// char info packet		
 
 	// LEFT, RIGHT
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == true)
 	{
 		Do_Left();		
 		sCharPacket.mLeft = true;
-		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+		m_bAnyKeyDown = true;
 	}
 	else if (CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == true)
 	{
 		Do_Right();
 		sCharPacket.mRight = true;
-		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+		m_bAnyKeyDown = true;
 	}
 
 	// JUMP
@@ -418,7 +419,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 			{
 				Do_Jump();
 				sCharPacket.mKeyDownSpace = true;
-				Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+				m_bAnyKeyDown = true;
 			}
 		}
 	}
@@ -429,8 +430,8 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		if (sCharPacket.mKeyDownSpace != true)
 		{
 			sCharPacket.mKeyDownSpace = false;
-			Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
 		}
+		m_bAnyKeyDown = true;
 	}
 
 	// FireBall
@@ -440,7 +441,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		{
 			Do_Attack();
 			sCharPacket.mAttack = true;
-			Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+			m_bAnyKeyDown = true;
 		}		
 	}
 	
@@ -452,8 +453,25 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	{
 		Do_Stand();
 		sCharPacket.mCharState = CHARACTER_STATE::STAND;
-		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+		m_bAnyKeyDown = false;
 	}
+
+	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_UP) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_DOWN) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_Z) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
+	{
+		m_bAnyKeyDown = false;
+	}
+
+	if (m_bAnyKeyDown)
+	{
+		sCharPacket.mPosX = m_vPos.x;
+		sCharPacket.mPosY = m_vPos.y;
+		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+	}	
 }
 
 void CAru::Do_Stand()

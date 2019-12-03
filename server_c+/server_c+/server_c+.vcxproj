@@ -129,6 +129,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="PacketManager.cpp" />
+    <ClCompile Include="PlayerInfo.cpp" />
     <ClCompile Include="SessionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="MatchManager.h" />
     <ClInclude Include="PacketList.h" />
     <ClInclude Include="PacketManager.h" />
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TemplateSingleton.h" />

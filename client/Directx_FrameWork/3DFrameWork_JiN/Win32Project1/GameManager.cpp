@@ -107,32 +107,34 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 	CStage* stage = (CStage*)m_pGameBase;
 	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
 
-	if (_sCharPacket.mLeft == true)
-	{
-		player->Do_Left();
-	}
-	else if (_sCharPacket.mRight == true)
-	{
-		player->Do_Right();
-	}
+	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
 
-	if (_sCharPacket.mKeyDownSpace == true)
-	{
-		player->Do_Jump();
-	}
+	//if (_sCharPacket.mLeft == true)
+	//{
+	//	player->Do_Left();
+	//}
+	//else if (_sCharPacket.mRight == true)
+	//{
+	//	player->Do_Right();
+	//}
 
-	if (_sCharPacket.mKeyDownSpace == false)
-	{
-		player->Do_Not_Jump();
-	}
+	//if (_sCharPacket.mKeyDownSpace == true)
+	//{
+	//	player->Do_Jump();
+	//}
 
-	if (_sCharPacket.mAttack == true)
-	{
-		player->Do_Attack();
-	}
+	//if (_sCharPacket.mKeyDownSpace == false)
+	//{
+	//	player->Do_Not_Jump();
+	//}
 
-	if (_sCharPacket.mCharState == CHARACTER_STATE::STAND)
-	{
-		player->Do_Stand();
-	}
+	//if (_sCharPacket.mAttack == true)
+	//{
+	//	player->Do_Attack();
+	//}
+
+	//if (_sCharPacket.mCharState == CHARACTER_STATE::STAND)
+	//{
+	//	player->Do_Stand();
+	//}
 }

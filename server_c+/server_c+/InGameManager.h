@@ -4,11 +4,13 @@
 
 #include "TemplateSingleton.h"
 #include "ClientSession.h"
+#include "PlayerInfo.h"
 
 typedef struct sInGameRoom
 {
-	ClientSession* mPlayer1;
+	ClientSession* mPlayer1;	
 	ClientSession* mPlayer2;
+	//PlayerInfo mPlayerInfo[2];
 	int mRoomNum;
 }SINGAMEROOM;
 
@@ -35,7 +37,7 @@ public:
 	void EnterCS() { EnterCriticalSection(&mCS); }
 	void LeaveCS() { LeaveCriticalSection(&mCS); }
 private:
-	std::list<SINGAMEROOM> mInGameRoomList;
+	std::list<SINGAMEROOM> mInGameRoomContainer;
 
 	int mRoomCount;
 	int mLastRoomNum;

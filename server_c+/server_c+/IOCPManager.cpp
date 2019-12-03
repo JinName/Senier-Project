@@ -256,21 +256,15 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 
 unsigned int WINAPI IOCPManager::PacketProcessThread(LPVOID lpParam)
 {
-	while (true)
-	{
-		PacketManager::GetInstance()->ProcessAllQueue();
-	}
+	PacketManager::GetInstance()->ProcessAllQueue();
 
 	return 0;
 }
 
 unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
 {
-	while (true)
-	{
-		MatchManager::GetInstance()->ProcessMatchList();
-	}
-
+	MatchManager::GetInstance()->ProcessMatchList();
+	
 	return 0;
 }
 

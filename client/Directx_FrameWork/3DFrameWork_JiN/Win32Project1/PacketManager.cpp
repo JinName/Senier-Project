@@ -32,14 +32,17 @@ bool PacketManager::Enqueue(char* recvBuffer)
 
 void PacketManager::ProcessAllQueue()
 {
-	if (!mRecvBufferQueue.empty())
+	while (true)
 	{
-		EnterCS();
-		char* buffer = mRecvBufferQueue.front();
-		mRecvBufferQueue.pop();
-		LeaveCS();
+		if (!mRecvBufferQueue.empty())
+		{
+			EnterCS();
+			char* buffer = mRecvBufferQueue.front();
+			mRecvBufferQueue.pop();
+			LeaveCS();
 
-		bool result = ProcessPacket(buffer);		
+			bool result = ProcessPacket(buffer);
+		}
 	}
 }
 
@@ -76,7 +79,7 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		break;	
 	}
 
-	//delete recvBuffer;
+	delete[] recvBuffer;
 
 	return true;
 }

@@ -1,5 +1,4 @@
-﻿  GameManager.cpp
-  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\GameManager.cpp(97): warning C4715: 'CGameManager::GameStart': 모든 제어 경로에서 값을 반환하지는 않습니다.
-D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\GameManager.cpp(138): warning C4715: 'CGameManager::SetPlayerState': 모든 제어 경로에서 값을 반환하지는 않습니다.
+﻿  Network.cpp
+D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\Network.cpp(85,1): warning C4996: 'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(1831): message : 'inet_addr' 선언을 참조하십시오.
   Win32Project1.vcxproj -> D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe

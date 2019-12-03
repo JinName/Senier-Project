@@ -78,7 +78,9 @@ private:
 	// 포션과 충돌시
 	bool m_bHP_isFull; // HP FULL 이면 true : 포션 못먹음
 	bool m_bPotion_Collision; // 포션과 충돌시 true
-
+	
+	SCHARACTER sCharPacket;
+	bool m_bAnyKeyDown;
 public:
 	CAru();
 	~CAru();

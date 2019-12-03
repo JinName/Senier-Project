@@ -65,6 +65,7 @@ private:
 
 	// game information
 	int				mRoomNum;		// -1 : not in game
+	int				mPlayerIndex;	// -1 : not in game
 public:
 	ClientSession(SOCKET sock);
 	~ClientSession() {}
@@ -80,12 +81,18 @@ public:
 	bool			Recv();									// recv data by client
 	bool			Send();									// send data to client
 
-	SOCKET			GetSocket() { return mSocket; }			// return socket
+	// get ///////////////////////
+	SOCKET			GetSocket()			{ return mSocket; } // return socket
+	int				GetRoomNum()		{ return mRoomNum; }
 
 	SOVERLAPPED		GetRecvOverlapped() { return mRecvOverlapped; }
 	SOVERLAPPED		GetSendOverlapped() { return mSendOverlapped; }
 
 	char*			GetSendOverlappedBuffer() { return mSendOverlapped.mBuffer; }
+
+	// set ///////////////////////
+	void			SetRoomNum(int roomNum)			{ mRoomNum = roomNum; }
+	void			SetPlayerIndex(int playerIndex)	{ mPlayerIndex = playerIndex; }
 
 	bool			SetSendOverlapped();
 	bool			SetSendOverlapped(char* buffer, int bufferSize);

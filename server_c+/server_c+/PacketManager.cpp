@@ -52,19 +52,22 @@ bool PacketManager::Dequeue()
 void PacketManager::ProcessAllQueue()
 {
 	// 패킷큐가 전부 처리될 때까지 반복
-	while (!mBufferQueue.empty())
+	while (true)
 	{
-		// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
-		EnterCS();
-		ClientPacket pack = mBufferQueue.front();
-		mBufferQueue.pop();
-		LeaveCS();
+		if (!mBufferQueue.empty())
+		{
+			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
+			EnterCS();
+			ClientPacket pack = mBufferQueue.front();
+			mBufferQueue.pop();
+			LeaveCS();
 
-		// 패킷 헤드 확인
-		PROTOCOL protocol = ParsingPacket(pack);
+			// 패킷 헤드 확인
+			PROTOCOL protocol = ParsingPacket(pack);
 
-		// 프로토콜에 따른 패킷 처리
-		ProcessPacket(protocol, pack);
+			// 프로토콜에 따른 패킷 처리
+			ProcessPacket(protocol, pack);
+		}
 	}
 }
 
@@ -112,27 +115,36 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	switch (protocol)
 	{
 	case PROTOCOL::TEST_CHAT:
+	{
 		SCHAT chat;
 		memcpy(&chat, pack.mBuffer + sizeof(SHEAD), sizeof(SCHAT));
 		cout << "Message From Client : " << chat.buf << endl;
 		break;
+	}
 
 	case PROTOCOL::MATCH_RQ:
+	{
 		SMATCH match;
 		memcpy(&match, pack.mBuffer + sizeof(SHEAD), sizeof(SMATCH));
 		if (match.mInMatch == true)
 		{
 			MatchManager::GetInstance()->Push_Back(pack.mSession);
 		}
-		
+
 		//cout << "Match Request From Client..." << match.mInMatch << endl;
 		break;
+	}
 
 	case PROTOCOL::MOVE_RQ:
+	{
 		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
 		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCHARACTER));
 		enemyPlayer->Send();
 
+		break;
+	}
+
+	case PROTOCOL::P1_MOVE_RQ:
 		break;
 	}
 }

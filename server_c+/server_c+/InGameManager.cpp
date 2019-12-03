@@ -20,7 +20,7 @@ void InGameManager::Init()
 
 void InGameManager::Clean()
 {
-	mInGameRoomList.clear();
+	mInGameRoomContainer.clear();
 
 	DeleteCriticalSection(&mCS);
 }
@@ -37,8 +37,10 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 	inGameRoom.mPlayer1 = player1;
 	inGameRoom.mPlayer2 = player2;
 	inGameRoom.mRoomNum = mLastRoomNum + 1;
+	//inGameRoom.mPlayerInfo[0].Init(0); // 1p
+	//inGameRoom.mPlayerInfo[1].Init(1); // 2p
 
-	mInGameRoomList.push_back(inGameRoom);
+	mInGameRoomContainer.push_back(inGameRoom);
 
 	++mLastRoomNum;
 	++mRoomCount;
@@ -54,28 +56,28 @@ bool InGameManager::OutGame(int roomNum)
 		return false;
 	}
 
-	std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomList.begin();
-	std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomList.end();
+	//std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomList.begin();
+	//std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomList.end();
 
-	while (begin_iter != end_iter)
-	{
-		if (begin_iter->mRoomNum == roomNum)
-		{
-			begin_iter = mInGameRoomList.erase(begin_iter);
-			break;
-		}
-		else
-		{
-			++begin_iter;
-		}	
+	//while (begin_iter != end_iter)
+	//{
+	//	if (begin_iter->mRoomNum == roomNum)
+	//	{
+	//		begin_iter = mInGameRoomList.erase(begin_iter);
+	//		break;
+	//	}
+	//	else
+	//	{
+	//		++begin_iter;
+	//	}	
 
-		// except error
-		if (begin_iter == end_iter)
-		{
-			cout << "wrong room number.." << endl;
-			return false;
-		}
-	}
+	//	// except error
+	//	if (begin_iter == end_iter)
+	//	{
+	//		cout << "wrong room number.." << endl;
+	//		return false;
+	//	}
+	//}
 
 	--mRoomCount;
 
@@ -92,8 +94,18 @@ ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
 
 	ClientSession* enemyClient = nullptr;
 
-	std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomList.begin();
-	std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomList.end();
+	//SINGAMEROOM inGameRoom;
+
+	//for (int i = 0; i < mInGameRoomContainer.size(); ++i)
+	//{
+	//	if (mInGameRoomContainer[i].mRoomNum == player->GetRoomNum())
+	//	{
+	//		//return mInGameRoomContainer[i].
+	//	}
+	//}
+
+	std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomContainer.begin();
+	std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomContainer.end();
 
 	while (begin_iter != end_iter)
 	{

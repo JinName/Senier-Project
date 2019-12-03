@@ -211,15 +211,18 @@ unsigned int WINAPI Network::RecvThread(LPVOID lpParam)
 
 unsigned int WINAPI Network::PacketProcessThread(LPVOID lpParam)
 {
-	while (true)
-	{
-		if (PacketManager::GetInstance()->GetClean() == true)
-		{
-			return 0;			
-		}
-		else
-		{
-			PacketManager::GetInstance()->ProcessAllQueue();
-		}
-	}
+	//while (true)
+	//{
+	//	if (PacketManager::GetInstance()->GetClean() == true)
+	//	{
+	//		return 0;			
+	//	}
+	//	else
+	//	{
+	//		PacketManager::GetInstance()->ProcessAllQueue();
+	//	}
+	//}
+	PacketManager::GetInstance()->ProcessAllQueue();
+
+	return 0;
 }
