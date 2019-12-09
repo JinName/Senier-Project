@@ -57,6 +57,7 @@ void CCollisionManager::Update(list<RECT> &_Rect_List, CAru &_aru)
 void CCollisionManager::Charater_Tile_Check(CTile* _Tile_Array, int _Tile_Array_Len, CAru &_aru)
 {
 	int count = 0;
+
 	for(int i = 0; i < _Tile_Array_Len; i++)
 	{
 		if (_Tile_Array->Get_Collision_is_Possible() == true && (&_aru)->Get_Collision_is_Possible() == true)
@@ -77,6 +78,7 @@ void CCollisionManager::Charater_Tile_Check(CTile* _Tile_Array, int _Tile_Array_
 				_Tile_Array->Set_isCollision(false);
 			}
 			
+
 		}
 
 		if (i == _Tile_Array_Len - 1)

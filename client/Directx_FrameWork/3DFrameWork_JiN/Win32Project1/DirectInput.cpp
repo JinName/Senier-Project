@@ -161,8 +161,8 @@ bool CInput::ReadKeyboardState()
 	{
 		if (hr == DIERR_INPUTLOST || hr == DIERR_NOTACQUIRED)
 			m_ipKeyboard->Acquire();
-		else
-			return false;
+		
+		return false;
 	}
 	return true;
 }

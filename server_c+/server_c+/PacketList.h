@@ -46,7 +46,7 @@ enum class PROTOCOL
 
 enum class CHARACTER_STATE
 {
-	STAND, UP, DOWN, LEFT, RIGHT
+	STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT
 };
 
 typedef struct sPacket_Head

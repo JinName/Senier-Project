@@ -37,6 +37,50 @@ void CAru::Set_Animation()
 	}
 }
 
+void CAru::Set_Animation(int _iAnimate_Num)
+{
+	if (!m_bAttacking)
+	{
+		if (_iAnimate_Num == 6)
+			m_iAnimate_Num = 3;
+		else
+			m_iAnimate_Num = _iAnimate_Num;
+	}
+
+	switch (_iAnimate_Num)
+	{
+	case STAND:
+		m_vDirection = { 0.0f, 0.0f };
+		m_b_isRunning = false;
+		m_Run_Particle_Sprite.Reset_Sprite();
+		break;
+
+	case LEFT:
+		m_vDirection.x = -1.0f;
+		m_b_isRunning = true;
+		currentDirection = -1;
+		break;
+
+	case RIGHT:
+		m_vDirection.x = 1.0f;
+		m_b_isRunning = true;
+		currentDirection = 1;
+		break;
+
+	case ATTACK:
+		CFireBall* FireBall = new CFireBall();
+		FireBall->Init(m_vPos, currentDirection);
+		FireBall->Set_Sprite(m_FireBall, m_FireBall_Hit);
+		m_FireBall_List.push_back(FireBall);
+
+		m_fBefore_Clock = clock();
+
+		m_bAttacking = true;
+		m_bAttack_Lock = true;
+		break;
+	}
+}
+
 bool CAru::Check_Reverse()
 {
 	if (m_vDirection.x == 0)
@@ -87,11 +131,11 @@ void CAru::Jump()
 }
 
 void CAru::Gravity()
-{	
+{
 	DWORD currentTime = GetTickCount();
 
 	DWORD TempTime = currentTime - dwOldtime;
-		
+
 	dwOldtime = currentTime;
 
 	if (!isVertical)
@@ -259,7 +303,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_bHP_isFull = true;
 	m_iJump = 0;
 	m_fSpeed = 3.0f;
-	m_fJump_Power = 0.0f;
+	m_fJump_Power = 4.5f;
 	m_fGravity_Accel = 0.0f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
@@ -305,7 +349,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_fAttack_Cooltime = 1.0f;
 	m_bAttack_Lock = false;
 	m_fBefore_Clock = 0.0f;
-	
+
 	// 캐릭터 스탠드 스프라이트
 	m_sprite[STAND].Create_Sprite(_pDevice, L"2D_Sprites\\Aru_stand_8peaces.bmp", 512, 64, 8, D3DCOLOR_XRGB(0, 170, 255));
 	m_sprite[UP].Create_Sprite(_pDevice, L"2D_Sprites\\Aru_up_8peaces.bmp", 512, 64, 8, D3DCOLOR_XRGB(0, 170, 255));
@@ -330,21 +374,25 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 	isCrash_Potion();
 
 	Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
-	
+
 	if (m_bActive_Collision == true)
 	{
-		if(m_bIsPlayer)
+		if (m_bIsPlayer)
 			KeyInput(_pDevice);
 
-		Jump();
+		if (m_bIsPlayer)
+			Jump();
 	}
-	// Gravity();
+
+	if (m_bIsPlayer)
+		Gravity();
 
 	Attack_Cooltime();
 	Skill_Update();
 	Skill_Destory();
 
-	Set_Animation();
+	if (m_bIsPlayer)
+		Set_Animation();
 
 	m_sprite[m_iAnimate_Num].Animation_Frame();
 
@@ -365,7 +413,7 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 void CAru::Render()
 {
 	m_sprite[m_iAnimate_Num].DrawBitmap(&m_vPos, 0xFFFFFFFF, Check_Reverse());
-	
+
 	if (m_b_isRunning && !m_bJump)
 	{
 		if (!Check_Reverse())
@@ -396,17 +444,30 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 {
 	// char info packet		
 
+	// STAND
+	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_UP) == false &&
+		CInput::Get_Instance()->IsKeyPressed(DIK_DOWN) == false)
+	{
+		Do_Stand();
+		sCharPacket.mCharState = CHARACTER_STATE::STAND;
+		m_bAnyKeyDown = false;
+	}
+
 	// LEFT, RIGHT
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == true)
 	{
-		Do_Left();		
+		Do_Left();
 		sCharPacket.mLeft = true;
+		sCharPacket.mCharState = CHARACTER_STATE::LEFT;
 		m_bAnyKeyDown = true;
 	}
 	else if (CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == true)
 	{
 		Do_Right();
 		sCharPacket.mRight = true;
+		sCharPacket.mCharState = CHARACTER_STATE::RIGHT;
 		m_bAnyKeyDown = true;
 	}
 
@@ -419,11 +480,12 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 			{
 				Do_Jump();
 				sCharPacket.mKeyDownSpace = true;
+				sCharPacket.mCharState = CHARACTER_STATE::JUMP;
 				m_bAnyKeyDown = true;
 			}
 		}
 	}
-	
+
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
 		Do_Not_Jump();
@@ -441,19 +503,9 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		{
 			Do_Attack();
 			sCharPacket.mAttack = true;
+			sCharPacket.mCharState = CHARACTER_STATE::ATTACK;
 			m_bAnyKeyDown = true;
-		}		
-	}
-	
-
-	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
-		CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == false &&
-		CInput::Get_Instance()->IsKeyPressed(DIK_UP) == false &&
-		CInput::Get_Instance()->IsKeyPressed(DIK_DOWN) == false)
-	{
-		Do_Stand();
-		sCharPacket.mCharState = CHARACTER_STATE::STAND;
-		m_bAnyKeyDown = false;
+		}
 	}
 
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
@@ -466,12 +518,12 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		m_bAnyKeyDown = false;
 	}
 
-	if (m_bAnyKeyDown)
+	if (true)
 	{
 		sCharPacket.mPosX = m_vPos.x;
 		sCharPacket.mPosY = m_vPos.y;
 		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
-	}	
+	}
 }
 
 void CAru::Do_Stand()

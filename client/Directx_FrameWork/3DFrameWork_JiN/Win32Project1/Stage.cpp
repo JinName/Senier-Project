@@ -10,8 +10,8 @@ CStage::~CStage()
 
 bool CStage::GameClear()
 {
-	if (m_Monster_List.size() == 0)
-		return true;
+	//if (m_Monster_List.size() == 0)
+	//	return true;
 
 	return false;
 }
@@ -160,10 +160,10 @@ void CStage::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 	m_CollisionMngr.Init();
 
 	// monster initialize
-	Create_Monster(_pDevice);	
+	//Create_Monster(_pDevice);	
 
 	// potion initialize
-	Create_Potion(_pDevice);
+	//Create_Potion(_pDevice);
 
 	// player initialize
 	m_Player[0].Init(_pDevice);
@@ -181,23 +181,31 @@ void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 	m_MapMngr.StageMap_Update();
 
 	// Monster
-	Update_Monster();
+	//Update_Monster();
 
 	// Potion
-	Update_Potion();
+	//Update_Potion();
 
 	// FireBall 생성을 위해 디바이스 필요
 	m_Player[0].Update(_pDevice);
 	m_Player[1].Update(_pDevice);	// 2p
 
+	//if (!m_Player[0].Get_isVertical())
+	//	cout << endl;
+
 	// UI 업데이트
-	m_UIMnger.Update(m_Player[0].Get_HP());
+	m_UIMnger.Update(m_Player[m_iPlayerIndex].Get_HP());
 
 	// 매 프래임 마다 충돌체크할 것들
-	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[0]);
-	m_CollisionMngr.CharAttack_Monster_Check(m_Player[0].Get_FireBall_List(), m_Monster_List);
-	m_CollisionMngr.Charater_Monster_Check(m_Player[0], m_Monster_List);
-	m_CollisionMngr.Charater_Potion_Check(m_Player[0], m_Potion_List);
+	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[m_iPlayerIndex]);
+	//m_CollisionMngr.CharAttack_Monster_Check(m_Player[0].Get_FireBall_List(), m_Monster_List);
+	//m_CollisionMngr.Charater_Monster_Check(m_Player[0], m_Monster_List);
+	//m_CollisionMngr.Charater_Potion_Check(m_Player[0], m_Potion_List);
+
+	//m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[1]);
+	//m_CollisionMngr.CharAttack_Monster_Check(m_Player[1].Get_FireBall_List(), m_Monster_List);
+	//m_CollisionMngr.Charater_Monster_Check(m_Player[1], m_Monster_List);
+	//m_CollisionMngr.Charater_Potion_Check(m_Player[1], m_Potion_List);
 
 	// GameOver
 	if (GameOver())
@@ -213,10 +221,10 @@ void CStage::OnRender(LPDIRECT3DDEVICE9 _pDevice)
 	m_MapMngr.StageMap_Render();
 
 	// Potion
-	Render_Potion();
+	//Render_Potion();
 
 	// Monster
-	Render_Monster();
+	//Render_Monster();
 
 	m_Player[0].Render();
 	m_Player[1].Render();
@@ -231,10 +239,10 @@ void CStage::OnCleanup(LPDIRECT3DDEVICE9 _pDevice)
 	m_MapMngr.StageMap_Cleanup();
 
 	// Monster
-	Clean_Monster();
+	//Clean_Monster();
 
 	// Potion
-	Clean_Potion();
+	//Clean_Potion();
 
 	m_Player[0].Clean();
 	m_Player[1].Clean();

@@ -6,7 +6,7 @@
 #include "PacketList.h"
 #include "Network.h"
 
-enum{ STAND, UP, DOWN, LEFT, ATTACK };
+enum{ STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT };
 
 class CAru : public CCharacter
 {
@@ -103,12 +103,15 @@ public:
 	// 점프시 on/off 타일과 충돌 가능 상태인지 반환
 	bool Get_Collision_is_Possible() { return m_bCollision_is_Possible; }
 	// 충돌 시 변수 셋팅
+	bool Get_isVertical() { return isVertical; }
 	void Set_isVertical(bool _isVertical) { isVertical = _isVertical; }
 	void Set_isHorizontal(bool _isHorizontal) { isHorizontal = _isHorizontal; }
 	void Set_isHit(bool _isHit) { isHit = _isHit; }
 
 	// 방향에 따른 애니매이션 번호 지정 함수
 	void Set_Animation();
+	void Set_Animation(int _iAnimate_Num);
+
 	// 캐릭터 최근 상태에 따른 DrawBitmap Reverse 여부
 	bool Check_Reverse();
 
