@@ -11,9 +11,7 @@
 using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
-
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/basic_file_sink.h"
+#include "Logger.h"
 
 #define PORT_NUM		10200
 #define BLOG_SIZE		5

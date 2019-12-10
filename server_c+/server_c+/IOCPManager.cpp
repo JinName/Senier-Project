@@ -59,7 +59,7 @@ bool IOCPManager::InitIOCPServer()
 	setsockopt(mListenSocket, SOL_SOCKET, SO_REUSEADDR, (const char*)& opt, sizeof(int));
 
 	// bind listening socket
-	if (SOCKET_ERROR == bind(mListenSocket, (SOCKADDR*)& serveraddr, sizeof(serveraddr)))
+	if (SOCKET_ERROR == ::bind(mListenSocket, (SOCKADDR*)& serveraddr, sizeof(serveraddr)))
 	{
 		cout << "bind() Fail..." << endl;
 		return false;
