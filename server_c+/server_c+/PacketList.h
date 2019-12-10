@@ -57,7 +57,7 @@ typedef struct sPacket_Head
 
 typedef struct sPacket_Tail
 {
-
+	bool end;
 } STAIL;
 
 struct SCHAT

@@ -1,6 +1,2 @@
-﻿  CollisionManager.cpp
-  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  Stage.cpp
-  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-  코드를 생성하고 있습니다...
+﻿  LINK : D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
   Win32Project1.vcxproj -> D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe

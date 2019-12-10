@@ -106,7 +106,7 @@ bool IOCPManager::StartPacketProcessThread()
 		cout << "Create Thread Fail... " << endl;
 		return false;
 	}
-	cout << "Created Packet Thread Thread" << endl;
+	cout << "Created Packet Thread" << endl;
 
 	CloseHandle(hPacketThread);
 
@@ -126,7 +126,7 @@ bool IOCPManager::StartMatchProcessThread()
 		cout << "Create Thread Fail... " << endl;
 		return false;
 	}
-	cout << "Created Match Thread Thread" << endl;
+	cout << "Created Match Thread" << endl;
 
 	CloseHandle(hMatchThread);
 }
@@ -188,7 +188,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	// ±Û·Î¹ú °´Ã¼¿¡¼­ Completion Port Handle °¡Á®¿È -> GetQueuedCompletionStatus() ¿¡ È°¿ë
 	HANDLE hCP = GIocpManager->GetCPHandle();
 
-	cout << "start thread CP " << hCP << endl;
+	//cout << "start thread CP " << hCP << endl;
 
 	while (true)
 	{

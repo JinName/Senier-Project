@@ -1,0 +1,12 @@
+[2019-12-10 21:04:25.479] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60914
+[2019-12-10 21:04:28.075] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60915
+[2019-12-10 21:04:31.874] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60916
+[2019-12-10 21:04:34.153] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60917
+[2019-12-10 21:04:38.107] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60918
+[2019-12-10 21:05:40.386] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 60921
+[2019-12-10 21:09:22.482] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60921
+[2019-12-10 21:09:23.960] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60918
+[2019-12-10 21:09:25.108] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60916
+[2019-12-10 21:09:26.115] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60914
+[2019-12-10 21:09:28.037] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60915
+[2019-12-10 21:09:28.777] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 60917

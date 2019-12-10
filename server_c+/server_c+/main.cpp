@@ -13,6 +13,7 @@ int main()
 	GSessionManager = new SessionManager;
 	GIocpManager = new IOCPManager;
 
+	GLogger->Init(LOGGER_TYPE::file);
 	PacketManager::GetInstance()->Init();
 	MatchManager::GetInstance()->Init();
 	InGameManager::GetInstance()->Init();
