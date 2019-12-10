@@ -61,6 +61,11 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 
 	cout << " Client Connected: IP = " << inet_ntoa(mClientAddr.sin_addr) << " PORT = " << ntohs(mClientAddr.sin_port) << endl;
 
+	// write log
+	char log[128];
+	sprintf(log, "Client Connected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
+	GLogger->file_write(LOGGER_LEVEL::info, log);
+
 	GSessionManager->IncreaseClientCount();
 }
 
@@ -153,6 +158,11 @@ bool ClientSession::DisConnect()
 	}
 
 	cout << " Client Disconnected: IP = " << inet_ntoa(mClientAddr.sin_addr) << " PORT = " << ntohs(mClientAddr.sin_port) << endl;
+
+	// write log
+	char log[128];
+	sprintf(log, "Client Disconnected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
+	GLogger->file_write(LOGGER_LEVEL::info, log);
 
 	GSessionManager->DecreaseClientCount();
 

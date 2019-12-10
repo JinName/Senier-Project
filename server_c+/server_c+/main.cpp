@@ -9,8 +9,10 @@
 int main()
 {
 	/// Global Managers initialize
+	GLogger = new Logger;
 	GSessionManager = new SessionManager;
 	GIocpManager = new IOCPManager;
+
 	PacketManager::GetInstance()->Init();
 	MatchManager::GetInstance()->Init();
 	InGameManager::GetInstance()->Init();
@@ -48,6 +50,7 @@ int main()
 	PacketManager::GetInstance()->DestroyInstance();
 	delete GIocpManager;
 	delete GSessionManager;
+	delete GLogger;
 
 	return 0;
 }
