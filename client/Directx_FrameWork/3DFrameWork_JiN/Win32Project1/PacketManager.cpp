@@ -1,7 +1,9 @@
 #include "PacketManager.h"
 #include "GameManager.h"
 
-PacketManager::PacketManager()
+PacketManager* g_pPacketManager = nullptr;
+
+PacketManager::PacketManager() : mStopFlag(false)
 {
 	InitializeCriticalSection(&mCS);
 }
@@ -34,15 +36,19 @@ void PacketManager::ProcessAllQueue()
 {
 	while (true)
 	{
+		if (mStopFlag) break;
+
 		if (!mRecvBufferQueue.empty())
 		{
 			EnterCS();
 			char* buffer = mRecvBufferQueue.front();
 			mRecvBufferQueue.pop();
-			LeaveCS();
+			LeaveCS();		
 
 			bool result = ProcessPacket(buffer);
 		}
+
+		if (mStopFlag) break;
 	}
 }
 
@@ -59,43 +65,44 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 	switch (protocol)
 	{
-	case PROTOCOL::GAMESTART_CM:
+	case PROTOCOL::GAMESTART_CM:	
+	{
 		SGAMESTART gamestart;
+		memset(&gamestart, 0, sizeof(SGAMESTART));
 		memcpy(&gamestart, recvBuffer + sizeof(SHEAD), sizeof(SGAMESTART));
-		
-		Network::GetInstance()->SetPlayerIndex(gamestart.mPlayerIndex);
+
+		g_pNetwork->SetPlayerIndex(gamestart.mPlayerIndex);
 
 		if (gamestart.mStart == true)
-			g_pGameManager->GameStart(gamestart.mPlayerIndex);			
+			g_pGameManager->GameStart(gamestart.mPlayerIndex);
 
 		break;
+	}
 
-	case PROTOCOL::MOVE_RQ:
+	case PROTOCOL::MOVE_RQ:	
+	{
 		SCHARACTER enemyChar;
+		memset(&enemyChar, 0, sizeof(SCHARACTER));
 		memcpy(&enemyChar, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
 
 		g_pGameManager->SetPlayerState(enemyChar);
 
-		break;	
+		break;
+	}
+
+	case PROTOCOL::GAMEEND_CM:
+	{
+		SGAMEEND end;
+		memset(&end, 0, sizeof(SGAMEEND));
+		memcpy(&end, recvBuffer + sizeof(SHEAD), sizeof(SGAMEEND));
+
+		g_pGameManager->GameOver();
+
+		break;
+	}
 	}
 
 	delete[] recvBuffer;
 
 	return true;
-}
-
-void PacketManager::Init()
-{
-}
-
-void PacketManager::Clean()
-{
-	while (!mRecvBufferQueue.empty())
-	{
-		mRecvBufferQueue.pop();
-	}
-
-	DeleteCriticalSection(&mCS);
-
-	m_bClean = true;
 }

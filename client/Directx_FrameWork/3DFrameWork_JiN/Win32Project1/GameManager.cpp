@@ -68,7 +68,7 @@ void CGameManager::Update()
 		m_pGameBase->Cleanup();
 		delete m_pGameBase;
 
-		m_pGameBase = new CStage;
+		m_pGameBase = new CTitle;
 		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
@@ -94,6 +94,22 @@ bool CGameManager::GameStart(int _iPlayerIndex)
 
 	m_iPlayerIndex = _iPlayerIndex;
 	m_pGameBase->Set_GameStart(true);
+
+	return true;
+}
+
+bool CGameManager::GameOver()
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	m_iPlayerIndex = -1;
+	m_pGameBase->Set_GameOver(true);
+
+	return true;
 }
 
 bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)

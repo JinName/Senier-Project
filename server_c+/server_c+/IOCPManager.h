@@ -4,6 +4,7 @@
 #include "ClientSession.h"
 #include "PacketManager.h"
 #include "MatchManager.h"
+#include "InGameManager.h"
 
 class IOCPManager
 {
@@ -36,6 +37,7 @@ private:
 
 	static bool	ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 	static bool	SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
+	static bool	DisconnectCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 };
 
 extern IOCPManager* GIocpManager;	// extern - for global freq

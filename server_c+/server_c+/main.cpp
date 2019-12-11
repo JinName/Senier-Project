@@ -40,6 +40,9 @@ int main()
 
 	cout << "End IOCP Server..." << endl;
 
+	MatchManager::GetInstance()->SetStopFlag(true);
+	PacketManager::GetInstance()->SetStopFlag(true);
+
 	// clean
 	InGameManager::GetInstance()->Clean();
 	MatchManager::GetInstance()->Clean();

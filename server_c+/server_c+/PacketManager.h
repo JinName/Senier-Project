@@ -9,8 +9,7 @@
 
 struct ClientPacket
 {
-	ClientPacket(ClientSession* client, char* buffer) : mSession(client), mBuffer(buffer)
-	{}
+	ClientPacket(ClientSession* client, char* buffer) : mSession(client), mBuffer(buffer) {}
 
 	ClientSession* mSession;
 	char* mBuffer;
@@ -55,6 +54,8 @@ public:
 	// 편의를 위한 CRITICAL_SECTION 함수
 	void EnterCS() { EnterCriticalSection(&mCS); }
 	void LeaveCS() { LeaveCriticalSection(&mCS); }
+
+	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
 private:
 	// PacketManager Have-A Queue
 	// 패킷처리 클래스에서는 패킷을 저장할 별도의 큐를 가진다.
@@ -63,7 +64,10 @@ private:
 
 	// for thread-safe
 	CRITICAL_SECTION mCS;
+
+	// while loop stop flag
+	bool mStopFlag;
 };
 
-PacketManager* TemplateSingleton<PacketManager>::m_pInstance = NULL;
+//PacketManager* TemplateSingleton<PacketManager>::m_pInstance = NULL;
 

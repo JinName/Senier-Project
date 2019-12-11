@@ -33,6 +33,7 @@ public:
 	// set
 	void Set_PlayerIndex(int _iPlayerIndex) { m_iPlayerIndex = _iPlayerIndex; }
 	void Set_GameStart(bool _bGameStart) { m_bGameStart = _bGameStart; }	
+	void Set_GameOver(bool _bGameOver) { m_bGameOver = _bGameOver; }
 
 	// get
 	int Get_GameScene_Num() { return m_iGameScene_Num; }

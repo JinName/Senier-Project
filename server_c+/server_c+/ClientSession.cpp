@@ -67,6 +67,8 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	GLogger->file_write(LOGGER_LEVEL::info, log);
 
 	GSessionManager->IncreaseClientCount();
+
+	return true;
 }
 
 /*
@@ -86,13 +88,13 @@ bool ClientSession::Recv()
 {
 	// except error
 	if (!IsConnected())
-		return false;
+		return false;	
 
 	DWORD flags = 0;
 	DWORD recvBytes = 0;
 	mRecvOverlapped.mWSABuf.buf = mRecvOverlapped.mBuffer;
 	mRecvOverlapped.mWSABuf.len = MAX_BUFSIZE;
-	mRecvOverlapped.mIOType = IOTYPE::IO_RECV;
+	mRecvOverlapped.mIOType = IOTYPE::IO_RECV;	
 
 	// WSARecv : WSA_IO_PENDING - success message
 	if (SOCKET_ERROR == WSARecv(mSocket, &mRecvOverlapped.mWSABuf, 1, &recvBytes, &flags, (LPWSAOVERLAPPED)&mRecvOverlapped, NULL))
@@ -104,9 +106,6 @@ bool ClientSession::Recv()
 		}
 	}
 
-	// cout << "Recv Message : " << recvOV->mWSABuf.buf << endl;
-	// cout << "Recv Bytes : " << recvBytes << endl;
-	
 	return true;
 }
 
@@ -133,7 +132,6 @@ bool ClientSession::Send()
 			return false;
 		}
 	}
-	//cout << "send massage : " << endl;
 
 	return true;
 }

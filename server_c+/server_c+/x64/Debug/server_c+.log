@@ -1,6 +1,6 @@
 ﻿  IOCPManager.cpp
 D:\Code Workspace\Senier-Project\server_c+\server_c+\spdlog\details\circular_q.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
-D:\Code Workspace\Senier-Project\server_c+\server_c+\MatchManager.h(28,21): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\Code Workspace\Senier-Project\server_c+\server_c+\MatchManager.h(30,21): warning C4267: 'return': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 D:\Code Workspace\Senier-Project\server_c+\server_c+\IOCPManager.cpp(40,1): warning C4996: 'WSASocketA': Use WSASocketW() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\WinSock2.h(3416): message : 'WSASocketA' 선언을 참조하십시오.
 D:\Code Workspace\Senier-Project\server_c+\server_c+\IOCPManager.cpp(80,75): warning C4312: '형식 캐스트': 'int'에서 더 큰 'LPVOID'(으)로의 변환입니다.

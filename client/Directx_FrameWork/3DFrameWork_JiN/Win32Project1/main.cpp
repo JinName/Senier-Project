@@ -5,18 +5,23 @@
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 {
-	CWinSetup *winSetup = new CWinSetup(hInst);
-	
-	Network::GetInstance()->Run();
-	PacketManager::GetInstance();
+	// init
+	CWinSetup *winSetup = new CWinSetup(hInst);	
+	g_pNetwork = new Network();
+	g_pPacketManager = new PacketManager();
+
+	// run
+	g_pNetwork->Run();
 	winSetup->Run();
 	
+	// clean
 	winSetup = NULL;
 	delete winSetup;
 	
-	PacketManager::GetInstance()->Clean();
-	PacketManager::GetInstance()->DestroyInstance();
-	Network::GetInstance()->DestroyInstance();	
+	g_pPacketManager->SetStopFlag(true);
+
+	delete g_pPacketManager;
+	delete g_pNetwork;
 	
 	return 0;
 }

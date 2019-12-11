@@ -17,28 +17,28 @@
   <Class Name="InGameManager">
     <Position X="8.25" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACACAAAiQAAAAAAAAABAAgCAAACAAACAACAAAAQAI=</HashCode>
+      <HashCode>AAACACAAAiQAAIABAAAABAAgCAAACAAACAACAAAAQAI=</HashCode>
       <FileName>InGameManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="IOCPManager">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAADCAAAAAAAAIBAAFABAAAAAgEACAIAAIAAAAACQA=</HashCode>
+      <HashCode>AAAADCAAAAAAAAIBAAFABAAAAAgEACAIAAYAAAAACQA=</HashCode>
       <FileName>IOCPManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MatchManager">
     <Position X="10.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAACBAAAAAAQAAAEAABAAACABAAAEAAAADAAAAQAA=</HashCode>
+      <HashCode>CEAAACJAAQAAAAAAAEAABAAACABAAAEAAAADAAAAQAA=</HashCode>
       <FileName>MatchManager.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PacketManager">
     <Position X="6" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CABAACAAAAAAAAQAggAABAAACIAwBAAAAAACAAAAQAA=</HashCode>
+      <HashCode>CEBAACAAAAAAAAQAggAABAAACIAwBAAAAAACAAAAQAA=</HashCode>
       <FileName>PacketManager.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -71,16 +71,16 @@
     </TypeIdentifier>
   </Class>
   <Struct Name="sOverlappedSocket">
-    <Position X="0.5" Y="7.25" Width="1.5" />
+    <Position X="0.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAEAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>ClientSession.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="sInGameRoom">
-    <Position X="8.25" Y="7.5" Width="1.5" />
+    <Position X="8.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAAAAAAAAACAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAACAAAAAAAAAAAAAQCAAEAAAACAAAAAAAAAAAAA=</HashCode>
       <FileName>InGameManager.h</FileName>
     </TypeIdentifier>
   </Struct>
@@ -99,42 +99,49 @@
     </TypeIdentifier>
   </Struct>
   <Struct Name="sPacket_Tail">
-    <Position X="23.25" Y="0.5" Width="1.5" />
+    <Position X="25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="SCHAT">
-    <Position X="19.5" Y="3.25" Width="1.5" />
+    <Position X="19.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="SMATCH">
-    <Position X="19.5" Y="2" Width="1.5" />
+    <Position X="19.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="SGAMESTART">
-    <Position X="19.5" Y="0.5" Width="1.5" />
+    <Position X="21.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Struct>
   <Struct Name="SCHARACTER">
-    <Position X="21.25" Y="0.5" Width="1.5" />
+    <Position X="23" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgQAAAAAEAAAAAAAAgAAAAAAABAAABEAAAIAgEAAAAA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Struct>
+  <Struct Name="SGAMEEND">
+    <Position X="21.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Enum Name="IOTYPE">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+    <Position X="0.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAACAAAEAAAAAAAAAAAAAgAAAAAAAAAAAABAAAgAA=</HashCode>
       <FileName>ClientSession.h</FileName>
@@ -143,12 +150,12 @@
   <Enum Name="PROTOCOL">
     <Position X="17.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAEAAAIAAAAAQAAAAAAAIABAAAIIAAAAAAAAwA=</HashCode>
+      <HashCode>EACAAAAEAAAIAAAAAQAAAAAAAIABAAAIIAAAAAAAAwA=</HashCode>
       <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="CHARACTER_STATE">
-    <Position X="21.25" Y="3.75" Width="1.5" />
+    <Position X="23" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAggAAAAAAgAAAAAICAAAgAAAAAAAAAAA=</HashCode>
       <FileName>PacketList.h</FileName>
@@ -166,6 +173,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Logger.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GAMEEND_STATE">
+    <Position X="21.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAEAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="맑은 고딕" Size="9" />

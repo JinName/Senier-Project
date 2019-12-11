@@ -2,7 +2,7 @@
 #include "MatchManager.h"
 #include "InGameManager.h"
 
-PacketManager::PacketManager()
+PacketManager::PacketManager() : mStopFlag(false)
 {
 	InitializeCriticalSection(&mCS);
 }
@@ -54,20 +54,26 @@ void PacketManager::ProcessAllQueue()
 	// 패킷큐가 전부 처리될 때까지 반복
 	while (true)
 	{
+		if (mStopFlag) break;
+
 		if (!mBufferQueue.empty())
 		{
 			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
 			EnterCS();
+
 			ClientPacket pack = mBufferQueue.front();
-			mBufferQueue.pop();
-			LeaveCS();
+			mBufferQueue.pop();	
 
 			// 패킷 헤드 확인
 			PROTOCOL protocol = ParsingPacket(pack);
 
 			// 프로토콜에 따른 패킷 처리
 			ProcessPacket(protocol, pack);
+
+			LeaveCS();
 		}
+
+		if (mStopFlag) break;
 	}
 }
 
@@ -75,11 +81,12 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 {
 	if (pack.mBuffer == nullptr)
 	{
+		cout << "parsing buffer is nullptr... return PROTOCOL::NONE" << endl;
 		return PROTOCOL::NONE;
 	}
 
 	SHEAD head;
-
+	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
 
 	return (PROTOCOL)head.mCmd;
@@ -117,6 +124,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	case PROTOCOL::TEST_CHAT:
 	{
 		SCHAT chat;
+		memset(&chat, 0, sizeof(SCHAT));
 		memcpy(&chat, pack.mBuffer + sizeof(SHEAD), sizeof(SCHAT));
 		cout << "Message From Client : " << chat.buf << endl;
 		break;
@@ -125,26 +133,30 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	case PROTOCOL::MATCH_RQ:
 	{
 		SMATCH match;
+		memset(&match, 0, sizeof(SMATCH));
 		memcpy(&match, pack.mBuffer + sizeof(SHEAD), sizeof(SMATCH));
 		if (match.mInMatch == true)
 		{
-			MatchManager::GetInstance()->Push_Back(pack.mSession);
+			MatchManager::GetInstance()->PushBackClient(pack.mSession);
 		}
 
-		//cout << "Match Request From Client..." << match.mInMatch << endl;
 		break;
 	}
 
 	case PROTOCOL::MOVE_RQ:
 	{
 		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+
+		if (enemyPlayer == nullptr)
+		{
+			cout << "enemy player is null.." << endl;
+			break;
+		}
+
 		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCHARACTER));
 		enemyPlayer->Send();
 
 		break;
 	}
-
-	case PROTOCOL::P1_MOVE_RQ:
-		break;
 	}
 }

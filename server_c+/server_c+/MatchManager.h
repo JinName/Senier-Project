@@ -22,7 +22,9 @@ public:
 	void Clean() override;
 	
 	// push back to list for wait play
-	bool Push_Back(ClientSession* client);
+	bool PushBackClient(ClientSession* client);
+	bool CheckExistClient(ClientSession* client);
+	bool DeleteClient(ClientSession* client);
 
 	// return wait count
 	int GetWaitCount() { return mMatchWaitList.size(); }
@@ -34,12 +36,17 @@ public:
 	// 편의를 위한 CRITICAL_SECTION 함수
 	void EnterCS() { EnterCriticalSection(&mCS); }
 	void LeaveCS() { LeaveCriticalSection(&mCS); }
+
+	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
 private:
 	// 매칭 대기열을 담을 리스트
 	std::list<ClientSession*> mMatchWaitList;
 
 	// for thread-safe
 	CRITICAL_SECTION mCS;
+
+	// while loop stop flag
+	bool mStopFlag;
 };
 
 MatchManager* TemplateSingleton<MatchManager>::m_pInstance = NULL;

@@ -37,7 +37,10 @@ enum class PROTOCOL
 	// LOGIN
 
 	// MATCH
-	MATCH_RQ, MATCH_RP, GAMESTART_CM,
+	MATCH_RQ, MATCH_RP, 
+	
+	// GAME START, END
+	GAMESTART_CM, GAMEEND_CM,
 
 	// PLAY
 	P1_MOVE_RQ, P1_MOVE_RP, P2_MOVE_RQ, P2_MOVE_RP,
@@ -47,6 +50,11 @@ enum class PROTOCOL
 enum class CHARACTER_STATE
 {
 	STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT
+};
+
+enum class GAMEEND_STATE
+{
+	DISCONNECTED, P1_WIN, P2_WIN
 };
 
 typedef struct sPacket_Head
@@ -74,6 +82,11 @@ struct SGAMESTART
 {
 	bool mStart;
 	int mPlayerIndex;	// 0 : 1p, 1 : 2p
+};
+
+struct SGAMEEND
+{
+	GAMEEND_STATE mGameEndState;
 };
 
 struct SCHARACTER

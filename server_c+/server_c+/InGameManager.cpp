@@ -33,17 +33,38 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 		return false;
 	}
 
-	SINGAMEROOM inGameRoom;
-	inGameRoom.mPlayer1 = player1;
-	inGameRoom.mPlayer2 = player2;
-	inGameRoom.mRoomNum = mLastRoomNum + 1;
-	//inGameRoom.mPlayerInfo[0].Init(0); // 1p
-	//inGameRoom.mPlayerInfo[1].Init(1); // 2p
+	SINGAMEROOM* inGameRoom = new SINGAMEROOM(player1, player2, mLastRoomNum + 1);
+	inGameRoom->mPlayer1->SetRoomNum(inGameRoom->mRoomNum);
+	inGameRoom->mPlayer2->SetRoomNum(inGameRoom->mRoomNum);
 
 	mInGameRoomContainer.push_back(inGameRoom);
 
 	++mLastRoomNum;
 	++mRoomCount;
+
+	return true;
+}
+
+bool InGameManager::GameEnd(int roomNum, GAMEEND_STATE endState)
+{
+	if (roomNum > mLastRoomNum)
+	{
+		cout << "wrong room number.." << endl;
+		return false;
+	}
+
+	// 게임이 끝나는 방 번호로 찾음
+	SINGAMEROOM* room = SearchRoom(roomNum);
+
+	// 게임 종료 원인을 패킷으로 전송
+	SGAMEEND end;
+	end.mGameEndState = endState;
+
+	PacketManager::GetInstance()->MakeSendPacket(room->mPlayer1, (char*)&end, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+	room->mPlayer1->Send();
+
+	PacketManager::GetInstance()->MakeSendPacket(room->mPlayer2, (char*)&end, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+	room->mPlayer2->Send();
 
 	return true;
 }
@@ -56,32 +77,46 @@ bool InGameManager::OutGame(int roomNum)
 		return false;
 	}
 
-	//std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomList.begin();
-	//std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomList.end();
+	SINGAMEROOM* room = SearchRoom(roomNum);
+	room->mPlayer1->SetPlayerIndex(-1);
+	room->mPlayer2->SetPlayerIndex(-1);
+	room->mPlayer1->SetRoomNum(-1);
+	room->mPlayer2->SetRoomNum(-1);
+	room->mPlayer1 = nullptr;
+	room->mPlayer2 = nullptr;
 
-	//while (begin_iter != end_iter)
-	//{
-	//	if (begin_iter->mRoomNum == roomNum)
-	//	{
-	//		begin_iter = mInGameRoomList.erase(begin_iter);
-	//		break;
-	//	}
-	//	else
-	//	{
-	//		++begin_iter;
-	//	}	
-
-	//	// except error
-	//	if (begin_iter == end_iter)
-	//	{
-	//		cout << "wrong room number.." << endl;
-	//		return false;
-	//	}
-	//}
+	delete room;
 
 	--mRoomCount;
 
 	return true;
+}
+
+SINGAMEROOM* InGameManager::SearchRoom(int roomNum)
+{
+	if (roomNum > mLastRoomNum)
+	{
+		cout << "wrong room number.." << endl;
+		return false;
+	}
+
+	SINGAMEROOM* room = nullptr;
+
+	std::list<SINGAMEROOM*>::iterator begin_iter = mInGameRoomContainer.begin();
+	std::list<SINGAMEROOM*>::iterator end_iter = mInGameRoomContainer.end();
+
+	while (begin_iter != end_iter)
+	{
+		if ((*begin_iter)->mRoomNum == roomNum)
+		{
+			room = *begin_iter;
+			break;
+		}
+
+		++begin_iter;
+	}
+
+	return room;
 }
 
 ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
@@ -94,38 +129,47 @@ ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
 
 	ClientSession* enemyClient = nullptr;
 
-	//SINGAMEROOM inGameRoom;
+	SINGAMEROOM* room = SearchRoom(player->GetRoomNum());
 
-	//for (int i = 0; i < mInGameRoomContainer.size(); ++i)
-	//{
-	//	if (mInGameRoomContainer[i].mRoomNum == player->GetRoomNum())
-	//	{
-	//		//return mInGameRoomContainer[i].
-	//	}
-	//}
-
-	std::list<SINGAMEROOM>::iterator begin_iter = mInGameRoomContainer.begin();
-	std::list<SINGAMEROOM>::iterator end_iter = mInGameRoomContainer.end();
-
-	while (begin_iter != end_iter)
+	if (room == nullptr)
 	{
-		if (begin_iter->mPlayer1 == player || begin_iter->mPlayer2 == player)
-		{
-			if (begin_iter->mPlayer1 == player)
-				enemyClient = begin_iter->mPlayer2;
-			else if (begin_iter->mPlayer2 == player)
-				enemyClient = begin_iter->mPlayer1;
-			else // except error
-			{
-				cout << "isn't search enemy player.." << endl;
-				return NULL;
-			}
+		cout << "room is nullptr.." << endl;
+		return NULL;
+ 	}
 
-			break;
-		}
-
-		++begin_iter;
+	if (room->mPlayer1 == nullptr || room->mPlayer2 == nullptr)
+	{
+		cout << "enemy client disconnected.." << endl;
+		return NULL;
 	}
+
+	if (player == room->mPlayer1)
+		enemyClient = room->mPlayer2;
+	else if (player == room->mPlayer2)
+		enemyClient = room->mPlayer1;
+
+	//std::list<SINGAMEROOM*>::iterator begin_iter = mInGameRoomContainer.begin();
+	//std::list<SINGAMEROOM*>::iterator end_iter = mInGameRoomContainer.end();
+
+	//while (begin_iter != end_iter)
+	//{
+	//	if ((*begin_iter)->mPlayer1 == player || (*begin_iter)->mPlayer2 == player)
+	//	{
+	//		if ((*begin_iter)->mPlayer1 == player)
+	//			enemyClient = (*begin_iter)->mPlayer2;
+	//		else if ((*begin_iter)->mPlayer2 == player)
+	//			enemyClient = (*begin_iter)->mPlayer1;
+	//		else // except error
+	//		{
+	//			cout << "isn't search enemy player.." << endl;
+	//			return NULL;
+	//		}
+
+	//		break;
+	//	}
+
+	//	++begin_iter;
+	//}
 
 	return enemyClient;
 }

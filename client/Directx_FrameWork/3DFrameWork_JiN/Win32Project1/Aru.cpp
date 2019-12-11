@@ -364,7 +364,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_FireBall_Hit.Create_Sprite(_pDevice, L"2D_Sprites\\fireball_hit.png", 576, 64, 9, NULL);
 
 	m_bAnyKeyDown = false;
-	sCharPacket.mPlayerIndex = Network::GetInstance()->GetPlayerIndex();
+	sCharPacket.mPlayerIndex = g_pNetwork->GetPlayerIndex();
 }
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
@@ -522,7 +522,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	{
 		sCharPacket.mPosX = m_vPos.x;
 		sCharPacket.mPosY = m_vPos.y;
-		Network::GetInstance()->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
 	}
 }
 

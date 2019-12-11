@@ -29,6 +29,7 @@ public:
 	void Initialize();
 
 	bool GameStart(int _iPlayerIndex);
+	bool GameOver();
 
 	void Update();
 	void Render();

@@ -3,11 +3,11 @@
 #include "PacketList.h"
 #include "TemplateSingleton.h"
 
-class Network : public TemplateSingleton<Network>
+class Network
 {
 public:
-	Network() : m_iPlayerIndex(-1) {}
-	~Network() {}
+	Network();
+	~Network();
 
 	void Init();
 	void Update();
@@ -44,3 +44,5 @@ private:
 
 	int m_iPlayerIndex;
 };
+
+extern Network* g_pNetwork;

@@ -1,16 +1,19 @@
 #pragma once
 #include "stdafx.h"
 #include <list>
+#include "PacketList.h"
 
 #include "TemplateSingleton.h"
 #include "ClientSession.h"
 #include "PlayerInfo.h"
+#include "PacketManager.h"
 
 typedef struct sInGameRoom
 {
+	sInGameRoom(ClientSession* player1, ClientSession* player2, int roomNum) : mPlayer1(player1), mPlayer2(player2), mRoomNum(roomNum) {}
+	~sInGameRoom() {}
 	ClientSession* mPlayer1;	
 	ClientSession* mPlayer2;
-	//PlayerInfo mPlayerInfo[2];
 	int mRoomNum;
 }SINGAMEROOM;
 
@@ -29,15 +32,19 @@ public:
 	void Init();
 	void Clean();
 
-	bool InGame(ClientSession* player1, ClientSession* player2);
+	bool InGame(ClientSession* player1, ClientSession* player2);	
 	bool OutGame(int roomNum);
+
+	bool GameEnd(int roomNum, GAMEEND_STATE endState);
+
+	SINGAMEROOM* SearchRoom(int roomNum);
 
 	ClientSession* GetEnemyClient(ClientSession* player);
 
 	void EnterCS() { EnterCriticalSection(&mCS); }
 	void LeaveCS() { LeaveCriticalSection(&mCS); }
 private:
-	std::list<SINGAMEROOM> mInGameRoomContainer;
+	std::list<SINGAMEROOM*> mInGameRoomContainer;
 
 	int mRoomCount;
 	int mLastRoomNum;

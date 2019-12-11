@@ -1,2 +1,4 @@
-﻿  LINK : D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+﻿  GameManager.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Win32Project1\GameManager.cpp(128): warning C4715: 'CGameManager::SetPlayerState': 모든 제어 경로에서 값을 반환하지는 않습니다.
   Win32Project1.vcxproj -> D:\Code Workspace\Senier-Project\client\Directx_FrameWork\3DFrameWork_JiN\Debug\Win32Project1.exe

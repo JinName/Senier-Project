@@ -10,7 +10,7 @@
 
 내가 아닌 다른 사람이 행동했다고 '통보'가 오는것이 있고
 자의에 상관없이 서버로 부터의 데이터 수정 '명령'이 있습니다.
-('명령' : 남이 날 때려서 HP를 수정해야 한다 -> 클라이언트에 명령프로토콜전송)
+('명령'은..예를 들자면.. 남이 날 때려서 HP를 수정해야 한다든지 이런거..)
 
 기본적으로 이 4가지에서 파생되거나, 의미가 혼합됩니다.
 - Request, Reply, Notify, Command(compulsion)
@@ -36,17 +36,25 @@ enum class PROTOCOL
 
 	// LOGIN
 
-	// MATCH	
-	MATCH_RQ, MATCH_RP, GAMESTART_CM,
+	// MATCH
+	MATCH_RQ, MATCH_RP,
+
+	// GAME START, END
+	GAMESTART_CM, GAMEEND_CM,
 
 	// PLAY
 	P1_MOVE_RQ, P1_MOVE_RP, P2_MOVE_RQ, P2_MOVE_RP,
-	MOVE_RQ	
+	MOVE_RQ
 };
 
 enum class CHARACTER_STATE
 {
 	STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT
+};
+
+enum class GAMEEND_STATE
+{
+	DISCONNECTED, P1_WIN, P2_WIN
 };
 
 typedef struct sPacket_Head
@@ -57,7 +65,7 @@ typedef struct sPacket_Head
 
 typedef struct sPacket_Tail
 {
-
+	bool end;
 } STAIL;
 
 struct SCHAT
@@ -76,16 +84,21 @@ struct SGAMESTART
 	int mPlayerIndex;	// 0 : 1p, 1 : 2p
 };
 
+struct SGAMEEND
+{
+	GAMEEND_STATE mGameEndState;
+};
+
 struct SCHARACTER
 {
 	SCHARACTER() : mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false) {}
 
-	int mPlayerIndex;	
-	
+	int mPlayerIndex;
+
 	float mPosX;
 	float mPosY;
 	CHARACTER_STATE mCharState;
-	
+
 	bool mLeft;
 	bool mRight;
 	bool mKeyDownSpace;

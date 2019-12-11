@@ -170,12 +170,11 @@ bool IOCPManager::AcceptLoop()
 		// 클라이언트 접속 처리
 		if (false == client->OnConnect(&clientaddr))
 		{
+			cout << "[FAIL] : IOCPManager > AcceptLoop() > client->OnConnect() is false" << endl;
 			// OnConnect() 실패 시에 다시 client 객체 초기화 후 삭제
 			client->DisConnect();
 			GSessionManager->DeleteClientSession(client);
 		}
-
-		//SOVERLAPPED* recvOV = new SOVERLAPPED(IO_RECV);
 
 		client->Recv();
 	}
@@ -188,11 +187,9 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	// 글로벌 객체에서 Completion Port Handle 가져옴 -> GetQueuedCompletionStatus() 에 활용
 	HANDLE hCP = GIocpManager->GetCPHandle();
 
-	//cout << "start thread CP " << hCP << endl;
-
 	while (true)
 	{
-		DWORD dwBytesTransferred;	// 전송받을 데이터
+		DWORD dwBytesTransferred = 0;	// 전송받을 데이터
 		SOVERLAPPED* overlapped = nullptr;
 		ClientSession* client = nullptr;
 
@@ -211,8 +208,14 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		if (ret == 0 || dwBytesTransferred == 0)			// dwBytesTransferred == 0 : 전송받은 데이터가 없음
 		{
 			cout << "Recive Data is zero..." << endl;
-			client->DisConnect();
-			GSessionManager->DeleteClientSession(client);
+			//if (overlapped != nullptr)
+			//{
+			//	overlapped->mIOType = IOTYPE::IO_DISCONNECT;
+			//}
+			//client->DisConnect();
+			//GSessionManager->DeleteClientSession(client);
+			DisconnectCompletion(client, overlapped, dwBytesTransferred);
+
 			continue;
 		}
 
@@ -237,6 +240,10 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		case IOTYPE::IO_RECV:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 RECV 일 경우 수행할 함수
 			completionOK = ReceiveCompletion(client, overlapped, dwBytesTransferred);
+			break;
+
+		case IOTYPE::IO_DISCONNECT:
+			completionOK = DisconnectCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		default:
@@ -277,7 +284,7 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 	}
 
 	// 완료된 recv 에 대한 처리 부분 ////////////////////////
-	PacketManager::GetInstance()->Enqueue(client, client->GetRecvOverlapped().mWSABuf.buf);	
+	PacketManager::GetInstance()->Enqueue(client, overlapped->mBuffer);
 	/////////////////////////////////////////////////////////
 
 	return client->Recv();
@@ -290,16 +297,41 @@ bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped,
 		printf_s("SendCompletion client returned nullptr! \n");
 		return false;
 	}
+	
+	// send 시에 추가 처리 부분 ///////////////////
 
-	/// 전송 다 되었는지 확인하는 것 처리..
+	///////////////////////////////////////////////
+
+	// 전송 다 되었는지 확인
 	if (overlapped->mWSABuf.len != dwBytesTransferred)
 	{
-		//delete overlapped;
 		cout << "send() isn't complete.." << endl;
 		return false;
 	}
 
-	//delete overlapped;
+	return true;
+}
+
+bool IOCPManager::DisconnectCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
+{
+	if (client == nullptr)
+	{
+		printf_s("DisconnectCompletion client returned nullptr! \n");
+		return false;
+	}
+
+	// 연결 해제 전에 처리해야할 것
+	// if in game : 인게임 방에서 나가기
+	// 인게임이 종료되었음을 알려주는 패킷 대전상대에게 전송
+	if (client->GetRoomNum() >= 0)
+	{
+		InGameManager::GetInstance()->GameEnd(client->GetRoomNum(), GAMEEND_STATE::DISCONNECTED);
+		InGameManager::GetInstance()->OutGame(client->GetRoomNum());
+	}	
+
+	// disconnet
+	client->DisConnect();
+	GSessionManager->DeleteClientSession(client);
 
 	return true;
 }
