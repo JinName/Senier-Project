@@ -79,13 +79,24 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		break;
 	}
 
-	case PROTOCOL::MOVE_RQ:	
+	case PROTOCOL::MOVE_RP:	
 	{
-		SCHARACTER enemyChar;
-		memset(&enemyChar, 0, sizeof(SCHARACTER));
-		memcpy(&enemyChar, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+		SCHARACTER player;
+		memset(&player, 0, sizeof(SCHARACTER));
+		memcpy(&player, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
 
-		g_pGameManager->SetPlayerState(enemyChar);
+		g_pGameManager->SetPlayerState(player);
+
+		break;
+	}
+
+	case PROTOCOL::BRCAST_MOVE_RP:
+	{
+		SCHARACTER otherPlayer;
+		memset(&otherPlayer, 0, sizeof(SCHARACTER));
+		memcpy(&otherPlayer, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+
+		g_pGameManager->SetPlayerState(otherPlayer);
 
 		break;
 	}

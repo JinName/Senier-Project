@@ -145,6 +145,13 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::MOVE_RQ:
 	{
+		// 1. MOVE_RQ 를 보낸 클라이언트에 대한 처리
+		// 1-1. 서버 내에 각 플레이어 위치연산
+		// 1-2. 클라이언트에 이동 허가 패킷 전송 (MOVE_RP)
+
+		// 2. 다른 클라이언트에서의 처리
+		// 2-1. 현재 접속 중인 다른 클라이언트로 MOVE_RQ 를 요청한 플레이어의 상태 브로드캐스팅
+
 		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
 
 		if (enemyPlayer == nullptr)

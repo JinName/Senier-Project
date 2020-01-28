@@ -25,6 +25,27 @@
     <Filter Include="Logger">
       <UniqueIdentifier>{ab9331ba-a78b-4603-b106-766ee70a4e13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\SessionManager">
+      <UniqueIdentifier>{e0ee5d6a-0e53-48da-bf83-8e5619e9682d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\SessionManager\ClientSession">
+      <UniqueIdentifier>{c9dd042c-42cb-4fe1-a44d-9119d96c2bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\InGameManager">
+      <UniqueIdentifier>{d6d71614-d26b-43d2-bd69-3bf4b16a46db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\InGameManager\InGameRoom">
+      <UniqueIdentifier>{a400624c-f9b4-4796-b046-56ababd23d38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\PacketManager">
+      <UniqueIdentifier>{16050d16-91af-4445-a4c2-b49754ea997d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\MatchManager">
+      <UniqueIdentifier>{50949258-4937-446c-8ffc-3c685ce9e7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\IOCPManager">
+      <UniqueIdentifier>{1973c782-3605-4a07-8e8f-edab6667d1ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,49 +54,34 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSession.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="InGameManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="IOCPManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="MatchManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="PacketManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="SessionManager.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionManager.cpp">
+      <Filter>Network\SessionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSession.cpp">
+      <Filter>Network\SessionManager\ClientSession</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameManager.cpp">
+      <Filter>Network\InGameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="InGameRoom.cpp">
+      <Filter>Network\InGameManager\InGameRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketManager.cpp">
+      <Filter>Network\PacketManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchManager.cpp">
+      <Filter>Network\MatchManager</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPManager.cpp">
+      <Filter>Network\IOCPManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerInfo.h">
       <Filter>GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientSession.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="InGameManager.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="IOCPManager.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchManager.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketManager.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="SessionManager.h">
-      <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Network\NetworkHeader</Filter>
@@ -88,6 +94,27 @@
     </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionManager.h">
+      <Filter>Network\SessionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSession.h">
+      <Filter>Network\SessionManager\ClientSession</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameManager.h">
+      <Filter>Network\InGameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameRoom.h">
+      <Filter>Network\InGameManager\InGameRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketManager.h">
+      <Filter>Network\PacketManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchManager.h">
+      <Filter>Network\MatchManager</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPManager.h">
+      <Filter>Network\IOCPManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

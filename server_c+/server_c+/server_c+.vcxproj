@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="InGameManager.cpp" />
+    <ClCompile Include="InGameRoom.cpp" />
     <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="InGameManager.h" />
+    <ClInclude Include="InGameRoom.h" />
     <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MatchManager.h" />
