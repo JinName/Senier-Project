@@ -57,6 +57,13 @@ void PlayerInfo::Init(int _iPlayerIndex)
 	m_fBefore_Clock = 0.0f;
 }
 
+void PlayerInfo::SetPosition(float _x, float _y, float _z)
+{
+	m_vPos.x = _x;
+	m_vPos.y = _y;
+	m_vPos.z = _z;
+}
+
 void PlayerInfo::Do_Left()
 {
 	m_vPos.x -= m_fSpeed;

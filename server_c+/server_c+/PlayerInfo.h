@@ -22,6 +22,9 @@ public:
 
 	void Init(int _iPlayerIndex);
 
+	void SetPosition(float _x, float _y, float _z);
+	VECTOR3 GetVector3() { return m_vPos; }
+
 	// do function
 	void Do_Left();
 	void Do_Right();

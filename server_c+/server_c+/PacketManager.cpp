@@ -145,9 +145,24 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::MOVE_RQ:
 	{
+		// 0. HEAD / DATA 분리
+		// 0-1. HEAD
+		SHEAD head;
+		memset(&head, 0, sizeof(SHEAD));
+		memcpy(&head, pack.mBuffer, sizeof(SHEAD));
+
+		// 0-2. DATA
+		SCHARACTER playerChar;
+		memset(&playerChar, 0, sizeof(SCHARACTER));
+		memcpy(&playerChar, pack.mBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+
 		// 1. MOVE_RQ 를 보낸 클라이언트에 대한 처리
-		// 1-1. 서버 내에 각 플레이어 위치연산
+		// 1-1. 서버 내에 각 플레이어 위치연산 후 연산 결과 반환받음
+		SCHARACTER newCharData = InGameManager::GetInstance()->SetPlayer(pack.mSession, playerChar);
+		
 		// 1-2. 클라이언트에 이동 허가 패킷 전송 (MOVE_RP)
+		MakeSendPacket(pack.mSession, (char*)&newCharData, sizeof(SCHARACTER), PROTOCOL::MOVE_RP);
+		pack.mSession->Send();
 
 		// 2. 다른 클라이언트에서의 처리
 		// 2-1. 현재 접속 중인 다른 클라이언트로 MOVE_RQ 를 요청한 플레이어의 상태 브로드캐스팅
