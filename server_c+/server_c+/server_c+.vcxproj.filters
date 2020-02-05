@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="GameLogic">
-      <UniqueIdentifier>{ab3d4867-424a-4cf8-a998-b6a9b50ad7b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{da18c067-137b-4191-bbc5-911196f16705}</UniqueIdentifier>
     </Filter>
@@ -46,13 +43,31 @@
     <Filter Include="Network\IOCPManager">
       <UniqueIdentifier>{1973c782-3605-4a07-8e8f-edab6667d1ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameLogicManager">
+      <UniqueIdentifier>{ab3d4867-424a-4cf8-a998-b6a9b50ad7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\Stage">
+      <UniqueIdentifier>{3c06990c-9970-46d7-9bab-afd57624413d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\CollisionManger">
+      <UniqueIdentifier>{ce92539a-ee53-44b4-8b2a-969537950b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\Entity">
+      <UniqueIdentifier>{e6c78ebd-769e-440e-8f27-89c7f22d94f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\Entity\Player">
+      <UniqueIdentifier>{8f4b7133-7483-49f3-bfe0-ec81c7e48de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\Entity\Skill">
+      <UniqueIdentifier>{51b95a19-8556-40d6-97f6-7261fa16bf79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInfo.cpp">
-      <Filter>GameLogic</Filter>
+      <Filter>GameLogicManager</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Logger</Filter>
@@ -78,10 +93,28 @@
     <ClCompile Include="IOCPManager.cpp">
       <Filter>Network\IOCPManager</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameLogicManager\Entity\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>GameLogicManager\CollisionManger</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage.cpp">
+      <Filter>GameLogicManager\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogicManager.cpp">
+      <Filter>GameLogicManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>GameLogicManager\Entity\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>GameLogicManager\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayerInfo.h">
-      <Filter>GameLogic</Filter>
+      <Filter>GameLogicManager</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Network\NetworkHeader</Filter>
@@ -115,6 +148,24 @@
     </ClInclude>
     <ClInclude Include="IOCPManager.h">
       <Filter>Network\IOCPManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>GameLogicManager\CollisionManger</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameLogicManager\Entity\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage.h">
+      <Filter>GameLogicManager\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogicManager.h">
+      <Filter>GameLogicManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>GameLogicManager\Entity\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>GameLogicManager\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

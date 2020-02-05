@@ -31,10 +31,16 @@ public:
 	PlayerInfo		GetPlayerInfo(int _playerIndex)		{ return mPlayerInfo[_playerIndex]; }
 	int				GetRoomNum()							{ return mRoomNum; }
 
+	// start logic thread
+	void			StartGameLogicThread();
+
 private:
 	int				mRoomNum;
 	ClientSession*	mClient[2];
 	PlayerInfo		mPlayerInfo[2];
 	int				mMapNum;
+
+	// logic thread : room 마다 게임 로직을 담당
+	static unsigned int WINAPI GameLogicThread(LPVOID lpParam);
 };
 

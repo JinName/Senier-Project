@@ -124,5 +124,6 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
 
 	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
-	player->Set_Animation((int)_sCharPacket.mCharState);
+	player->Set_Direction(_sCharPacket.mDirectionX, 0.0f);
+	//player->Set_Animation((int)_sCharPacket.mCharState);
 }

@@ -97,6 +97,7 @@ struct SCHARACTER
 
 	float mPosX;
 	float mPosY;
+	float mDirectionX;
 	CHARACTER_STATE mCharState;
 
 	bool mLeft;

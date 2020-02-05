@@ -167,16 +167,19 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		// 2. 다른 클라이언트에서의 처리
 		// 2-1. 현재 접속 중인 다른 클라이언트로 MOVE_RQ 를 요청한 플레이어의 상태 브로드캐스팅
 
-		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+		// 플레이어가 입장해 있는 방에서 상대방 Session 을 탐색
+		ClientSession* enemySession = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
 
-		if (enemyPlayer == nullptr)
+		// 값을 찾지 못했을 경우
+		if (enemySession == nullptr)
 		{
-			cout << "enemy player is null.." << endl;
+			cout << "enemy session is null.." << endl;
 			break;
 		}
 
-		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCHARACTER));
-		enemyPlayer->Send();
+		// 보내줄 패킷 생성, 전송
+		MakeSendPacket(enemySession, (char*)&newCharData, sizeof(SCHARACTER), PROTOCOL::BRCAST_MOVE_RP);
+		enemySession->Send();
 
 		break;
 	}

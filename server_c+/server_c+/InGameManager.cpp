@@ -33,12 +33,41 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 		return false;
 	}
 
+	// into GameRoom
 	InGameRoom* inGameRoom = new InGameRoom(player1, player2, mLastRoomNum + 1);
+
+	// init
+	inGameRoom->Init();
 
 	mInGameRoomList.push_back(inGameRoom);
 
 	++mLastRoomNum;
 	++mRoomCount;
+
+	// send gamestart packet to client
+	// setting player 1
+	SGAMESTART player1_Gamestart;
+	player1_Gamestart.mStart = true;
+	player1_Gamestart.mPlayerIndex = 0; // 1p
+	//player1_Gamestart.mPlayerInfo[player1_Gamestart.mPlayerIndex].Init(player1_Gamestart.mPlayerIndex);
+	player1->SetPlayerIndex(0);
+
+	// setting player 2
+	SGAMESTART player2_Gamestart;
+	player2_Gamestart.mStart = true;
+	player2_Gamestart.mPlayerIndex = 1; // 2p
+	//player1_Gamestart.mPlayerInfo[player1_Gamestart.mPlayerIndex].Init(player1_Gamestart.mPlayerIndex);
+	player1->SetPlayerIndex(1);
+
+	bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+	bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+
+	if (player1_result && player2_result)
+	{
+		// Send Game Start Packet
+		player1->Send();
+		player2->Send();
+	}
 
 	return true;
 }
@@ -151,10 +180,11 @@ ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
 
 SCHARACTER InGameManager::SetPlayer(ClientSession* player, SCHARACTER charPacket)
 {
-	InGameRoom* room = SearchRoom(player->GetRoomNum);
+	InGameRoom* room = SearchRoom(player->GetRoomNum());
 
 	room->SetPlayer(charPacket.mPlayerIndex, charPacket);
 
+	charPacket.mDirectionX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetDirection().x;
 	charPacket.mPosX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().x;
 	charPacket.mPosY = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().y;
 

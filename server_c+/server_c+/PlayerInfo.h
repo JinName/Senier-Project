@@ -17,13 +17,16 @@ struct VECTOR3
 class PlayerInfo
 {
 public:
-	PlayerInfo();
-	~PlayerInfo();
+	PlayerInfo() {}
+	~PlayerInfo() {}
 
 	void Init(int _iPlayerIndex);
 
 	void SetPosition(float _x, float _y, float _z);
 	VECTOR3 GetVector3() { return m_vPos; }
+
+	void SetDirection(float _fDirectionX, float _fDirectionY) { m_vDirection.x = _fDirectionX; m_vDirection.y = _fDirectionY; }
+	VECTOR2 GetDirection() { return m_vDirection; }
 
 	// do function
 	void Do_Left();

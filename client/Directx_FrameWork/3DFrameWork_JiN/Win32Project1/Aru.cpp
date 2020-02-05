@@ -1,7 +1,5 @@
 #include "Aru.h"
 
-
-
 CAru::CAru()
 {
 }
@@ -364,7 +362,9 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_FireBall_Hit.Create_Sprite(_pDevice, L"2D_Sprites\\fireball_hit.png", 576, 64, 9, NULL);
 
 	m_bAnyKeyDown = false;
-	sCharPacket.mPlayerIndex = g_pNetwork->GetPlayerIndex();
+	m_bTransfered = false;
+	memset(&m_sCharPacket, 0, sizeof(SCHARACTER));
+	m_sCharPacket.mPlayerIndex = g_pNetwork->GetPlayerIndex();
 }
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
@@ -384,8 +384,8 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 			Jump();
 	}
 
-	if (m_bIsPlayer)
-		Gravity();
+	//if (m_bIsPlayer)
+		//Gravity();
 
 	Attack_Cooltime();
 	Skill_Update();
@@ -443,7 +443,6 @@ void CAru::Clean()
 VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 {
 	// char info packet		
-
 	// STAND
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
 		CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == false &&
@@ -451,7 +450,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->IsKeyPressed(DIK_DOWN) == false)
 	{
 		Do_Stand();
-		sCharPacket.mCharState = CHARACTER_STATE::STAND;
+		m_sCharPacket.mCharState = CHARACTER_STATE::STAND;
 		m_bAnyKeyDown = false;
 	}
 
@@ -459,15 +458,15 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == true)
 	{
 		Do_Left();
-		sCharPacket.mLeft = true;
-		sCharPacket.mCharState = CHARACTER_STATE::LEFT;
+		m_sCharPacket.mLeft = true;
+		m_sCharPacket.mCharState = CHARACTER_STATE::LEFT;
 		m_bAnyKeyDown = true;
 	}
 	else if (CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == true)
 	{
 		Do_Right();
-		sCharPacket.mRight = true;
-		sCharPacket.mCharState = CHARACTER_STATE::RIGHT;
+		m_sCharPacket.mRight = true;
+		m_sCharPacket.mCharState = CHARACTER_STATE::RIGHT;
 		m_bAnyKeyDown = true;
 	}
 
@@ -479,8 +478,8 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 			if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == true)
 			{
 				Do_Jump();
-				sCharPacket.mKeyDownSpace = true;
-				sCharPacket.mCharState = CHARACTER_STATE::JUMP;
+				m_sCharPacket.mKeyDownSpace = true;
+				m_sCharPacket.mCharState = CHARACTER_STATE::JUMP;
 				m_bAnyKeyDown = true;
 			}
 		}
@@ -489,9 +488,9 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
 		Do_Not_Jump();
-		if (sCharPacket.mKeyDownSpace != true)
+		if (m_sCharPacket.mKeyDownSpace != true)
 		{
-			sCharPacket.mKeyDownSpace = false;
+			m_sCharPacket.mKeyDownSpace = false;
 		}
 		m_bAnyKeyDown = true;
 	}
@@ -502,8 +501,8 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		if (CInput::Get_Instance()->IsKeyPressed(DIK_Z) == true)
 		{
 			Do_Attack();
-			sCharPacket.mAttack = true;
-			sCharPacket.mCharState = CHARACTER_STATE::ATTACK;
+			m_sCharPacket.mAttack = true;
+			m_sCharPacket.mCharState = CHARACTER_STATE::ATTACK;
 			m_bAnyKeyDown = true;
 		}
 	}
@@ -515,14 +514,23 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->IsKeyPressed(DIK_Z) == false &&
 		CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
-		m_bAnyKeyDown = false;
+		m_bAnyKeyDown = false;		
 	}
 
-	if (true)
+	if (m_bAnyKeyDown)
 	{
-		sCharPacket.mPosX = m_vPos.x;
-		sCharPacket.mPosY = m_vPos.y;
-		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sCharPacket, sizeof(SCHARACTER));
+		m_sCharPacket.mDirectionX = m_vDirection.x;
+		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&m_sCharPacket, sizeof(SCHARACTER));
+		m_bTransfered = false;
+	}
+	else
+	{
+		if (!m_bTransfered)
+		{
+			m_sCharPacket.mDirectionX = m_vDirection.x;			
+			g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&m_sCharPacket, sizeof(SCHARACTER));
+			m_bTransfered = true;
+		}
 	}
 }
 
@@ -548,7 +556,7 @@ void CAru::Do_Attack()
 
 void CAru::Do_Left()
 {
-	m_vPos.x -= m_fSpeed;
+	//m_vPos.x -= m_fSpeed;
 	m_vDirection.x = -1.0f;
 	m_b_isRunning = true;
 	currentDirection = -1;
@@ -556,7 +564,7 @@ void CAru::Do_Left()
 
 void CAru::Do_Right()
 {
-	m_vPos.x += m_fSpeed;
+	//m_vPos.x += m_fSpeed;
 	m_vDirection.x = 1.0f;
 	m_b_isRunning = true;
 	currentDirection = 1;

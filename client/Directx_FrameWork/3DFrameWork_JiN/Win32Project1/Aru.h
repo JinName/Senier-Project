@@ -79,8 +79,9 @@ private:
 	bool m_bHP_isFull; // HP FULL 이면 true : 포션 못먹음
 	bool m_bPotion_Collision; // 포션과 충돌시 true
 	
-	SCHARACTER sCharPacket;
 	bool m_bAnyKeyDown;
+	bool m_bTransfered;
+	SCHARACTER m_sCharPacket;
 public:
 	CAru();
 	~CAru();
@@ -111,6 +112,8 @@ public:
 	// 방향에 따른 애니매이션 번호 지정 함수
 	void Set_Animation();
 	void Set_Animation(int _iAnimate_Num);
+
+	void Set_Direction(float _x, float _y) { m_vDirection.x = _x; m_vDirection.y = _y; }
 
 	// 캐릭터 최근 상태에 따른 DrawBitmap Reverse 여부
 	bool Check_Reverse();
