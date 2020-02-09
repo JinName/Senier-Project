@@ -1,5 +1,7 @@
 #pragma once
-class Skill
+#include "Entity.h"
+
+class Skill : public Entity
 {
 public:
 	void SetDamage(int _iDamage) { m_iDamage = _iDamage; }

@@ -1,6 +1,6 @@
 #include "InGameManager.h"
 
-InGameManager::InGameManager() : mRoomCount(0), mLastRoomNum(0)
+InGameManager::InGameManager() : mRoomCount(0), mLastRoomNum(0), mStopFlag(false)
 {
 	InitializeCriticalSection(&mCS);
 }
@@ -189,4 +189,73 @@ SCHARACTER InGameManager::SetPlayer(ClientSession* player, SCHARACTER charPacket
 	charPacket.mPosY = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().y;
 
 	return charPacket;
+}
+
+bool InGameManager::Enqueue(ClientPacket clientPacket)
+{
+	mInGameBufferQueue.push(clientPacket);
+}
+
+bool InGameManager::Dequeue()
+{
+	mInGameBufferQueue.pop();
+}
+
+void InGameManager::ProcessAllQueue()
+{
+	while (true)
+	{
+		if (mStopFlag) break;
+
+		if (!mInGameBufferQueue.empty())
+		{
+			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
+			EnterCS();
+
+			ClientPacket pack = mInGameBufferQueue.front();
+			mInGameBufferQueue.pop();
+
+			// 패킷 헤드 확인
+			PROTOCOL protocol = ParsingPacket(pack);
+
+			// 프로토콜에 따른 패킷 처리
+			ProcessPacket(protocol, pack);
+
+			LeaveCS();
+		}
+
+		if (mStopFlag) break;
+	}
+}
+
+PROTOCOL InGameManager::ParsingPacket(ClientPacket pack)
+{
+	if (pack.mBuffer == nullptr)
+	{
+		cout << "parsing buffer is nullptr... return PROTOCOL::NONE" << endl;
+		return PROTOCOL::NONE;
+	}
+
+	SHEAD head;
+	memset(&head, 0, sizeof(SHEAD));
+	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
+
+	return (PROTOCOL)head.mCmd;
+}
+
+void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
+{
+	switch (protocol)
+	{
+	case PROTOCOL::MOVE_RQ:
+	{
+		SCHARACTER playerChar;
+		memset(&playerChar, 0, sizeof(SCHARACTER));
+		memcpy(&playerChar, pack.mBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+
+		InGameRoom* room = SearchRoom(pack.mSession->GetRoomNum());
+
+		break;
+	}
+	}
 }

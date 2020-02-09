@@ -21,6 +21,16 @@ public:
 	InGameManager();
 	~InGameManager();
 
+	// PacketManager -> InGameManager : 인게임로직에 관련한 패킷은 InGameManager 에서 처리
+	bool Enqueue(ClientPacket clientPacket);
+	bool Dequeue();
+
+	void ProcessAllQueue();
+
+	PROTOCOL ParsingPacket(ClientPacket pack);
+
+	void ProcessPacket(PROTOCOL protocol, ClientPacket pack);
+
 	void EnterCS() { EnterCriticalSection(&mCS); }
 	void LeaveCS() { LeaveCriticalSection(&mCS); }
 
@@ -38,12 +48,19 @@ public:
 
 	// 플레이어 정보를 받아서 변경 후 변경된 정보를 구조체에 담아 다시 반환
 	SCHARACTER SetPlayer(ClientSession* player, SCHARACTER charPacket);
+
+	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
 private:
 	std::list<InGameRoom*> mInGameRoomList;
+
+	// 게임 내에서 처리가 필요한 패킷의 경우 이 큐를 통해 처리
+	queue<ClientPacket> mInGameBufferQueue;
 
 	int mRoomCount;
 	int mLastRoomNum;
 
 	CRITICAL_SECTION mCS;
+
+	bool mStopFlag;
 };
 

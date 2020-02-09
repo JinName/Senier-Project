@@ -61,6 +61,12 @@
     <Filter Include="GameLogicManager\Entity\Skill">
       <UniqueIdentifier>{51b95a19-8556-40d6-97f6-7261fa16bf79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameLogicManager\Entity\Tile">
+      <UniqueIdentifier>{ec04be84-1302-4da9-b611-f5907ac10d96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogicManager\CollisionManger\BoxCollider">
+      <UniqueIdentifier>{d4432900-4a7f-42d1-aff3-23c6336877a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +116,15 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>GameLogicManager\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>GameLogicManager\Entity\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>GameLogicManager\CollisionManger\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,8 +182,28 @@
     <ClInclude Include="Entity.h">
       <Filter>GameLogicManager\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="GameLogic.h">
+      <Filter>GameLogicManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>GameLogicManager\Entity\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxCollider.h">
+      <Filter>GameLogicManager\CollisionManger\BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="server_c+.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

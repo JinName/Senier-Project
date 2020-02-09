@@ -18,6 +18,9 @@ InGameRoom::~InGameRoom()
 
 void InGameRoom::Init()
 {
+	// 게임 로직 매니저 초기화
+	mGameLogicManager.Init();
+
 	// 캐릭터 정보 초기화(위치 등..)
 	for (int i = 0; i < 2; ++i)
 	{
@@ -33,4 +36,16 @@ void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
 		mPlayerInfo[_playerIndex].Do_Left();
 	else if (_charPacket.mRight)
 		mPlayerInfo[_playerIndex].Do_Right();
+}
+
+unsigned int WINAPI InGameRoom::GameLogicThread(LPVOID lpParam)
+{
+	GameLogicManager* inGameMgr = (GameLogicManager*)lpParam;
+
+	while (true)
+	{
+		inGameMgr->Update();
+	}
+	
+	return 0;
 }

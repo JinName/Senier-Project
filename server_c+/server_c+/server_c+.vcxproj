@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="IOCPManager.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="MatchManager.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -145,29 +147,38 @@
     <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameLogicManager.h" />
     <ClInclude Include="InGameManager.h" />
     <ClInclude Include="InGameRoom.h" />
     <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="MatchManager.h" />
     <ClInclude Include="PacketList.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInfo.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SessionManager.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TemplateSingleton.h" />
+    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="server_c+.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

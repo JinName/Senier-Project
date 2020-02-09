@@ -89,6 +89,13 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
 
+	if (head.mTransferToInGame)
+	{
+		InGameManager::GetInstance()->Enqueue(pack);
+
+		return PROTOCOL::TRANFERED;
+	}
+
 	return (PROTOCOL)head.mCmd;
 }
 
@@ -121,6 +128,12 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 {
 	switch (protocol)
 	{
+	case PROTOCOL::TRANFERED:
+	{
+		// 다른 패킷처리스레드로 패킷이 전송된 경우
+		break;
+	}
+
 	case PROTOCOL::TEST_CHAT:
 	{
 		SCHAT chat;

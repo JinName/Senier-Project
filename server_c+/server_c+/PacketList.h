@@ -31,6 +31,9 @@ enum class PROTOCOL
 	// default
 	NONE,
 
+	// transfered to another thread
+	TRANFERED,
+
 	// CHAT
 	TEST_CHAT,
 	
@@ -59,8 +62,12 @@ enum class GAMEEND_STATE
 
 typedef struct sPacket_Head
 {
+	sPacket_Head() : mTransferToInGame(false)
+	{}
+
 	UCHAR mCmd;
 	DWORD mPacketSize;
+	bool mTransferToInGame;
 } SHEAD;
 
 typedef struct sPacket_Tail
