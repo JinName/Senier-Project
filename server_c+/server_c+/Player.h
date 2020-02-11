@@ -2,6 +2,8 @@
 #include "GameLogic.h"
 #include "Entity.h"
 
+enum { STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT };
+
 class Player : public Entity
 {
 public:
@@ -12,6 +14,69 @@ public:
 	void Do_Right();
 	void Do_Jump();
 	void Do_Not_Jump();
+
+	// HP 풀일때 true
+	bool Get_HP_isFull();
+	// 포션 충돌시 true
+	void Set_Potion_Collision(bool _bPotion_Collision) { m_bPotion_Collision = _bPotion_Collision; }
+
+	// 피격시 on/off : 몬스터와 충돌 가능 상태인지 반환
+	bool Get_Active_Collision() { return m_bActive_Collision; }
+	void Set_Active_Collision(bool _bActive_Collision) { m_bActive_Collision = _bActive_Collision; }
+
+	// hp 반환
+	int Get_HP() { return m_iHP; }
+
+	// 파이어볼 리스트 반환 - 충돌처리
+	//list<CFireBall*> Get_FireBall_List() { return m_FireBall_List; }
+
+	// 점프시 on/off 타일과 충돌 가능 상태인지 반환
+	bool Get_Collision_is_Possible() { return m_bCollision_is_Possible; }
+	// 충돌 시 변수 셋팅
+	bool Get_isVertical() { return isVertical; }
+	void Set_isVertical(bool _isVertical) { isVertical = _isVertical; }
+	void Set_isHorizontal(bool _isHorizontal) { isHorizontal = _isHorizontal; }
+	void Set_isHit(bool _isHit) { isHit = _isHit; }
+
+	// 방향에 따른 애니매이션 번호 지정 함수
+	void Set_Animation();
+	void Set_Animation(int _iAnimate_Num);
+
+	void Set_Direction(float _x, float _y) { m_vDirection.x = _x; m_vDirection.y = _y; }
+
+	// 캐릭터 최근 상태에 따른 DrawBitmap Reverse 여부
+	bool Check_Reverse();
+
+	// 캐릭터 중력
+	void Gravity();
+	// 캐릭터 점프
+	void Jump();
+
+	// 캐릭터가 타일과 충돌 시 움직임
+	void isCrash_Tile();
+	// 적과 부딪혔을때
+	void isCrash_Enemy();
+	// 포션과 충돌 시
+	void isCrash_Potion();
+
+	// 충돌 가능한 상태인지
+	void Check_Collision_is_Possible();
+
+	// FireBall Update()
+	//void Skill_Update();
+	//void Skill_Render();
+	//void Skill_Clean();
+
+	// FireBall Destory
+	//void Skill_Destory();
+
+	// Attack Cooltime
+	void Attack_Cooltime();
+
+	void Init();
+	void Update();
+	//void Render();
+	void Clean();
 
 private:
 

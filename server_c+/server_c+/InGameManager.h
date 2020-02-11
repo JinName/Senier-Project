@@ -39,10 +39,11 @@ public:
 
 	bool InGame(ClientSession* player1, ClientSession* player2);	
 	bool OutGame(int roomNum);
-
 	bool GameEnd(int roomNum, GAMEEND_STATE endState);
 
 	InGameRoom* SearchRoom(int roomNum);
+
+	bool DeleteRoomInList(int roomNum);
 
 	ClientSession* GetEnemyClient(ClientSession* player);	
 

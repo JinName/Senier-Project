@@ -173,13 +173,14 @@ bool Network::StartPacketProcessThread()
 //	closesocket(sock);
 //}
 
-bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize)
+bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool _inGame)
 {
 	// [헤드] 구조체 생성
 	SHEAD head;
 	memset(&head, 0, sizeof(SHEAD));
 	head.mCmd = (unsigned char)_protocol;
 	head.mPacketSize = (DWORD)sizeof(SHEAD) + _dataSize;
+	head.mTransferToInGame = _inGame;
 
 	// [헤드] + [데이터] 조립
 	char buffer[MAX_BUFSIZE];

@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include "ClientSession.h"
-#include "PlayerInfo.h"
+//#include "PlayerInfo.h"
 #include "PacketList.h"
 #include "GameLogicManager.h"
 
@@ -29,21 +29,26 @@ public:
 
 	// get
 	ClientSession*		GetClientSession(int _playerIndex)		{ return mClient[_playerIndex]; }
-	PlayerInfo			GetPlayerInfo(int _playerIndex)		{ return mPlayerInfo[_playerIndex]; }
+	//PlayerInfo			GetPlayerInfo(int _playerIndex)		{ return mPlayerInfo[_playerIndex]; }
 	int					GetRoomNum()							{ return mRoomNum; }
 	GameLogicManager*	GetGameLogicManager()					{ return &mGameLogicManager; }
 
 	// start logic thread
-	void				StartGameLogicThread();
+	bool				StartGameLogicThread();
+
+	// stop flag
+	void				SetThreadStopFlag(bool _flag)			{ mStopFlag = _flag; }
+	bool				GetThreadStopFlag()						{ return mStopFlag; }
 
 private:
 	int					mRoomNum;
 	ClientSession*		mClient[2];
-	PlayerInfo			mPlayerInfo[2];
+	//PlayerInfo			mPlayerInfo[2];
 	int					mMapNum;
 
 	// in game logic manager
 	GameLogicManager	mGameLogicManager;
+	bool				mStopFlag;
 
 	// logic thread : room 마다 게임 로직을 담당
 	static unsigned int WINAPI GameLogicThread(LPVOID lpParam);

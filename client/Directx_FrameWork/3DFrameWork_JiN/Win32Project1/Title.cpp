@@ -48,7 +48,7 @@ void CTitle::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 			match.mInMatch = true;
 
 			// 서버에 패킷전송
-			g_pNetwork->SendPacket(PROTOCOL::MATCH_RQ, (char*)&match, sizeof(SMATCH));
+			g_pNetwork->SendPacket(PROTOCOL::MATCH_RQ, (char*)&match, sizeof(SMATCH), false);
 
 			//m_bGameStart = true;
 			m_bOnClick = false;

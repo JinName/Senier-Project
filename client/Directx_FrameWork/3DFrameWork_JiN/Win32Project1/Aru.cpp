@@ -363,8 +363,8 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 
 	m_bAnyKeyDown = false;
 	m_bTransfered = false;
-	memset(&m_sCharPacket, 0, sizeof(SCHARACTER));
-	m_sCharPacket.mPlayerIndex = g_pNetwork->GetPlayerIndex();
+	//memset(&m_sCharPacket, 0, sizeof(SCHARACTER));
+	m_iPlayerIndex = g_pNetwork->GetPlayerIndex();
 }
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
@@ -442,7 +442,12 @@ void CAru::Clean()
 
 VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 {
-	// char info packet		
+	// char info packet
+	SCHARACTER sChar;
+	memset(&sChar, 0, sizeof(SCHARACTER));
+
+	sChar.mPlayerIndex = m_iPlayerIndex;
+
 	// STAND
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == false &&
 		CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == false &&
@@ -450,7 +455,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->IsKeyPressed(DIK_DOWN) == false)
 	{
 		Do_Stand();
-		m_sCharPacket.mCharState = CHARACTER_STATE::STAND;
+		sChar.mCharState = CHARACTER_STATE::STAND;
 		m_bAnyKeyDown = false;
 	}
 
@@ -458,15 +463,15 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_LEFT) == true)
 	{
 		Do_Left();
-		m_sCharPacket.mLeft = true;
-		m_sCharPacket.mCharState = CHARACTER_STATE::LEFT;
+		sChar.mLeft = true;
+		sChar.mCharState = CHARACTER_STATE::LEFT;
 		m_bAnyKeyDown = true;
 	}
 	else if (CInput::Get_Instance()->IsKeyPressed(DIK_RIGHT) == true)
 	{
 		Do_Right();
-		m_sCharPacket.mRight = true;
-		m_sCharPacket.mCharState = CHARACTER_STATE::RIGHT;
+		sChar.mRight = true;
+		sChar.mCharState = CHARACTER_STATE::RIGHT;
 		m_bAnyKeyDown = true;
 	}
 
@@ -478,8 +483,8 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 			if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == true)
 			{
 				Do_Jump();
-				m_sCharPacket.mKeyDownSpace = true;
-				m_sCharPacket.mCharState = CHARACTER_STATE::JUMP;
+				sChar.mKeyDownSpace = true;
+				sChar.mCharState = CHARACTER_STATE::JUMP;
 				m_bAnyKeyDown = true;
 			}
 		}
@@ -488,9 +493,9 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
 		Do_Not_Jump();
-		if (m_sCharPacket.mKeyDownSpace != true)
+		if (sChar.mKeyDownSpace != true)
 		{
-			m_sCharPacket.mKeyDownSpace = false;
+			sChar.mKeyDownSpace = false;
 		}
 		m_bAnyKeyDown = true;
 	}
@@ -501,8 +506,8 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		if (CInput::Get_Instance()->IsKeyPressed(DIK_Z) == true)
 		{
 			Do_Attack();
-			m_sCharPacket.mAttack = true;
-			m_sCharPacket.mCharState = CHARACTER_STATE::ATTACK;
+			sChar.mAttack = true;
+			sChar.mCharState = CHARACTER_STATE::ATTACK;
 			m_bAnyKeyDown = true;
 		}
 	}
@@ -519,18 +524,9 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 
 	if (m_bAnyKeyDown)
 	{
-		m_sCharPacket.mDirectionX = m_vDirection.x;
-		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&m_sCharPacket, sizeof(SCHARACTER));
+		sChar.mDirectionX = m_vDirection.x;
+		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), true);
 		m_bTransfered = false;
-	}
-	else
-	{
-		if (!m_bTransfered)
-		{
-			m_sCharPacket.mDirectionX = m_vDirection.x;			
-			g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&m_sCharPacket, sizeof(SCHARACTER));
-			m_bTransfered = true;
-		}
 	}
 }
 

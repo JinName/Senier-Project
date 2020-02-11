@@ -81,7 +81,8 @@ private:
 	
 	bool m_bAnyKeyDown;
 	bool m_bTransfered;
-	SCHARACTER m_sCharPacket;
+	
+	int m_iPlayerIndex;
 public:
 	CAru();
 	~CAru();

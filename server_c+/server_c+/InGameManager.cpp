@@ -38,6 +38,7 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 
 	// init
 	inGameRoom->Init();
+	inGameRoom->StartGameLogicThread();
 
 	mInGameRoomList.push_back(inGameRoom);
 
@@ -112,7 +113,13 @@ bool InGameManager::OutGame(int roomNum)
 	room->SetClientSession(0, nullptr);
 	room->SetClientSession(1, nullptr);
 
-	delete room;
+	DeleteRoomInList(roomNum);
+
+	// 안전하게 스레드 종료
+	room->SetThreadStopFlag(true);
+
+	if (room != nullptr)
+		delete room;
 
 	--mRoomCount;
 
@@ -144,6 +151,26 @@ InGameRoom* InGameManager::SearchRoom(int roomNum)
 	}
 
 	return room;
+}
+
+bool InGameManager::DeleteRoomInList(int roomNum)
+{
+	std::list<InGameRoom*>::iterator begin_iter = mInGameRoomList.begin();
+	std::list<InGameRoom*>::iterator end_iter = mInGameRoomList.end();
+
+	while (begin_iter != end_iter)
+	{
+		if ((*begin_iter)->GetRoomNum() == roomNum)
+		{
+			begin_iter = mInGameRoomList.erase(begin_iter);
+
+			break;
+		}
+
+		++begin_iter;
+	}
+
+	return true;
 }
 
 ClientSession* InGameManager::GetEnemyClient(ClientSession* player)
@@ -184,9 +211,9 @@ SCHARACTER InGameManager::SetPlayer(ClientSession* player, SCHARACTER charPacket
 
 	room->SetPlayer(charPacket.mPlayerIndex, charPacket);
 
-	charPacket.mDirectionX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetDirection().x;
-	charPacket.mPosX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().x;
-	charPacket.mPosY = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().y;
+	//charPacket.mDirectionX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetDirection().x;
+	//charPacket.mPosX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().x;
+	//charPacket.mPosY = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().y;
 
 	return charPacket;
 }
@@ -194,11 +221,15 @@ SCHARACTER InGameManager::SetPlayer(ClientSession* player, SCHARACTER charPacket
 bool InGameManager::Enqueue(ClientPacket clientPacket)
 {
 	mInGameBufferQueue.push(clientPacket);
+
+	return true;
 }
 
 bool InGameManager::Dequeue()
 {
 	mInGameBufferQueue.pop();
+
+	return true;
 }
 
 void InGameManager::ProcessAllQueue()
@@ -254,6 +285,16 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		memcpy(&playerChar, pack.mBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
 
 		InGameRoom* room = SearchRoom(pack.mSession->GetRoomNum());
+
+		room->SetPlayer(playerChar.mPlayerIndex, playerChar);
+
+		// 연산 처리 후 클라이언트에 플레이어 현재 정보에 대한 패킷 전송
+		playerChar.mPosX = room->GetGameLogicManager()->GetPlayer(playerChar.mPlayerIndex)->GetPosition().x;
+		playerChar.mPosY = room->GetGameLogicManager()->GetPlayer(playerChar.mPlayerIndex)->GetPosition().y;
+		PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(0), (char*)&playerChar, sizeof(SCHARACTER), PROTOCOL::BRCAST_MOVE_RP);
+		PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(1), (char*)&playerChar, sizeof(SCHARACTER), PROTOCOL::BRCAST_MOVE_RP);
+		room->GetClientSession(0)->Send();
+		room->GetClientSession(1)->Send();
 
 		break;
 	}

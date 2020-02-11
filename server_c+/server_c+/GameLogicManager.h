@@ -1,5 +1,6 @@
 #pragma once
 #include "GameLogic.h"
+#include "PacketManager.h"
 #include "Player.h"
 
 class GameLogicManager

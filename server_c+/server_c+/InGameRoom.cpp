@@ -1,7 +1,7 @@
 #include "InGameRoom.h"
 
 InGameRoom::InGameRoom(ClientSession* _player1, ClientSession* _player2, int _roomNum)
-	: mRoomNum(_roomNum)
+	: mRoomNum(_roomNum), mStopFlag(false)
 {
 	mClient[0] = _player1;
 	mClient[1] = _player2;
@@ -22,29 +22,57 @@ void InGameRoom::Init()
 	mGameLogicManager.Init();
 
 	// 캐릭터 정보 초기화(위치 등..)
-	for (int i = 0; i < 2; ++i)
-	{
-		mPlayerInfo[i].Init(i);
-	}
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	mPlayerInfo[i].Init(i);
+	//}
 }
 
 void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
 {
-	mPlayerInfo[_playerIndex].SetDirection(_charPacket.mDirectionX, 0.0f);
+	//mPlayerInfo[_playerIndex].SetDirection(_charPacket.mDirectionX, 0.0f);
+
+	//if (_charPacket.mLeft)
+	//	mPlayerInfo[_playerIndex].Do_Left();
+	//else if (_charPacket.mRight)
+	//	mPlayerInfo[_playerIndex].Do_Right();
 
 	if (_charPacket.mLeft)
-		mPlayerInfo[_playerIndex].Do_Left();
+		mGameLogicManager.GetPlayer(_playerIndex)->Do_Left();
 	else if (_charPacket.mRight)
-		mPlayerInfo[_playerIndex].Do_Right();
+		mGameLogicManager.GetPlayer(_playerIndex)->Do_Right();
+}
+
+bool InGameRoom::StartGameLogicThread()
+{
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, GameLogicThread, this, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+
+	// close handle after create
+	CloseHandle(hThread);
+
+	return true;
 }
 
 unsigned int WINAPI InGameRoom::GameLogicThread(LPVOID lpParam)
 {
-	GameLogicManager* inGameMgr = (GameLogicManager*)lpParam;
+	InGameRoom* room = (InGameRoom*)lpParam;
 
 	while (true)
 	{
-		inGameMgr->Update();
+		if (room->GetThreadStopFlag()) break;
+
+		room->GetGameLogicManager()->Update();
+
+		if (room->GetThreadStopFlag()) break;
 	}
 	
 	return 0;

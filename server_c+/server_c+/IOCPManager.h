@@ -16,6 +16,7 @@ public:
 	bool		StartIOCPThread();	// start iocp worker thread
 	bool		StartPacketProcessThread();	// start packet process thread
 	bool		StartMatchProcessThread();	// start match process thread
+	bool		StartInGameProcessThread();	// start in gmae process thread
 	bool		CloseIOCPServer();	// close iocp server	
 
 	bool		AcceptLoop();		// accept loop
@@ -34,6 +35,7 @@ private:
 	static unsigned int WINAPI WorkerThread(LPVOID lpParam);	// worker thread for completion port	
 	static unsigned int WINAPI PacketProcessThread(LPVOID lpParam);
 	static unsigned int WINAPI MatchProcessThread(LPVOID lpParam);
+	static unsigned int WINAPI inGameProcessThread(LPVOID lpParam);
 
 	static bool	ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 	static bool	SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);

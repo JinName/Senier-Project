@@ -131,6 +131,24 @@ bool IOCPManager::StartMatchProcessThread()
 	CloseHandle(hMatchThread);
 }
 
+bool IOCPManager::StartInGameProcessThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hInGameThread = (HANDLE)_beginthreadex(NULL, 0, inGameProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hInGameThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Match Thread" << endl;
+
+	CloseHandle(hInGameThread);
+}
+
 bool IOCPManager::CloseIOCPServer()
 {
 	// close handle and socket
@@ -274,6 +292,14 @@ unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
 	
 	return 0;
 }
+
+unsigned int WINAPI IOCPManager::inGameProcessThread(LPVOID lpParam)
+{
+	InGameManager::GetInstance()->ProcessAllQueue();
+
+	return 0;
+}
+
 
 bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {

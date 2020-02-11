@@ -30,6 +30,9 @@ int main()
 	if (GIocpManager->StartMatchProcessThread() == false)
 		return -1;
 
+	if (GIocpManager->StartInGameProcessThread() == false)
+		return -1;
+
 	cout << "Start IOCP Server..." << endl;
 
 	if (GIocpManager->AcceptLoop() == false)

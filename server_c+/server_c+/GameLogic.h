@@ -1,9 +1,5 @@
 #pragma once
-#include <stdlib.h>
-#include <time.h>
-#include <Windows.h>
-#include <iostream>
-using namespace std;
+#include "stdafx.h"
 
 struct VECTOR2
 {

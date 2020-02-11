@@ -31,6 +31,9 @@ enum class PROTOCOL
 	// default
 	NONE,
 
+	// trasfered
+	TRANFERED,
+
 	// CHAT
 	TEST_CHAT,
 
