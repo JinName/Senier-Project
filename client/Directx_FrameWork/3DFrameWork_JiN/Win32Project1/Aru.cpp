@@ -12,19 +12,19 @@ void CAru::Set_Animation()
 {
 	if (m_bAttacking == false)
 	{
-		if (m_vDirection.x == 0 && m_vDirection.y == 0)
+		if (m_vDirection.x == 0.0f && m_vDirection.y == 0.0f)
 		{
 			m_iAnimate_Num = 0;
 		}
-		else if (m_vDirection.y < 0)
+		else if (m_vDirection.y < 0.0f)
 		{
 			m_iAnimate_Num = 1;
 		}
-		else if (m_vDirection.y > 0)
+		else if (m_vDirection.y > 0.0f)
 		{
 			m_iAnimate_Num = 2;
 		}
-		else if (m_vDirection.x > 0 || m_vDirection.x < 0)
+		else if (m_vDirection.x > 0.0f || m_vDirection.x < 0.0f)
 		{
 			m_iAnimate_Num = 3;
 		}
@@ -316,7 +316,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	//Line_Init(_pDevice);
 
 	// 캐릭터 기본 시작 위치
-	m_vPos = { 100.0f, 300.0f, 0.0f };
+	//m_vPos = { 100.0f, 300.0f, 0.0f };
 
 	// 몬스터와 충돌시 false : 입력도 받지않고 충돌도 하지않는 무적상태 3초
 	m_bActive_Collision = true;
@@ -369,30 +369,29 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 {
-	isCrash_Tile();
-	isCrash_Enemy();
-	isCrash_Potion();
+	//isCrash_Tile();
+	//isCrash_Enemy();
+	//isCrash_Potion();
 
-	Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
+	//Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
 
 	if (m_bActive_Collision == true)
 	{
 		if (m_bIsPlayer)
 			KeyInput(_pDevice);
 
-		if (m_bIsPlayer)
-			Jump();
+		//if (m_bIsPlayer)
+		//	Jump();
 	}
 
 	//if (m_bIsPlayer)
 		//Gravity();
 
-	Attack_Cooltime();
-	Skill_Update();
-	Skill_Destory();
-
-	if (m_bIsPlayer)
-		Set_Animation();
+	//Attack_Cooltime();
+	//Skill_Update();
+	//Skill_Destory();
+	
+	Set_Animation();
 
 	m_sprite[m_iAnimate_Num].Animation_Frame();
 
@@ -407,7 +406,7 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 	}
 
 	//Set_Collider(m_sprite[m_iAnimate_Num].Get_Sprite_Width() - 20.0f, m_sprite[m_iAnimate_Num].Get_Sprite_Height(), true, RECT{0, 20, 0, 0});
-	Set_Collider(44.0f, 64.0f, true, RECT{ 0, 20, 0, 0 });
+	//Set_Collider(44.0f, 64.0f, true, RECT{ 0, 20, 0, 0 });
 }
 
 void CAru::Render()
@@ -520,6 +519,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
 		m_bAnyKeyDown = false;		
+		//Do_Stand();
 	}
 
 	if (m_bAnyKeyDown)
@@ -527,6 +527,15 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		sChar.mDirectionX = m_vDirection.x;
 		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), true);
 		m_bTransfered = false;
+	}
+	else
+	{
+		if (m_bTransfered == false)
+		{
+			sChar.mDirectionX = m_vDirection.x;
+			g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), true);
+			m_bTransfered = true;
+		}
 	}
 }
 

@@ -18,3 +18,16 @@ using namespace std;
 #define MAX_MSG_LEN		256
 #define LOCAL_IP		"127.0.0.1"
 #define MAX_BUFSIZE		1024
+
+struct VECTOR2
+{
+	float x;
+	float y;
+};
+
+struct VECTOR3
+{
+	float x;
+	float y;
+	float z;
+};

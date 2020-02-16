@@ -116,9 +116,10 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD data
 	SHEAD head;
 	head.mCmd = (unsigned char)protocol;
 	head.mPacketSize = sizeof(SHEAD) + dataBufferSize;
+	head.mTransferToInGame = false;
 
 	memcpy(p, (char*)&head, sizeof(SHEAD));
-	memcpy(p + sizeof(SHEAD), data, sizeof(data));
+	memcpy(p + sizeof(SHEAD), data, dataBufferSize);
 
 	// set send overlapped
 	client->SetSendOverlapped();

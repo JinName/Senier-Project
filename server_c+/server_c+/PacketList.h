@@ -62,8 +62,7 @@ enum class GAMEEND_STATE
 
 typedef struct sPacket_Head
 {
-	sPacket_Head() : mTransferToInGame(false)
-	{}
+	sPacket_Head() : mTransferToInGame(false) {}
 
 	UCHAR mCmd;
 	DWORD mPacketSize;
@@ -89,6 +88,7 @@ struct SGAMESTART
 {
 	bool mStart;
 	int mPlayerIndex;	// 0 : 1p, 1 : 2p
+	VECTOR3 mStartPosition[2];
 };
 
 struct SGAMEEND

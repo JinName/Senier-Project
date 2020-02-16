@@ -39,6 +39,19 @@ void CGameManager::Update()
 
 		m_pGameBase = new CStage;
 		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+
+		for (int i = 0; i < 2; ++i)
+		{
+			CAru* player = ((CStage*)m_pGameBase)->GetCharacter(i);
+
+			player->Set_Position(m_vStartPosition[i].x, m_vStartPosition[i].y, 0.0f);
+
+			if (i == 0)
+				player->Set_Direction(1.0f, 0.0f);
+			else if (i == 1)
+				player->Set_Direction(-1.0f, 0.0f);
+		}
+
 		m_pGameBase->InitD3D(m_hWnd);		
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == TITLE && m_pGameBase->Get_Exit())
@@ -124,6 +137,33 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
 
 	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
-	player->Set_Direction(_sCharPacket.mDirectionX, 0.0f);
+
+	if (_sCharPacket.mLeft == true)
+	{
+		player->Do_Left();
+	}
+	else if (_sCharPacket.mRight == true)
+	{
+		player->Do_Right();
+	}
+	else if (_sCharPacket.mLeft == false && _sCharPacket.mRight == false)
+	{
+		player->Do_Stand();
+	}
+
+	//player->Set_Direction(_sCharPacket.mDirectionX, 0.0f);
 	//player->Set_Animation((int)_sCharPacket.mCharState);
+}
+
+void CGameManager::SetStartPosition(VECTOR3 _vPlayer1, VECTOR3 _vPlayer2)
+{
+	// player1
+	m_vStartPosition[0].x = _vPlayer1.x;
+	m_vStartPosition[0].y = _vPlayer1.y;
+	m_vStartPosition[0].z = _vPlayer1.z;
+
+	// player2
+	m_vStartPosition[1].x = _vPlayer2.x;
+	m_vStartPosition[1].y = _vPlayer2.y;
+	m_vStartPosition[1].z = _vPlayer2.z;
 }

@@ -333,7 +333,7 @@ void Player::Attack_Cooltime()
 
 ////////////// Init, Update, Render, Clean  /////////////////////////////////////////////
 
-void Player::Init()
+void Player::Init(int _iPlayerIndex)
 {
 	m_iHP = 3;
 	m_bHP_isFull = true;
@@ -354,7 +354,10 @@ void Player::Init()
 	//Line_Init(_pDevice);
 
 	// 캐릭터 기본 시작 위치
-	m_vPos = { 100.0f, 300.0f, 0.0f };
+	if (_iPlayerIndex == 0)
+		m_vPos = { 100.0f, 300.0f, 0.0f };
+	else if (_iPlayerIndex == 1)
+		m_vPos = { 500.0f, 300.0f, 0.0f };
 
 	// 몬스터와 충돌시 false : 입력도 받지않고 충돌도 하지않는 무적상태 3초
 	m_bActive_Collision = true;

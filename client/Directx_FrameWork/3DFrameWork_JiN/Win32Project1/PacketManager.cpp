@@ -70,11 +70,15 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		SGAMESTART gamestart;
 		memset(&gamestart, 0, sizeof(SGAMESTART));
 		memcpy(&gamestart, recvBuffer + sizeof(SHEAD), sizeof(SGAMESTART));
+		int datasize = sizeof(recvBuffer);
 
 		g_pNetwork->SetPlayerIndex(gamestart.mPlayerIndex);
 
 		if (gamestart.mStart == true)
+		{
 			g_pGameManager->GameStart(gamestart.mPlayerIndex);
+			g_pGameManager->SetStartPosition(gamestart.mStartPosition[0], gamestart.mStartPosition[1]);
+		}
 
 		break;
 	}

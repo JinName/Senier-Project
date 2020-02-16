@@ -48,17 +48,21 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 	// send gamestart packet to client
 	// setting player 1
 	SGAMESTART player1_Gamestart;
+	memset(&player1_Gamestart, 0, sizeof(SGAMESTART));
 	player1_Gamestart.mStart = true;
 	player1_Gamestart.mPlayerIndex = 0; // 1p
-	//player1_Gamestart.mPlayerInfo[player1_Gamestart.mPlayerIndex].Init(player1_Gamestart.mPlayerIndex);
+	player1_Gamestart.mStartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
+	player1_Gamestart.mStartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
 	player1->SetPlayerIndex(0);
 
 	// setting player 2
 	SGAMESTART player2_Gamestart;
+	memset(&player2_Gamestart, 0, sizeof(SGAMESTART));
 	player2_Gamestart.mStart = true;
 	player2_Gamestart.mPlayerIndex = 1; // 2p
-	//player1_Gamestart.mPlayerInfo[player1_Gamestart.mPlayerIndex].Init(player1_Gamestart.mPlayerIndex);
-	player1->SetPlayerIndex(1);
+	player2_Gamestart.mStartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
+	player2_Gamestart.mStartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
+	player2->SetPlayerIndex(1);
 
 	bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
 	bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);

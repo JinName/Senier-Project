@@ -73,7 +73,7 @@ public:
 	// Attack Cooltime
 	void Attack_Cooltime();
 
-	void Init();
+	void Init(int _iPlayerIndex);
 	void Update();
 	//void Render();
 	void Clean();
