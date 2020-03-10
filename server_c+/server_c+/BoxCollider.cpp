@@ -16,6 +16,15 @@ void BoxCollider::Init()
 
 bool BoxCollider::isIntersect(RECT _A, RECT _B)
 {
+	// for debug
+	//if (_A.top <= _B.bottom)
+	{
+		if (_A.right >= _B.left && _A.left <= _B.right)
+		{
+			cout << "Crash!!" << endl;
+		}
+	}
+
 	if (_A.right >= _B.left &&
 		_A.left <= _B.right &&
 		_A.top <= _B.bottom &&
@@ -85,7 +94,7 @@ bool BoxCollider::isIntersect(RECT _A, RECT _B)
 
 bool BoxCollider::Player_upCheck(RECT _A, RECT _B)
 {
-	if (_A.bottom < _B.top)
+	if (_A.bottom < _B.top + 10)
 	{
 		if (_A.left < _B.right && _A.right > _B.left)
 		{

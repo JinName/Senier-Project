@@ -115,6 +115,17 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 		break;
 	}
+
+	case PROTOCOL::UPDATE_NF:
+	{
+		SCHARACTER player;
+		memset(&player, 0, sizeof(SCHARACTER));
+		memcpy(&player, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+		
+		g_pGameManager->SetPlayerPosition(player);
+
+		break;
+	}
 	}
 
 	delete[] recvBuffer;

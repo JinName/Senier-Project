@@ -19,7 +19,12 @@ InGameRoom::~InGameRoom()
 void InGameRoom::Init()
 {
 	// 게임 로직 매니저 초기화
-	mGameLogicManager.Init();
+	mGameLogicManager.Init(mClient[0], mClient[1]);
+}
+
+void InGameRoom::Clean()
+{
+	mGameLogicManager.Clean();
 }
 
 void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
@@ -62,11 +67,11 @@ unsigned int WINAPI InGameRoom::GameLogicThread(LPVOID lpParam)
 
 	while (true)
 	{
-		if (room->GetThreadStopFlag()) break;
+		//if (room->GetThreadStopFlag()) break;
 
 		room->GetGameLogicManager()->Update();
 
-		if (room->GetThreadStopFlag()) break;
+		//if (room->GetThreadStopFlag()) break;
 	}
 	
 	return 0;

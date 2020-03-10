@@ -155,6 +155,20 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 	//player->Set_Animation((int)_sCharPacket.mCharState);
 }
 
+bool CGameManager::SetPlayerPosition(SCHARACTER _sCharPacket)
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	CStage* stage = (CStage*)m_pGameBase;
+	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
+
+	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
+}
+
 void CGameManager::SetStartPosition(VECTOR3 _vPlayer1, VECTOR3 _vPlayer2)
 {
 	// player1

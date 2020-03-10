@@ -1,12 +1,16 @@
 #pragma once
 #include "GameLogic.h"
 #include "Entity.h"
+#include "Tile.h"
 
 enum { STAND, UP, DOWN, LEFT, ATTACK, JUMP, RIGHT };
 
 class Player : public Entity
 {
 public:
+	Player() {}
+	~Player() {}
+
 	// do Function
 	void Do_Stand();
 	void Do_Attack();
@@ -78,6 +82,11 @@ public:
 	//void Render();
 	void Clean();
 
+
+	/////////////////
+	void SetCollisionTile(Tile* _tile);
+	Tile* GetCollisionTile() { return m_CollisionTile; }
+
 private:
 
 	//list<CFireBall*> m_FireBall_List;
@@ -142,5 +151,7 @@ private:
 
 	bool m_bAnyKeyDown;
 	bool m_bTransfered;
+
+	Tile* m_CollisionTile;
 };
 

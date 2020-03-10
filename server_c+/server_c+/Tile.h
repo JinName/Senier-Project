@@ -5,6 +5,11 @@
 class Tile : public Entity
 {
 public:
+	Tile() {}
+	~Tile() {}
+
+	void Init(VECTOR3 _vPos, float _fWidth, float _fHeight, bool _bCenteredRect, RECT _detailRect);
+
 	bool Get_isCollision() { return m_b_isCollision; }
 	void Set_isCollision(bool _isCollision) { m_b_isCollision = _isCollision; }
 

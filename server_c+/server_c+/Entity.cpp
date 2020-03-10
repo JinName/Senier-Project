@@ -23,12 +23,6 @@ void Entity::SetCollider(float _width, float _height, bool _centered_rect)
 		m_rCollider.top = m_vPos.y;
 		m_rCollider.bottom = m_vPos.y + _height;
 	}
-
-	//vList[0] = D3DXVECTOR2(m_rCollider.left, m_rCollider.top);
-	//vList[1] = D3DXVECTOR2(m_rCollider.right, m_rCollider.top);
-	//vList[2] = D3DXVECTOR2(m_rCollider.right, m_rCollider.bottom);
-	//vList[3] = D3DXVECTOR2(m_rCollider.left, m_rCollider.bottom);
-	//vList[4] = D3DXVECTOR2(m_rCollider.left, m_rCollider.top);
 }
 
 void Entity::SetCollider(float _width, float _height, bool _centered_rect, RECT _detail_rect)
@@ -51,10 +45,4 @@ void Entity::SetCollider(float _width, float _height, bool _centered_rect, RECT 
 	m_rCollider.right += _detail_rect.right;
 	m_rCollider.top += _detail_rect.top;
 	m_rCollider.bottom += _detail_rect.bottom;
-
-	//vList[0] = D3DXVECTOR2(m_rCollider.left, m_rCollider.top);
-	//vList[1] = D3DXVECTOR2(m_rCollider.right, m_rCollider.top);
-	//vList[2] = D3DXVECTOR2(m_rCollider.right, m_rCollider.bottom);
-	//vList[3] = D3DXVECTOR2(m_rCollider.left, m_rCollider.bottom);
-	//vList[4] = D3DXVECTOR2(m_rCollider.left, m_rCollider.top);
 }

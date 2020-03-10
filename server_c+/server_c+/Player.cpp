@@ -343,7 +343,7 @@ void Player::Init(int _iPlayerIndex)
 	m_fGravity_Accel = 0.0f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
-	m_fCharacter_mass = 4.0f;
+	m_fCharacter_mass = 0.5f;
 	m_fCollision_Power = 15.0f; // 충돌시 밀려나는 힘
 
 	isVertical = false; // 수직 충돌
@@ -357,7 +357,7 @@ void Player::Init(int _iPlayerIndex)
 	if (_iPlayerIndex == 0)
 		m_vPos = { 100.0f, 300.0f, 0.0f };
 	else if (_iPlayerIndex == 1)
-		m_vPos = { 500.0f, 300.0f, 0.0f };
+		m_vPos = { 700.0f, 100.0f, 0.0f };
 
 	// 몬스터와 충돌시 false : 입력도 받지않고 충돌도 하지않는 무적상태 3초
 	m_bActive_Collision = true;
@@ -404,7 +404,7 @@ void Player::Update()
 	}
 
 	//if (m_bIsPlayer)
-		//Gravity();
+	Gravity();
 
 	Attack_Cooltime();
 	//Skill_Update();
@@ -439,4 +439,12 @@ void Player::Clean()
 	Skill_Clean();
 	m_FireBall.CleanUp();
 	m_FireBall_Hit.CleanUp();*/
+}
+
+void Player::SetCollisionTile(Tile* _tile)
+{
+	if (m_CollisionTile != nullptr)
+		m_CollisionTile = nullptr;
+
+	m_CollisionTile = _tile;
 }

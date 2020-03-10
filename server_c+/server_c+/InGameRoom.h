@@ -22,6 +22,8 @@ public:
 
 	// init
 	void				Init();
+	// clean
+	void				Clean();
 
 	// set
 	void				SetClientSession(int _playerIndex, ClientSession* _client) { mClient[_playerIndex] = _client; }

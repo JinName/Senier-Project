@@ -47,7 +47,10 @@ enum class PROTOCOL
 
 	// PLAY
 	P1_MOVE_RQ, P1_MOVE_RP, P2_MOVE_RQ, P2_MOVE_RP,
-	MOVE_RQ, MOVE_RP, BRCAST_MOVE_RP
+	MOVE_RQ, MOVE_RP, BRCAST_MOVE_RP,
+
+	// UPDATE
+	UPDATE_NF
 };
 
 enum class CHARACTER_STATE
@@ -98,7 +101,7 @@ struct SGAMEEND
 
 struct SCHARACTER
 {
-	SCHARACTER() : mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false) {}
+	SCHARACTER() : mPlayerIndex(-1), mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false), mCharState(CHARACTER_STATE::STAND), mPosX(0.0f), mPosY(0.0f), mDirectionX(0.0f) {}
 
 	int mPlayerIndex;
 

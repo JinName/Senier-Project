@@ -37,6 +37,7 @@ public:
 	void Cleanup();
 
 	bool SetPlayerState(SCHARACTER _sCharPacket);
+	bool SetPlayerPosition(SCHARACTER _sCharPacket);
 	void SetStartPosition(VECTOR3 _vPlayer1, VECTOR3 _Player2);
 };
 

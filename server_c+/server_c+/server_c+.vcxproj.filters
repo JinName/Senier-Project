@@ -105,9 +105,6 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>GameLogicManager\CollisionManger</Filter>
     </ClCompile>
-    <ClCompile Include="Stage.cpp">
-      <Filter>GameLogicManager\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="GameLogicManager.cpp">
       <Filter>GameLogicManager</Filter>
     </ClCompile>
@@ -125,6 +122,12 @@
     </ClCompile>
     <ClCompile Include="Manager.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBase.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="StageForest.cpp">
+      <Filter>GameLogicManager\Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +173,6 @@
     <ClInclude Include="Player.h">
       <Filter>GameLogicManager\Entity\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Stage.h">
-      <Filter>GameLogicManager\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogicManager.h">
       <Filter>GameLogicManager</Filter>
     </ClInclude>
@@ -196,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="Manager.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBase.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StageForest.h">
+      <Filter>GameLogicManager\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -121,6 +121,7 @@ bool InGameManager::OutGame(int roomNum)
 
 	// 안전하게 스레드 종료
 	room->SetThreadStopFlag(true);
+	room->Clean();
 
 	if (room != nullptr)
 		delete room;
