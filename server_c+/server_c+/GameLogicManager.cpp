@@ -1,12 +1,12 @@
 #include "GameLogicManager.h"
 
 GameLogicManager::GameLogicManager()
-	:m_iPlayerCount(0)
+	:m_iPlayerCount(0), m_bInitComplete(false)
 {
 }
 
 GameLogicManager::GameLogicManager(ClientSession* _client1, ClientSession* _client2)
-	: m_iPlayerCount(0)
+	: m_iPlayerCount(0), m_bInitComplete(false)
 {
 	m_Client[0] = _client1;
 	m_Client[1] = _client2;
@@ -30,22 +30,30 @@ void GameLogicManager::Init(ClientSession* _client1, ClientSession* _client2)
 		m_Player[i].Init(i);
 		++m_iPlayerCount;
 	}
+	
+	// FOR DEBUG
+	m_Player[0].SetDebugPlayer(true);
+
+	m_bInitComplete = true;
 }
 
 void GameLogicManager::Update()
 {
-	for (int i = 0; i < 2; ++i)
+	if (m_bInitComplete)
 	{
-		m_Player[i].Update();
-	}
+		for (int i = 0; i < 2; ++i)
+		{
+			m_Player[i].Update();
+		}
 
-	// 충돌체크 다른 업데이트 끝난 후 마지막에
-	for (int i = 0; i < 2; ++i)
-	{
-		m_CollisionMgr.Charater_Tile_Check(m_StageBase->GetTileArray(), m_StageBase->GetTileCount(), m_Player[i]);
-	}
-	
-	SendPlayerState();
+		// 충돌체크 다른 업데이트 끝난 후 마지막에
+		for (int i = 0; i < 2; ++i)
+		{
+			m_CollisionMgr.Charater_Tile_Check(m_StageBase->GetTileArray(), m_StageBase->GetTileCount(), m_Player[i]);
+		}
+
+		SendPlayerState();
+	}	
 }
 
 void GameLogicManager::Clean()

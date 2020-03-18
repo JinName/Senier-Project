@@ -53,6 +53,12 @@ void CGameManager::Update()
 		}
 
 		m_pGameBase->InitD3D(m_hWnd);		
+
+		SINITCOMPLETE sInit;
+		memset(&sInit, 0, sizeof(SINITCOMPLETE));
+		sInit.mPlayerIndex = m_iPlayerIndex;
+		sInit.mComplete = true;
+		g_pNetwork->SendPacket(PROTOCOL::INITCOMPLETE_RQ, (char*)&sInit, sizeof(SINITCOMPLETE), true);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == TITLE && m_pGameBase->Get_Exit())
 	{

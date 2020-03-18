@@ -7,6 +7,7 @@
 #include "GameOver.h"
 #include "GameClear.h"
 #include "PacketList.h"
+#include "Network.h"
 
 class CGameManager
 {

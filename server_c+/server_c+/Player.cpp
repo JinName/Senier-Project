@@ -51,7 +51,10 @@ void Player::Do_Jump()
 		m_bOld_Check = false;
 		++m_iJump;
 	}
+	isVertical = false;
+	m_bCollision_is_Possible = false;
 	m_bJump_Input_Lock = true;
+	m_bInitGravity = false;
 }
 
 void Player::Do_Not_Jump()
@@ -161,7 +164,7 @@ void Player::Jump()
 				m_bCollision_is_Possible = false;
 				m_bOld_Check = true;
 			}
-			m_vPos.y -= m_fJump_Power;
+			//m_vPos.y -= m_fJump_Power;
 		}
 		else if (m_iJump == 2)
 		{
@@ -173,29 +176,59 @@ void Player::Jump()
 				velocity = 0.0f;
 				m_bOld_Check = true;
 			}
-			m_vPos.y -= m_fJump_Power;
+			//m_vPos.y -= m_fJump_Power;
 		}
 	}
 }
 
 void Player::Gravity()
 {
-	DWORD currentTime = GetTickCount();
+	DWORD currentTime = ::timeGetTime();
 
 	DWORD TempTime = currentTime - dwOldtime;
+
+	//if (m_bDebugPlayer)
+	//{
+	//	cout << "Gravity() > currentTime : " << currentTime << endl;
+	//	cout << "Gravity() > TempTime : " << TempTime << endl;
+	//	cout << "Gravity() > dwOldtime : " << dwOldtime << endl;
+	//}
 
 	dwOldtime = currentTime;
 
 	if (!isVertical)
 	{
-		velocity += 0.0098f * (float)TempTime / 60.0f * 2.0f;
-		m_fGravity_Accel = velocity * (float)TempTime * m_fCharacter_mass;
-		m_vPos.y = m_vPos.y + m_fGravity_Accel;
+		
+
+		if (TempTime > 0)
+		{
+			velocity += 0.0098f * (float)TempTime / 60.0f * 2.0f;
+
+			//if (m_bDebugPlayer)
+			//{
+			//	cout << "Gravity() > TempTime : " << TempTime << endl;
+			//	cout << "Gravity() > Velocity : " << velocity << endl;
+			//}
+
+			m_fGravity_Accel = velocity * (float)TempTime * m_fCharacter_mass;
+
+			//if (m_bDebugPlayer)
+			//	cout << "Gravity() > Gravity Accel : " << m_fGravity_Accel << endl;
+			//m_vPos.y = m_vPos.y + m_fGravity_Accel;
+		}
 	}
 	else
 	{
-		m_fGravity_Accel = 0.0f;
-		velocity = 0.0f;
+		if (!m_bInitGravity)
+		{
+			if (m_bDebugPlayer)
+				cout << "Gravity() > [Init Gravity]" << endl;
+
+			m_fGravity_Accel = 0.0f;
+			velocity = 0.0f;
+			//dwOldtime = (DWORD)0;
+			m_bInitGravity = true;
+		}		
 	}
 }
 
@@ -203,14 +236,16 @@ void Player::isCrash_Tile()
 {
 	if (isVertical)
 	{
-		m_vPos.y = m_vPos.y;
+		//m_vPos.y = m_vPos.y;
 		m_bJump = false;
 		m_iJump = 0;
 		m_bOld_Check = false;
 		m_bJump_is_Possible = true;
+		m_fFinalPosY = 0.0f;
 	}
 	else
 	{
+		m_bInitGravity = false;
 		m_bJump_is_Possible = false;
 	}
 	/*
@@ -338,12 +373,12 @@ void Player::Init(int _iPlayerIndex)
 	m_iHP = 3;
 	m_bHP_isFull = true;
 	m_iJump = 0;
-	m_fSpeed = 3.0f;
-	m_fJump_Power = 4.5f;
+	m_fSpeed = 4.5f;
+	m_fJump_Power = 0.04f;
 	m_fGravity_Accel = 0.0f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
-	m_fCharacter_mass = 0.5f;
+	m_fCharacter_mass = 0.25f;
 	m_fCollision_Power = 15.0f; // 충돌시 밀려나는 힘
 
 	isVertical = false; // 수직 충돌
@@ -357,7 +392,7 @@ void Player::Init(int _iPlayerIndex)
 	if (_iPlayerIndex == 0)
 		m_vPos = { 100.0f, 300.0f, 0.0f };
 	else if (_iPlayerIndex == 1)
-		m_vPos = { 700.0f, 100.0f, 0.0f };
+		m_vPos = { 800.0f, 100.0f, 0.0f };
 
 	// 몬스터와 충돌시 false : 입력도 받지않고 충돌도 하지않는 무적상태 3초
 	m_bActive_Collision = true;
@@ -381,13 +416,18 @@ void Player::Init(int _iPlayerIndex)
 	// 애니매이션 넘버 ( 기본 = 0 )
 	m_iAnimate_Num = 0;
 
-	dwOldtime = GetTickCount();
+	dwOldtime = ::timeGetTime();
 	velocity = 0.0f;
 
 	//FireBall Cooltime
 	m_fAttack_Cooltime = 1.0f;
 	m_bAttack_Lock = false;
 	m_fBefore_Clock = 0.0f;
+
+	/////////////////////////////////////////
+	m_fFinalPosY = 0.0f;
+	m_bDebugPlayer = false;
+	m_bInitGravity = false;
 }
 
 void Player::Update()
@@ -405,6 +445,8 @@ void Player::Update()
 
 	//if (m_bIsPlayer)
 	Gravity();
+
+	CalPositionY();
 
 	Attack_Cooltime();
 	//Skill_Update();
@@ -447,4 +489,25 @@ void Player::SetCollisionTile(Tile* _tile)
 		m_CollisionTile = nullptr;
 
 	m_CollisionTile = _tile;
+}
+
+void Player::CalPositionY()
+{
+	if (m_bJump)
+	{
+		//if (m_fGravity_Accel > m_fJump_Power)
+		//{
+		//	if (m_bDebugPlayer)
+		//		cout << "X Pos : " << m_vPos.x << " / " << "Gravity_Accel : "<< m_fGravity_Accel << " / " << "Jump_Power : "<< m_fJump_Power << endl;
+		//}
+
+		m_vPos.y += m_fGravity_Accel - m_fJump_Power;
+	}
+	else
+	{
+		if (!isVertical)
+		{
+			m_vPos.y += m_fGravity_Accel;
+		}
+	}
 }

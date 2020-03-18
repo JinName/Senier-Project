@@ -67,6 +67,9 @@
     <Filter Include="GameLogicManager\CollisionManger\BoxCollider">
       <UniqueIdentifier>{d4432900-4a7f-42d1-aff3-23c6336877a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameLogicManager\Stage\StageForest">
+      <UniqueIdentifier>{4ede1a7f-c2ae-4f3f-a4f6-17c2ce38b85b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -120,13 +123,10 @@
     <ClCompile Include="BoxCollider.cpp">
       <Filter>GameLogicManager\CollisionManger\BoxCollider</Filter>
     </ClCompile>
-    <ClCompile Include="Manager.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="StageForest.cpp">
+      <Filter>GameLogicManager\Stage\StageForest</Filter>
     </ClCompile>
     <ClCompile Include="StageBase.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="StageForest.cpp">
       <Filter>GameLogicManager\Stage</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,13 +194,10 @@
     <ClInclude Include="BoxCollider.h">
       <Filter>GameLogicManager\CollisionManger\BoxCollider</Filter>
     </ClInclude>
-    <ClInclude Include="Manager.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="StageForest.h">
+      <Filter>GameLogicManager\Stage\StageForest</Filter>
     </ClInclude>
     <ClInclude Include="StageBase.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="StageForest.h">
       <Filter>GameLogicManager\Stage</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,11 @@
 #pragma once
 #include "GameLogic.h"
 
+enum class CollisionType
+{
+	NONE, VERTICAL, HORIZONTAL
+};
+
 class BoxCollider
 {
 public:
@@ -11,7 +16,7 @@ public:
 	void Init();
 
 	// RECT 충돌
-	bool isIntersect(RECT _object1, RECT _object2);
+	CollisionType isIntersect(RECT _object1, RECT _object2);
 
 	// A가 B 위에 있는지 체크
 	bool Player_upCheck(RECT _A, RECT _B);
@@ -20,7 +25,5 @@ public:
 	int Get_Vertical_or_Horizontal();
 
 private:
-	bool isVertical;
-	bool isHorizontal;
-};
 
+};

@@ -43,11 +43,12 @@ enum class PROTOCOL
 	MATCH_RQ, MATCH_RP, 
 	
 	// GAME START, END
-	GAMESTART_CM, GAMEEND_CM,
+	GAMESTART_CM, GAMEEND_CM, INITCOMPLETE_RQ,
 
 	// PLAY
 	P1_MOVE_RQ, P1_MOVE_RP, P2_MOVE_RQ, P2_MOVE_RP,
 	MOVE_RQ, MOVE_RP, BRCAST_MOVE_RP,
+	JUMP_RQ,
 
 	// UPDATE
 	UPDATE_NF
@@ -115,4 +116,10 @@ struct SCHARACTER
 	bool mKeyDownSpace;
 	bool mAttack;
 	bool mDamaged;
+};
+
+struct SINITCOMPLETE
+{
+	int mPlayerIndex;
+	bool mComplete;
 };

@@ -10,21 +10,12 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::Init()
 {
-	isVertical = false;
-	isHorizontal = false;
+	//isVertical = false;
+	//isHorizontal = false;
 }
 
-bool BoxCollider::isIntersect(RECT _A, RECT _B)
+CollisionType BoxCollider::isIntersect(RECT _A, RECT _B)
 {
-	// for debug
-	//if (_A.top <= _B.bottom)
-	{
-		if (_A.right >= _B.left && _A.left <= _B.right)
-		{
-			cout << "Crash!!" << endl;
-		}
-	}
-
 	if (_A.right >= _B.left &&
 		_A.left <= _B.right &&
 		_A.top <= _B.bottom &&
@@ -38,22 +29,22 @@ bool BoxCollider::isIntersect(RECT _A, RECT _B)
 			{
 				if (std::labs(_A.right - _B.left) > std::labs(_B.bottom - _A.top))
 				{
-					isVertical = true;
+					return CollisionType::VERTICAL;
 				}
 				else
 				{
-					isHorizontal = true;
+					return CollisionType::HORIZONTAL;
 				}
 			}
 			else // B가 A의 아래쪽
 			{
 				if (std::labs(_A.right - _B.left) > std::labs(_A.bottom - _B.top))
 				{
-					isVertical = true;
+					return CollisionType::VERTICAL;
 				}
 				else
 				{
-					isHorizontal = true;
+					return CollisionType::HORIZONTAL;
 				}
 			}
 		}
@@ -64,32 +55,32 @@ bool BoxCollider::isIntersect(RECT _A, RECT _B)
 			{
 				if (std::labs(_B.right - _A.left) > std::labs(_B.bottom - _A.top))
 				{
-					isVertical = true;
+					return CollisionType::VERTICAL;
 				}
 				else
 				{
-					isHorizontal = true;
+					return CollisionType::HORIZONTAL;
 				}
 			}
 			else // B가 A의 아래쪽
 			{
 				if (std::labs(_B.right - _A.left) > std::labs(_A.bottom - _B.top))
 				{
-					isVertical = true;
+					return CollisionType::VERTICAL;
 				}
 				else
 				{
-					isHorizontal = true;
+					return CollisionType::HORIZONTAL;
 				}
 			}
 		}
-		return true;
+		//return true;
 	}
 
-	isVertical = false;
-	isHorizontal = false;
+	//isVertical = false;
+	//isHorizontal = false;
 
-	return false;
+	return CollisionType::NONE;
 }
 
 bool BoxCollider::Player_upCheck(RECT _A, RECT _B)
@@ -106,14 +97,14 @@ bool BoxCollider::Player_upCheck(RECT _A, RECT _B)
 
 int BoxCollider::Get_Vertical_or_Horizontal()
 {
-	if (isVertical == true && isHorizontal == false)
+	/*if (isVertical == true && isHorizontal == false)
 	{
 		return 1;
 	}
 	else if (isVertical == false && isHorizontal == true)
 	{
 		return 2;
-	}
+	}*/
 
 	return 0;
 }

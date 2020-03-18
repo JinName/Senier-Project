@@ -30,4 +30,6 @@ private:
 	CollisionManager m_CollisionMgr;
 
 	int m_iPlayerCount;
+
+	bool m_bInitComplete;
 };

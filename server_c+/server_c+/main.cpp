@@ -8,6 +8,8 @@
 
 int main()
 {
+	timeBeginPeriod(1);
+
 	/// Global Managers initialize
 	GLogger = new Logger;
 	GSessionManager = new SessionManager;
@@ -58,6 +60,8 @@ int main()
 	delete GIocpManager;
 	delete GSessionManager;
 	delete GLogger;
+
+	timeEndPeriod(1);
 
 	return 0;
 }

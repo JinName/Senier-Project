@@ -87,6 +87,9 @@ public:
 	void SetCollisionTile(Tile* _tile);
 	Tile* GetCollisionTile() { return m_CollisionTile; }
 
+	void CalPositionY();
+	void SetDebugPlayer(bool _bDebug) { m_bDebugPlayer = _bDebug; }
+
 private:
 
 	//list<CFireBall*> m_FireBall_List;
@@ -153,5 +156,13 @@ private:
 	bool m_bTransfered;
 
 	Tile* m_CollisionTile;
+
+
+	///////////////////////////////
+	float m_fFinalPosY;
+
+	bool m_bDebugPlayer;
+
+	bool m_bInitGravity;
 };
 

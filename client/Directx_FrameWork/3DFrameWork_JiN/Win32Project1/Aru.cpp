@@ -481,17 +481,19 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		{
 			if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == true)
 			{
-				Do_Jump();
+				//Do_Jump();
 				sChar.mKeyDownSpace = true;
 				sChar.mCharState = CHARACTER_STATE::JUMP;
-				m_bAnyKeyDown = true;
+				m_bAnyKeyDown = true;			
+				m_bJump_Input_Lock = true;
 			}
 		}
 	}
 
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
-		Do_Not_Jump();
+		//Do_Not_Jump();
+		m_bJump_Input_Lock = false;
 		if (sChar.mKeyDownSpace != true)
 		{
 			sChar.mKeyDownSpace = false;
@@ -577,23 +579,23 @@ void CAru::Do_Right()
 
 void CAru::Do_Jump()
 {
-	if (m_iJump == 0)
-	{
-		if (!m_bOld_Check)
-		{
-			m_bJump = true;
-			++m_iJump;
-		}
-	}
-	else if (m_iJump == 1)
-	{
-		m_bOld_Check = false;
-		++m_iJump;
-	}
-	m_bJump_Input_Lock = true;
+	//if (m_iJump == 0)
+	//{
+	//	if (!m_bOld_Check)
+	//	{
+	//		m_bJump = true;
+	//		++m_iJump;
+	//	}
+	//}
+	//else if (m_iJump == 1)
+	//{
+	//	m_bOld_Check = false;
+	//	++m_iJump;
+	//}
+	//m_bJump_Input_Lock = true;
 }
 
 void CAru::Do_Not_Jump()
 {
-	m_bJump_Input_Lock = false;
+	//m_bJump_Input_Lock = false;
 }

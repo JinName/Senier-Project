@@ -1,9 +1,12 @@
 #pragma once
+#define _WINSOCKAPI_
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <process.h>
 #include <WinSock2.h>
+#include <Windows.h>
 
 #include <map>
 
@@ -11,6 +14,7 @@
 using namespace std;
 
 #pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "winmm.lib")
 #include "Logger.h"
 
 #define PORT_NUM		10200

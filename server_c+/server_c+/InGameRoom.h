@@ -26,14 +26,15 @@ public:
 	void				Clean();
 
 	// set
-	void				SetClientSession(int _playerIndex, ClientSession* _client) { mClient[_playerIndex] = _client; }
+	void				SetClientSession(int _playerIndex, ClientSession* _client)	{ mClient[_playerIndex] = _client; }
 	void				SetPlayer(int _playerIndex, SCHARACTER _charPacket);
+	void				SetInitComplete(int _playerIndex, bool _initComplete)		{ mInitComplete[_playerIndex] = _initComplete; }
 
 	// get
 	ClientSession*		GetClientSession(int _playerIndex)		{ return mClient[_playerIndex]; }
-	//PlayerInfo			GetPlayerInfo(int _playerIndex)		{ return mPlayerInfo[_playerIndex]; }
 	int					GetRoomNum()							{ return mRoomNum; }
 	GameLogicManager*	GetGameLogicManager()					{ return &mGameLogicManager; }
+	bool				GetInitComplete(int _playerIndex)		{ return mInitComplete[_playerIndex]; }
 
 	// start logic thread
 	bool				StartGameLogicThread();
@@ -42,10 +43,13 @@ public:
 	void				SetThreadStopFlag(bool _flag)			{ mStopFlag = _flag; }
 	bool				GetThreadStopFlag()						{ return mStopFlag; }
 
+
+	void				Update();
+
 private:
 	int					mRoomNum;
 	ClientSession*		mClient[2];
-	//PlayerInfo			mPlayerInfo[2];
+	bool				mInitComplete[2];
 	int					mMapNum;
 
 	// in game logic manager

@@ -40,10 +40,15 @@ void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
 		mGameLogicManager.GetPlayer(_playerIndex)->Do_Left();
 	else if (_charPacket.mRight)
 		mGameLogicManager.GetPlayer(_playerIndex)->Do_Right();
+
+	if (_charPacket.mKeyDownSpace)
+		mGameLogicManager.GetPlayer(_playerIndex)->Do_Jump();
 }
 
 bool InGameRoom::StartGameLogicThread()
 {
+	cout << "[INFO] Start In Game Logic Thread!!" << endl;
+
 	DWORD dwThreadId;
 	// begin thread
 	HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, GameLogicThread, this, 0, (unsigned int*)&dwThreadId);
@@ -65,14 +70,19 @@ unsigned int WINAPI InGameRoom::GameLogicThread(LPVOID lpParam)
 {
 	InGameRoom* room = (InGameRoom*)lpParam;
 
-	while (true)
-	{
-		//if (room->GetThreadStopFlag()) break;
-
-		room->GetGameLogicManager()->Update();
-
-		//if (room->GetThreadStopFlag()) break;
-	}
+	room->Update();
 	
 	return 0;
+}
+
+void InGameRoom::Update()
+{
+	while (true)
+	{
+		if (mStopFlag) break;
+
+		mGameLogicManager.Update();
+
+		if (mStopFlag) break;
+	}	
 }
