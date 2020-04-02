@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-Logger* GLogger = nullptr;
+Logger* g_pLogger = nullptr;
 
 Logger::Logger() : file_logger(nullptr)
 {

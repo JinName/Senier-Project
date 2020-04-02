@@ -1,6 +1,6 @@
 #include "IOCPManager.h"
 
-IOCPManager* GIocpManager = nullptr;
+IOCPManager* g_pIocpManager = nullptr;
 
 IOCPManager::IOCPManager() : mCP(NULL), mThreadCount(2), mListenSocket(NULL)
 {

@@ -1,6 +1,6 @@
 #include "SessionManager.h"
 
-SessionManager* GSessionManager = nullptr;
+SessionManager* g_pSessionManager = nullptr;
 
 SessionManager::SessionManager() : mClientCount(0)
 {

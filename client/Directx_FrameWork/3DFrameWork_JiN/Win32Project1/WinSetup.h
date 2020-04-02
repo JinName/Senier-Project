@@ -27,6 +27,9 @@ private:
 	//CD3DSetup *m_temp;
 	//CGameManager *m_game;
 
+	// d3d 구동 시작스위치
+	bool m_bD3DWork;
+
 public:
 	CWinSetup();
 	CWinSetup(HINSTANCE hInstance);

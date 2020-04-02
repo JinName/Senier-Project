@@ -38,6 +38,7 @@ enum class PROTOCOL
 	TEST_CHAT,
 	
 	// LOGIN
+	LOGIN_RQ, LOGIN_OK, LOGIN_DN,
 
 	// MATCH
 	MATCH_RQ, MATCH_RP, 
@@ -122,4 +123,11 @@ struct SINITCOMPLETE
 {
 	int mPlayerIndex;
 	bool mComplete;
+};
+
+// login
+struct SLOGIN
+{
+	char* mID;
+	char* mPW;
 };

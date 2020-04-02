@@ -43,7 +43,6 @@ public:
 	void				SetThreadStopFlag(bool _flag)			{ mStopFlag = _flag; }
 	bool				GetThreadStopFlag()						{ return mStopFlag; }
 
-
 	void				Update();
 
 private:

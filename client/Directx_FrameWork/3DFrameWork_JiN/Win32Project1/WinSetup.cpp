@@ -2,7 +2,8 @@
 
 CWinSetup::CWinSetup()
 	:m_hWnd(NULL),
-	m_hInst(NULL)
+	m_hInst(NULL),
+	m_bD3DWork(false)
 	//m_game(NULL)
 {
 	// 윈도우 크기 설정
@@ -11,7 +12,8 @@ CWinSetup::CWinSetup()
 
 CWinSetup::CWinSetup(HINSTANCE hInstance)
 	:m_hWnd(NULL),
-	m_hInst(hInstance)
+	m_hInst(hInstance),
+	m_bD3DWork(false)
 	//m_game(NULL)
 {
 	// 윈도우 크기 설정
@@ -87,6 +89,9 @@ void CWinSetup::createWindow()
 
 VOID CWinSetup::Init()
 {
+	// login 성공시 textbox 숨김
+	//ShowWindow(m_hTextBox, SW_HIDE);
+
 	// 키보드 생성
 	CInput::Get_Instance()->InitDirectInput(m_hInst, m_hWnd);
 
@@ -94,6 +99,8 @@ VOID CWinSetup::Init()
 
 	// D3D 초기화
 	g_pGameManager->Initialize();
+
+	m_bD3DWork = true;
 }
 
 
@@ -112,9 +119,12 @@ void CWinSetup::MsgLoop()
 		}
 		else
 		{
-			g_pGameManager->Update();
-			if (g_pGameManager != NULL)
-				g_pGameManager->Render();
+			if (m_bD3DWork) // 로그인 성공 -> init() -> m_bD3DWork = true;
+			{
+				g_pGameManager->Update();
+				if (g_pGameManager != NULL)
+					g_pGameManager->Render();
+			}			
 		}
 	}
 

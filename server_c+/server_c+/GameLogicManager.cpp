@@ -32,9 +32,11 @@ void GameLogicManager::Init(ClientSession* _client1, ClientSession* _client2)
 	}
 	
 	// FOR DEBUG
-	m_Player[0].SetDebugPlayer(true);
+	//m_Player[0].SetDebugPlayer(true);
 
 	m_bInitComplete = true;
+
+	cout << "GameLogicManager > Init() > init complete!" << endl;
 }
 
 void GameLogicManager::Update()

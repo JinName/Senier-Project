@@ -1,6 +1,7 @@
 #include "PacketManager.h"
 #include "MatchManager.h"
 #include "InGameManager.h"
+#include "GameDBManger.h"
 
 PacketManager::PacketManager() : mStopFlag(false)
 {
@@ -155,6 +156,28 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		if (match.mInMatch == true)
 		{
 			MatchManager::GetInstance()->PushBackClient(pack.mSession);
+		}
+
+		break;
+	}
+	case PROTOCOL::LOGIN_RQ:
+	{
+		SLOGIN login;
+		memset(&login, 0, sizeof(SLOGIN));
+		memcpy(&login, pack.mBuffer + sizeof(SHEAD), sizeof(SLOGIN));
+
+		bool loginResult = g_pGameDBManager->Login(login.mID, login.mPW);
+
+		// 성공시 LOGIN_OK, 실패시 LOGIN_DN 전송
+		if (loginResult)
+		{
+			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_OK);
+			pack.mSession->Send();
+		}
+		else
+		{
+			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_DN);
+			pack.mSession->Send();
 		}
 
 		break;

@@ -70,6 +70,12 @@
     <Filter Include="GameLogicManager\Stage\StageForest">
       <UniqueIdentifier>{4ede1a7f-c2ae-4f3f-a4f6-17c2ce38b85b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\MYSQLManager">
+      <UniqueIdentifier>{cf99e7c9-5f03-4070-853f-159777f37f1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\MYSQLManager\GameDBManager">
+      <UniqueIdentifier>{89d597ec-74db-4c16-9374-21686240713b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -128,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="StageBase.cpp">
       <Filter>GameLogicManager\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="MYSQLManager.cpp">
+      <Filter>Network\MYSQLManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDBManger.cpp">
+      <Filter>Network\MYSQLManager\GameDBManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="StageBase.h">
       <Filter>GameLogicManager\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="MYSQLManager.h">
+      <Filter>Network\MYSQLManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDBManger.h">
+      <Filter>Network\MYSQLManager\GameDBManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

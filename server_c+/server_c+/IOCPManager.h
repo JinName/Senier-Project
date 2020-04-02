@@ -42,4 +42,4 @@ private:
 	static bool	DisconnectCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 };
 
-extern IOCPManager* GIocpManager;	// extern - for global freq
+extern IOCPManager* g_pIocpManager;	// extern - for global freq
