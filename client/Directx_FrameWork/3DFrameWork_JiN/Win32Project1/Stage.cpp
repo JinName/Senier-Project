@@ -168,7 +168,7 @@ void CStage::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 	// player initialize
 	m_Player[0].Init(_pDevice);
 	m_Player[1].Init(_pDevice);
-	m_Player[1].Set_Position(400.0f, 100.0f, 0.0f);
+	//m_Player[1].Set_Position(400.0f, 100.0f, 0.0f);
 	m_Player[m_iPlayerIndex].SetIsPlayer(true);
 
 	// ui initialize

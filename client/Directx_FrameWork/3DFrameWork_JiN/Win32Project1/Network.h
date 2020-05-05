@@ -33,7 +33,7 @@ public:
 	void SetPlayerIndex(int _iPlayerIndex) { m_iPlayerIndex = _iPlayerIndex; }
 
 	// 패킷 전송
-	bool SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize);
+	bool SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool _inGame);
 
 private:
 	WSADATA m_WsaData;

@@ -34,7 +34,7 @@ private:
 	CRITICAL_SECTION mCS;
 };
 
-extern Logger* GLogger;
+extern Logger* g_pLogger;
 
 
 //spdlog::info("spdlogger...");

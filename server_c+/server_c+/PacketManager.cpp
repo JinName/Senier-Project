@@ -1,6 +1,7 @@
 #include "PacketManager.h"
 #include "MatchManager.h"
 #include "InGameManager.h"
+#include "GameDBManger.h"
 
 PacketManager::PacketManager() : mStopFlag(false)
 {
@@ -46,6 +47,8 @@ bool PacketManager::Enqueue(ClientSession* client, char* buffer)
 
 bool PacketManager::Dequeue()
 {
+
+
 	return true;
 }
 
@@ -89,6 +92,13 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
 
+	if (head.mTransferToInGame)
+	{
+		InGameManager::GetInstance()->Enqueue(pack);
+
+		return PROTOCOL::TRANFERED;
+	}
+
 	return (PROTOCOL)head.mCmd;
 }
 
@@ -107,9 +117,10 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD data
 	SHEAD head;
 	head.mCmd = (unsigned char)protocol;
 	head.mPacketSize = sizeof(SHEAD) + dataBufferSize;
+	head.mTransferToInGame = false;
 
 	memcpy(p, (char*)&head, sizeof(SHEAD));
-	memcpy(p + sizeof(SHEAD), data, sizeof(data));
+	memcpy(p + sizeof(SHEAD), data, dataBufferSize);
 
 	// set send overlapped
 	client->SetSendOverlapped();
@@ -121,6 +132,13 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 {
 	switch (protocol)
 	{
+	case PROTOCOL::TRANFERED:
+	{
+		// 다른 패킷처리스레드로 패킷이 전송된 경우
+		//cout << "PACKET TRANSFER TO >> InGameManager" << endl;
+		break;
+	}
+
 	case PROTOCOL::TEST_CHAT:
 	{
 		SCHAT chat;
@@ -138,6 +156,28 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		if (match.mInMatch == true)
 		{
 			MatchManager::GetInstance()->PushBackClient(pack.mSession);
+		}
+
+		break;
+	}
+	case PROTOCOL::LOGIN_RQ:
+	{
+		SLOGIN login;
+		memset(&login, 0, sizeof(SLOGIN));
+		memcpy(&login, pack.mBuffer + sizeof(SHEAD), sizeof(SLOGIN));
+
+		bool loginResult = g_pGameDBManager->Login(login.mID, login.mPW);
+
+		// 성공시 LOGIN_OK, 실패시 LOGIN_DN 전송
+		if (loginResult)
+		{
+			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_OK);
+			pack.mSession->Send();
+		}
+		else
+		{
+			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_DN);
+			pack.mSession->Send();
 		}
 
 		break;

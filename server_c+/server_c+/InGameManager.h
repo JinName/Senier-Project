@@ -7,26 +7,7 @@
 #include "ClientSession.h"
 #include "PlayerInfo.h"
 #include "PacketManager.h"
-
-// 유저가 대전하는 방 내의 정보를 담는 구조체
-// 해당 룸의 번호(int mRoomNum)
-// 어떤 클라이언트가 접속해있는지(ClientSession* mPlayer1, mPlayer2)
-// 각 클라이언트의 캐릭터 정보(PlayerInfo mPlayerInfo1, mPlayerInfo2)
-// 어떤 맵에 있는지(int mMapNum)
-// 해당 룸의 충돌처리를 담당할 충돌 매니저(CollisionManager mCollisionMgr)
-typedef struct sInGameRoom
-{
-	sInGameRoom(ClientSession* player1, ClientSession* player2, int roomNum) : mPlayer1(player1), mPlayer2(player2), mRoomNum(roomNum) {}
-	~sInGameRoom() {}
-
-	int mRoomNum;
-	ClientSession* mPlayer1;	
-	ClientSession* mPlayer2;
-	PlayerInfo mPlayerInfo1;
-	PlayerInfo mPlayerInfo2;
-	int mMapNum;
-	
-}SINGAMEROOM;
+#include "InGameRoom.h"
 
 /*
 현재 대전 중인 플레이어를 짝지어 리스트로 저장
@@ -40,26 +21,47 @@ public:
 	InGameManager();
 	~InGameManager();
 
+	// PacketManager -> InGameManager : 인게임로직에 관련한 패킷은 InGameManager 에서 처리
+	bool Enqueue(ClientPacket clientPacket);
+	bool Dequeue();
+
+	void ProcessAllQueue();
+
+	PROTOCOL ParsingPacket(ClientPacket pack);
+
+	void ProcessPacket(PROTOCOL protocol, ClientPacket pack);
+
+	void EnterCS() { EnterCriticalSection(&mCS); }
+	void LeaveCS() { LeaveCriticalSection(&mCS); }
+
 	void Init();
 	void Clean();
 
 	bool InGame(ClientSession* player1, ClientSession* player2);	
 	bool OutGame(int roomNum);
-
 	bool GameEnd(int roomNum, GAMEEND_STATE endState);
 
-	SINGAMEROOM* SearchRoom(int roomNum);
+	InGameRoom* SearchRoom(int roomNum);
 
-	ClientSession* GetEnemyClient(ClientSession* player);
+	bool DeleteRoomInList(int roomNum);
 
-	void EnterCS() { EnterCriticalSection(&mCS); }
-	void LeaveCS() { LeaveCriticalSection(&mCS); }
+	ClientSession* GetEnemyClient(ClientSession* player);	
+
+	// 플레이어 정보를 받아서 변경 후 변경된 정보를 구조체에 담아 다시 반환
+	SCHARACTER SetPlayer(ClientSession* player, SCHARACTER charPacket);
+
+	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
 private:
-	std::list<SINGAMEROOM*> mInGameRoomContainer;
+	std::list<InGameRoom*> mInGameRoomList;
+
+	// 게임 내에서 처리가 필요한 패킷의 경우 이 큐를 통해 처리
+	queue<ClientPacket> mInGameBufferQueue;
 
 	int mRoomCount;
 	int mLastRoomNum;
 
 	CRITICAL_SECTION mCS;
+
+	bool mStopFlag;
 };
 

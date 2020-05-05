@@ -204,6 +204,9 @@
     <ClCompile Include="PacketManager.cpp">
       <Filter>Network\PacketManager</Filter>
     </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="PacketManager.h">
       <Filter>Network\PacketManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

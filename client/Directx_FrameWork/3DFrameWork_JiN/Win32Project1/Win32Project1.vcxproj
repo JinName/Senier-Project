@@ -124,6 +124,7 @@
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WinSetup.cpp" />
     <ClCompile Include="D3DSetup.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WinConfigure.h" />
     <ClInclude Include="WinSetup.h" />

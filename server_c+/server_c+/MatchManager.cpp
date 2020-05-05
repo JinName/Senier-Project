@@ -92,30 +92,8 @@ void MatchManager::ProcessMatchList()
 			LeaveCS();
 			// end Critical Section
 
-			// setting player 1
-			SGAMESTART player1_Gamestart;
-			player1_Gamestart.mStart = true;
-			player1_Gamestart.mPlayerIndex = 0; // 1p
-			player1->SetPlayerIndex(0);
-
-			// setting player 2
-			SGAMESTART player2_Gamestart;
-			player2_Gamestart.mStart = true;
-			player2_Gamestart.mPlayerIndex = 1; // 2p
-			player1->SetPlayerIndex(1);
-
-			bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
-			bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
-
-			if (player1_result && player2_result)
-			{
-				// 클라이언트 -> InGameRoom 과정 추가 필요
-				InGameManager::GetInstance()->InGame(player1, player2);
-
-				// Send Game Start Packet
-				player1->Send();
-				player2->Send();
-			}
+			// into GameRoom
+			InGameManager::GetInstance()->InGame(player1, player2);			
 		}
 
 		if (mStopFlag) break;

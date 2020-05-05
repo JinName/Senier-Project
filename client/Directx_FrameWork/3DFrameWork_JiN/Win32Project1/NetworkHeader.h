@@ -35,3 +35,16 @@ typedef struct sOverlappedSocket : public OVERLAPPED
 	WSABUF					mWSABuf;
 	char					mBuffer[MAX_BUFSIZE];
 } SOVERLAPPED;
+
+struct VECTOR2
+{
+	float x;
+	float y;
+};
+
+struct VECTOR3
+{
+	float x;
+	float y;
+	float z;
+};

@@ -44,4 +44,4 @@ private:
 };
 
 //전역으로 사용하기 위해 extern 변수로 정의.
-extern SessionManager* GSessionManager;
+extern SessionManager* g_pSessionManager;

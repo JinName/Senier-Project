@@ -7,6 +7,7 @@
 #include "GameOver.h"
 #include "GameClear.h"
 #include "PacketList.h"
+#include "Network.h"
 
 class CGameManager
 {
@@ -20,6 +21,7 @@ private:
 	HINSTANCE m_hInstance;
 
 	int m_iPlayerIndex;
+	D3DXVECTOR3 m_vStartPosition[2];
 	
 public:
 	CGameManager();
@@ -36,6 +38,8 @@ public:
 	void Cleanup();
 
 	bool SetPlayerState(SCHARACTER _sCharPacket);
+	bool SetPlayerPosition(SCHARACTER _sCharPacket);
+	void SetStartPosition(VECTOR3 _vPlayer1, VECTOR3 _Player2);
 };
 
 extern CGameManager* g_pGameManager;

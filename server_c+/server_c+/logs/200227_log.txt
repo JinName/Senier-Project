@@ -1,0 +1,12 @@
+[2020-02-27 01:26:33.868] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58906
+[2020-02-27 01:26:38.541] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58910
+[2020-02-27 01:26:53.494] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 58906
+[2020-02-27 01:26:54.839] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 58910
+[2020-02-27 01:28:16.772] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58919
+[2020-02-27 01:28:18.981] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58920
+[2020-02-27 01:41:02.836] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58952
+[2020-02-27 01:41:04.772] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58953
+[2020-02-27 01:44:19.176] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58957
+[2020-02-27 01:44:21.429] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58958
+[2020-02-27 01:56:30.564] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58989
+[2020-02-27 01:56:32.466] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 58993

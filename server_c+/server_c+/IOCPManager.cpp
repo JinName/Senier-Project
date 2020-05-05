@@ -1,6 +1,6 @@
 #include "IOCPManager.h"
 
-IOCPManager* GIocpManager = nullptr;
+IOCPManager* g_pIocpManager = nullptr;
 
 IOCPManager::IOCPManager() : mCP(NULL), mThreadCount(2), mListenSocket(NULL)
 {
@@ -131,6 +131,24 @@ bool IOCPManager::StartMatchProcessThread()
 	CloseHandle(hMatchThread);
 }
 
+bool IOCPManager::StartInGameProcessThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hInGameThread = (HANDLE)_beginthreadex(NULL, 0, inGameProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hInGameThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created Match Thread" << endl;
+
+	CloseHandle(hInGameThread);
+}
+
 bool IOCPManager::CloseIOCPServer()
 {
 	// close handle and socket
@@ -165,7 +183,7 @@ bool IOCPManager::AcceptLoop()
 		//getpeername(acceptedSock, (SOCKADDR*)& clientaddr, &addrlen);
 
 		// 소켓 정보 구조체 할당과 초기화
-		ClientSession* client = GSessionManager->CreateClientSession(acceptedSock);
+		ClientSession* client = g_pSessionManager->CreateClientSession(acceptedSock);
 
 		// 클라이언트 접속 처리
 		if (false == client->OnConnect(&clientaddr))
@@ -173,7 +191,7 @@ bool IOCPManager::AcceptLoop()
 			cout << "[FAIL] : IOCPManager > AcceptLoop() > client->OnConnect() is false" << endl;
 			// OnConnect() 실패 시에 다시 client 객체 초기화 후 삭제
 			client->DisConnect();
-			GSessionManager->DeleteClientSession(client);
+			g_pSessionManager->DeleteClientSession(client);
 		}
 
 		client->Recv();
@@ -185,7 +203,7 @@ bool IOCPManager::AcceptLoop()
 unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 {
 	// 글로벌 객체에서 Completion Port Handle 가져옴 -> GetQueuedCompletionStatus() 에 활용
-	HANDLE hCP = GIocpManager->GetCPHandle();
+	HANDLE hCP = g_pIocpManager->GetCPHandle();
 
 	while (true)
 	{
@@ -213,7 +231,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 			//	overlapped->mIOType = IOTYPE::IO_DISCONNECT;
 			//}
 			//client->DisConnect();
-			//GSessionManager->DeleteClientSession(client);
+			//g_pSessionManager->DeleteClientSession(client);
 			DisconnectCompletion(client, overlapped, dwBytesTransferred);
 
 			continue;
@@ -223,7 +241,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		{
 			cout << "Recive Data is zero...Overlapped error" << endl;
 			client->DisConnect();
-			GSessionManager->DeleteClientSession(client);
+			g_pSessionManager->DeleteClientSession(client);
 		}
 
 		// GetQueuedCompletionStatus() 성공시
@@ -254,7 +272,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		//{
 		//	cout << "Completion Error..." << endl;
 		//	client->DisConnect();
-		//	GSessionManager->DeleteClientSession(client);
+		//	g_pSessionManager->DeleteClientSession(client);
 		//}
 	}
 	
@@ -274,6 +292,14 @@ unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
 	
 	return 0;
 }
+
+unsigned int WINAPI IOCPManager::inGameProcessThread(LPVOID lpParam)
+{
+	InGameManager::GetInstance()->ProcessAllQueue();
+
+	return 0;
+}
+
 
 bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
@@ -331,7 +357,7 @@ bool IOCPManager::DisconnectCompletion(ClientSession* client, SOVERLAPPED* overl
 
 	// disconnet
 	client->DisConnect();
-	GSessionManager->DeleteClientSession(client);
+	g_pSessionManager->DeleteClientSession(client);
 
 	return true;
 }

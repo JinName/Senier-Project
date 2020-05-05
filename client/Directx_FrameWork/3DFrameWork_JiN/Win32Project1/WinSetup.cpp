@@ -1,8 +1,13 @@
 #include "WinSetup.h"
 
+CWinSetup* g_pWinSetup = nullptr;
+
 CWinSetup::CWinSetup()
 	:m_hWnd(NULL),
-	m_hInst(NULL)
+	m_hInst(NULL),
+	m_bD3DWork(false),
+	m_hEditID(NULL),
+	m_hEditPW(NULL)
 	//m_game(NULL)
 {
 	// 윈도우 크기 설정
@@ -11,7 +16,10 @@ CWinSetup::CWinSetup()
 
 CWinSetup::CWinSetup(HINSTANCE hInstance)
 	:m_hWnd(NULL),
-	m_hInst(hInstance)
+	m_hInst(hInstance),
+	m_bD3DWork(false),
+	m_hEditID(NULL),
+	m_hEditPW(NULL)
 	//m_game(NULL)
 {
 	// 윈도우 크기 설정
@@ -23,12 +31,48 @@ LRESULT WINAPI CWinSetup::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 {
 	switch (msg)
 	{
+	case WM_CREATE:
+		
+
+		return 0;
+
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case 11:
+		{
+			// LOGIN 버튼 눌렀을때 패킷 전송하여 아이디 비번 확인
+			GetWindowText(m_hEditID, m_ID, 64);
+			GetWindowText(m_hEditPW, m_PW, 64);
+
+			char* id = ConvertWCtoC(m_ID);
+			char* pw = ConvertWCtoC(m_PW);
+
+			SLOGIN login;
+			memset(&login, 0, sizeof(SLOGIN));
+			strcpy(login.mID, id);
+			strcpy(login.mPW, pw);
+
+			g_pNetwork->SendPacket(PROTOCOL::LOGIN_RQ, (char*)&login, sizeof(SLOGIN), false);
+
+			delete[] id;
+			delete[] pw;
+
+			break;
+		}
+		}
+		return 0;
+
 	case WM_DESTROY:
-		g_pGameManager->Cleanup();
-		delete g_pGameManager;
-		g_pGameManager = NULL;
+		if (m_bD3DWork)
+		{
+			g_pGameManager->Cleanup();
+			delete g_pGameManager;
+			g_pGameManager = NULL;
+		}
 
 		PostQuitMessage(0);
+
 		return 0;
 
 	default:
@@ -87,6 +131,11 @@ void CWinSetup::createWindow()
 
 VOID CWinSetup::Init()
 {
+	// login 성공시 Editbox 숨김
+	ShowWindow(m_hLoginButton, SW_HIDE);
+	ShowWindow(m_hEditID, SW_HIDE);
+	ShowWindow(m_hEditPW, SW_HIDE);
+
 	// 키보드 생성
 	CInput::Get_Instance()->InitDirectInput(m_hInst, m_hWnd);
 
@@ -94,6 +143,8 @@ VOID CWinSetup::Init()
 
 	// D3D 초기화
 	g_pGameManager->Initialize();
+
+	m_bD3DWork = true;
 }
 
 
@@ -112,9 +163,12 @@ void CWinSetup::MsgLoop()
 		}
 		else
 		{
-			g_pGameManager->Update();
-			if (g_pGameManager != NULL)
-				g_pGameManager->Render();
+			if (m_bD3DWork) // 로그인 성공 -> init() -> m_bD3DWork = true;
+			{
+				g_pGameManager->Update();
+				if (g_pGameManager != NULL)
+					g_pGameManager->Render();
+			}			
 		}
 	}
 
@@ -126,7 +180,20 @@ void CWinSetup::Run()
 	initWindow();
 	createWindow();
 
-	Init();
+	CreateLoginWindow();
+	//Init();
 	
 	MsgLoop();
+}
+
+void CWinSetup::CreateLoginWindow()
+{
+	m_hEditID = CreateWindow(L"EDIT", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER, 300, 100, 100, 30, m_hWnd, (HMENU)21, m_hInst, NULL);
+	m_hEditPW = CreateWindow(L"EDIT", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD | EM_SETPASSWORDCHAR, 300, 200, 100, 30, m_hWnd, (HMENU)22, m_hInst, NULL);
+	// LOGIN BUTTON
+	m_hLoginButton = CreateWindow(L"button", L"LOGIN", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 500, 100, 100, 30, m_hWnd, (HMENU)11, m_hInst, NULL);
+
+	SendMessage(m_hEditPW, EM_SETPASSWORDCHAR, (WPARAM)'*', 0);
+
+	UpdateWindow(m_hWnd);
 }
