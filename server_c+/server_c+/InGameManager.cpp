@@ -315,9 +315,10 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 		room->SetInitComplete(sInit.mPlayerIndex, sInit.mComplete);
 
+		/////////////// 디버그 지점 //////////////////////////
 		if (room->GetInitComplete(0) == true && room->GetInitComplete(1) == true)
 		{
-			room->StartGameLogicThread();
+			//room->StartGameLogicThread();
 		}
 
 		break;

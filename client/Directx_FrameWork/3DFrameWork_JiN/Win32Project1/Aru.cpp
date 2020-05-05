@@ -369,23 +369,23 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 {
-	//isCrash_Tile();
+	isCrash_Tile();
 	//isCrash_Enemy();
 	//isCrash_Potion();
 
-	//Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
+	Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
 
 	if (m_bActive_Collision == true)
 	{
 		if (m_bIsPlayer)
 			KeyInput(_pDevice);
 
-		//if (m_bIsPlayer)
-		//	Jump();
+		if (m_bIsPlayer)
+			Jump();
 	}
 
-	//if (m_bIsPlayer)
-		//Gravity();
+	if (m_bIsPlayer)
+		Gravity();
 
 	//Attack_Cooltime();
 	//Skill_Update();
@@ -406,7 +406,7 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 	}
 
 	//Set_Collider(m_sprite[m_iAnimate_Num].Get_Sprite_Width() - 20.0f, m_sprite[m_iAnimate_Num].Get_Sprite_Height(), true, RECT{0, 20, 0, 0});
-	//Set_Collider(44.0f, 64.0f, true, RECT{ 0, 20, 0, 0 });
+	Set_Collider(44.0f, 64.0f, true, RECT{ 0, 20, 0, 0 });
 }
 
 void CAru::Render()
@@ -481,7 +481,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		{
 			if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == true)
 			{
-				//Do_Jump();
+				Do_Jump();
 				sChar.mKeyDownSpace = true;
 				sChar.mCharState = CHARACTER_STATE::JUMP;
 				m_bAnyKeyDown = true;			
@@ -492,7 +492,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 
 	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
-		//Do_Not_Jump();
+		Do_Not_Jump();
 		m_bJump_Input_Lock = false;
 		if (sChar.mKeyDownSpace != true)
 		{
@@ -506,7 +506,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	{
 		if (CInput::Get_Instance()->IsKeyPressed(DIK_Z) == true)
 		{
-			Do_Attack();
+			//Do_Attack();
 			sChar.mAttack = true;
 			sChar.mCharState = CHARACTER_STATE::ATTACK;
 			m_bAnyKeyDown = true;
@@ -521,13 +521,14 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		CInput::Get_Instance()->IsKeyPressed(DIK_SPACE) == false)
 	{
 		m_bAnyKeyDown = false;		
-		//Do_Stand();
 	}
 
-	if (m_bAnyKeyDown)
+	if (m_bAnyKeyDown || !isVertical)
 	{
 		sChar.mDirectionX = m_vDirection.x;
-		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), true);
+		sChar.mPosX = m_vPos.x;
+		sChar.mPosY = m_vPos.y;
+		g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), false);
 		m_bTransfered = false;
 	}
 	else
@@ -535,7 +536,9 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 		if (m_bTransfered == false)
 		{
 			sChar.mDirectionX = m_vDirection.x;
-			g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), true);
+			sChar.mPosX = m_vPos.x;
+			sChar.mPosY = m_vPos.y;
+			g_pNetwork->SendPacket(PROTOCOL::MOVE_RQ, (char*)&sChar, sizeof(SCHARACTER), false);
 			m_bTransfered = true;
 		}
 	}
@@ -563,7 +566,10 @@ void CAru::Do_Attack()
 
 void CAru::Do_Left()
 {
-	//m_vPos.x -= m_fSpeed;
+	if (m_bIsPlayer)
+	{
+		m_vPos.x -= m_fSpeed;
+	}
 	m_vDirection.x = -1.0f;
 	m_b_isRunning = true;
 	currentDirection = -1;
@@ -571,7 +577,10 @@ void CAru::Do_Left()
 
 void CAru::Do_Right()
 {
-	//m_vPos.x += m_fSpeed;
+	if (m_bIsPlayer)
+	{
+		m_vPos.x += m_fSpeed;
+	}
 	m_vDirection.x = 1.0f;
 	m_b_isRunning = true;
 	currentDirection = 1;
@@ -579,23 +588,23 @@ void CAru::Do_Right()
 
 void CAru::Do_Jump()
 {
-	//if (m_iJump == 0)
-	//{
-	//	if (!m_bOld_Check)
-	//	{
-	//		m_bJump = true;
-	//		++m_iJump;
-	//	}
-	//}
-	//else if (m_iJump == 1)
-	//{
-	//	m_bOld_Check = false;
-	//	++m_iJump;
-	//}
-	//m_bJump_Input_Lock = true;
+	if (m_iJump == 0)
+	{
+		if (!m_bOld_Check)
+		{
+			m_bJump = true;
+			++m_iJump;
+		}
+	}
+	else if (m_iJump == 1)
+	{
+		m_bOld_Check = false;
+		++m_iJump;
+	}
+	m_bJump_Input_Lock = true;
 }
 
 void CAru::Do_Not_Jump()
 {
-	//m_bJump_Input_Lock = false;
+	m_bJump_Input_Lock = false;
 }

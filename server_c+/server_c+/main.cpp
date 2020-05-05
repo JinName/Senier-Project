@@ -37,8 +37,8 @@ int main()
 	if (g_pIocpManager->StartMatchProcessThread() == false)
 		return -1;
 
-	if (g_pIocpManager->StartInGameProcessThread() == false)
-		return -1;
+	//if (g_pIocpManager->StartInGameProcessThread() == false)
+	//	return -1;
 
 	cout << "Start IOCP Server..." << endl;
 

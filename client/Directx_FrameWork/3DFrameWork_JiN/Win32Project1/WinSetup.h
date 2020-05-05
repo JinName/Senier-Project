@@ -4,6 +4,7 @@
 #include "D3DSetup.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "Util.h"
 
 class CWinSetup
 {
@@ -26,6 +27,13 @@ private:
 	// 게임 정보 - Game->Update(), Game->Rneder()
 	//CD3DSetup *m_temp;
 	//CGameManager *m_game;
+
+	// editbox
+	HWND m_hLoginButton;
+	HWND m_hEditID;
+	HWND m_hEditPW;
+	WCHAR m_ID[64];
+	WCHAR m_PW[64];
 
 	// d3d 구동 시작스위치
 	bool m_bD3DWork;
@@ -50,8 +58,12 @@ public:
 
 	void Run();
 
+	void CreateLoginWindow();
+
 
 	// 키보드 입력 리턴
 	
 	// 마우스 입력 리턴
 };
+
+extern CWinSetup* g_pWinSetup;

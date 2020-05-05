@@ -21,5 +21,7 @@ bool GameDBManger::Login(const char* _id, const char* _pw)
 
 	FreeSQLResult(res);
 
+	cout << "GameDBManager > Login() > LOGIN SUCCESS" << endl;
+
 	return true;
 }

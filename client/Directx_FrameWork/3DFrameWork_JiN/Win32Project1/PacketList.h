@@ -2,6 +2,8 @@
 
 #include "NetworkHeader.h"
 
+#define MAX_LEN_USER_INFO 32
+
 /*
 온라인게임에서 사용하는 프로토콜은 기본적인 특성이 있습니다.
 
@@ -38,6 +40,7 @@ enum class PROTOCOL
 	TEST_CHAT,
 
 	// LOGIN
+	LOGIN_RQ, LOGIN_OK, LOGIN_DN,
 
 	// MATCH
 	MATCH_RQ, MATCH_RP,
@@ -102,7 +105,7 @@ struct SGAMEEND
 
 struct SCHARACTER
 {
-	SCHARACTER() : mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false) {}
+	SCHARACTER() : mPlayerIndex(-1), mLeft(false), mRight(false), mKeyDownSpace(false), mAttack(false), mDamaged(false), mCharState(CHARACTER_STATE::STAND), mPosX(0.0f), mPosY(0.0f), mDirectionX(0.0f) {}
 
 	int mPlayerIndex;
 
@@ -122,4 +125,11 @@ struct SINITCOMPLETE
 {
 	int mPlayerIndex;
 	bool mComplete;
+};
+
+// login
+struct SLOGIN
+{
+	char mID[MAX_LEN_USER_INFO];
+	char mPW[MAX_LEN_USER_INFO];
 };

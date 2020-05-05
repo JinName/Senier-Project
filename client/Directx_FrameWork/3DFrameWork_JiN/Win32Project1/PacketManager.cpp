@@ -1,5 +1,6 @@
 #include "PacketManager.h"
 #include "GameManager.h"
+#include "WinSetup.h"
 
 PacketManager* g_pPacketManager = nullptr;
 
@@ -83,7 +84,7 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		break;
 	}
 
-	case PROTOCOL::MOVE_RP:	
+	case PROTOCOL::MOVE_RQ:	
 	{
 		SCHARACTER player;
 		memset(&player, 0, sizeof(SCHARACTER));
@@ -126,6 +127,14 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 		break;
 	}
+
+	case PROTOCOL::LOGIN_OK:
+	{
+		g_pWinSetup->Init();
+
+		break;
+	}
+
 	}
 
 	delete[] recvBuffer;

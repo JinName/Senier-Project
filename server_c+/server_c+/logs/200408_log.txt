@@ -1,0 +1,7 @@
+[2020-04-08 01:10:09.610] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 56375
+[2020-04-08 01:15:47.646] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 56375
+[2020-04-08 01:16:30.618] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 56449
+[2020-04-08 01:30:45.553] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 56744
+[2020-04-08 01:31:11.661] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 56744
+[2020-04-08 01:31:58.345] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 56768
+[2020-04-08 01:32:01.189] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 56769

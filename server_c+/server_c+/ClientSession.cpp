@@ -44,10 +44,10 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	// 아래 코드에서는 this 를 통해 ClientSession 객체의 포인터를 넘겨주어
 	// 해당 소캣에 I/O 작업이 일어날 경우,
 	// GetQueuedCompletionStatus() 을 통해 해당 클라이언트 객체의 포인터를 넘겨받을 수 있다.
-	HANDLE hCP = CreateIoCompletionPort((HANDLE)mSocket, GIocpManager->GetCPHandle(), (ULONG_PTR)this, 0);
+	HANDLE hCP = CreateIoCompletionPort((HANDLE)mSocket, g_pIocpManager->GetCPHandle(), (ULONG_PTR)this, 0);
 
 	// except error for cp handle
-	if (hCP != GIocpManager->GetCPHandle())
+	if (hCP != g_pIocpManager->GetCPHandle())
 	{
 		cout << "CreateIoCompletionPort error: " << GetLastError() << endl;
 		return false;
@@ -64,9 +64,9 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	// write log
 	char log[128];
 	sprintf(log, "Client Connected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
-	GLogger->file_write(LOGGER_LEVEL::info, log);
+	g_pLogger->file_write(LOGGER_LEVEL::info, log);
 
-	GSessionManager->IncreaseClientCount();
+	g_pSessionManager->IncreaseClientCount();
 
 	return true;
 }
@@ -160,9 +160,9 @@ bool ClientSession::DisConnect()
 	// write log
 	char log[128];
 	sprintf(log, "Client Disconnected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
-	GLogger->file_write(LOGGER_LEVEL::info, log);
+	g_pLogger->file_write(LOGGER_LEVEL::info, log);
 
-	GSessionManager->DecreaseClientCount();
+	g_pSessionManager->DecreaseClientCount();
 
 	closesocket(mSocket);
 

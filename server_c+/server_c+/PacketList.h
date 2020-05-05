@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 
+#define MAX_LEN_USER_INFO 32
+
 /*
 온라인게임에서 사용하는 프로토콜은 기본적인 특성이 있습니다.
 
@@ -128,6 +130,6 @@ struct SINITCOMPLETE
 // login
 struct SLOGIN
 {
-	char* mID;
-	char* mPW;
+	char mID[MAX_LEN_USER_INFO];
+	char mPW[MAX_LEN_USER_INFO];
 };
