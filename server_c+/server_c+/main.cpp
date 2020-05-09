@@ -6,6 +6,7 @@
 #include "MatchManager.h"
 #include "InGameManager.h"
 #include "GameDBManger.h"
+#include "Crypt.h"
 
 int main()
 {
@@ -13,11 +14,13 @@ int main()
 
 	/// Global Managers initialize
 	g_pLogger = new Logger;
+	g_pCrypt = new Crypt;
 	g_pSessionManager = new SessionManager;
 	g_pIocpManager = new IOCPManager;
 	g_pGameDBManager = new GameDBManger;
 
 	g_pLogger->Init(LOGGER_TYPE::file);
+	g_pCrypt->Init();
 	g_pGameDBManager->Init();
 	PacketManager::GetInstance()->Init();
 	MatchManager::GetInstance()->Init();
@@ -58,6 +61,7 @@ int main()
 	PacketManager::GetInstance()->Clean();
 
 	g_pGameDBManager->Disconnect();
+	g_pCrypt->Clean();
 
 	// destroy singleton
 	InGameManager::GetInstance()->DestroyInstance();
@@ -65,6 +69,7 @@ int main()
 	PacketManager::GetInstance()->DestroyInstance();
 	delete g_pIocpManager;
 	delete g_pSessionManager;
+	delete g_pCrypt;
 	delete g_pLogger;
 
 	timeEndPeriod(1);

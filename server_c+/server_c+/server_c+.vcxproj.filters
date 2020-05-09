@@ -76,6 +76,9 @@
     <Filter Include="Network\MYSQLManager\GameDBManager">
       <UniqueIdentifier>{89d597ec-74db-4c16-9374-21686240713b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Crypt">
+      <UniqueIdentifier>{6d8d2a29-85bd-46cc-b9eb-abfdb756c155}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="GameDBManger.cpp">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypt.cpp">
+      <Filter>Crypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="GameDBManger.h">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypt.h">
+      <Filter>Crypt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
