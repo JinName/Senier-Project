@@ -5,6 +5,7 @@
 #include "PacketManager.h"
 #include "MatchManager.h"
 #include "InGameManager.h"
+#include "SystemUsage.h"
 
 class IOCPManager
 {
@@ -17,6 +18,7 @@ public:
 	bool		StartPacketProcessThread();	// start packet process thread
 	bool		StartMatchProcessThread();	// start match process thread
 	bool		StartInGameProcessThread();	// start in gmae process thread
+	bool		StartSystemUsageThread();	// start system usage thread
 	bool		CloseIOCPServer();	// close iocp server	
 
 	bool		AcceptLoop();		// accept loop
@@ -36,6 +38,9 @@ private:
 	static unsigned int WINAPI PacketProcessThread(LPVOID lpParam);
 	static unsigned int WINAPI MatchProcessThread(LPVOID lpParam);
 	static unsigned int WINAPI inGameProcessThread(LPVOID lpParam);
+
+	// for read cpu, memory usage
+	static unsigned int WINAPI SystemUsageThread(LPVOID lpParam);
 
 	static bool	ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);
 	static bool	SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred);

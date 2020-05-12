@@ -144,9 +144,27 @@ bool IOCPManager::StartInGameProcessThread()
 		cout << "Create Thread Fail... " << endl;
 		return false;
 	}
-	cout << "Created Match Thread" << endl;
+	cout << "Created In Game Thread" << endl;
 
 	CloseHandle(hInGameThread);
+}
+
+bool IOCPManager::StartSystemUsageThread()
+{
+	// create thread
+	DWORD dwThreadId;
+	// begin thread
+	HANDLE hSystemThread = (HANDLE)_beginthreadex(NULL, 0, SystemUsageThread, NULL, 0, (unsigned int*)&dwThreadId);
+
+	// except error - for create thread
+	if (hSystemThread == INVALID_HANDLE_VALUE)
+	{
+		cout << "Create Thread Fail... " << endl;
+		return false;
+	}
+	cout << "Created System Usage Thread" << endl;
+
+	CloseHandle(hSystemThread);
 }
 
 bool IOCPManager::CloseIOCPServer()
@@ -296,6 +314,19 @@ unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
 unsigned int WINAPI IOCPManager::inGameProcessThread(LPVOID lpParam)
 {
 	InGameManager::GetInstance()->ProcessAllQueue();
+
+	return 0;
+}
+
+unsigned int WINAPI IOCPManager::SystemUsageThread(LPVOID lpParam)
+{
+	while (true)
+	{
+		cout << "CPU Usage : " << g_pSystemUsage->GetCpuUsage() << " %" << endl;
+		cout << "Memory Usage : " << g_pSystemUsage->GetMemoryUsage() << " MB" << endl;
+
+		Sleep(1500);
+	}
 
 	return 0;
 }

@@ -7,10 +7,15 @@
 #include "InGameManager.h"
 #include "GameDBManger.h"
 #include "Crypt.h"
+#include "SystemUsage.h"
 
 int main()
 {
 	timeBeginPeriod(1);
+
+	// system usage
+	g_pSystemUsage = new SystemUsage;
+	g_pSystemUsage->Init();
 
 	/// Global Managers initialize
 	g_pLogger = new Logger;
@@ -40,8 +45,8 @@ int main()
 	if (g_pIocpManager->StartMatchProcessThread() == false)
 		return -1;
 
-	//if (g_pIocpManager->StartInGameProcessThread() == false)
-	//	return -1;
+	if (g_pIocpManager->StartSystemUsageThread() == false)
+		return -1;
 
 	cout << "Start IOCP Server..." << endl;
 
@@ -71,6 +76,7 @@ int main()
 	delete g_pSessionManager;
 	delete g_pCrypt;
 	delete g_pLogger;
+	delete g_pSystemUsage;
 
 	timeEndPeriod(1);
 

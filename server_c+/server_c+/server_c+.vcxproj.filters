@@ -79,6 +79,9 @@
     <Filter Include="Crypt">
       <UniqueIdentifier>{6d8d2a29-85bd-46cc-b9eb-abfdb756c155}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SystemUsage">
+      <UniqueIdentifier>{042f94e9-ce75-4b8b-895c-8e5cf0b54b0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="Crypt.cpp">
       <Filter>Crypt</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemUsage.cpp">
+      <Filter>SystemUsage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +232,9 @@
     </ClInclude>
     <ClInclude Include="Crypt.h">
       <Filter>Crypt</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemUsage.h">
+      <Filter>SystemUsage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

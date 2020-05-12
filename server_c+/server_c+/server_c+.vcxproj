@@ -159,6 +159,7 @@
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="StageForest.cpp" />
     <ClCompile Include="StageBase.cpp" />
+    <ClCompile Include="SystemUsage.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +187,7 @@
     <ClInclude Include="StageForest.h" />
     <ClInclude Include="StageBase.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SystemUsage.h" />
     <ClInclude Include="TemplateSingleton.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
