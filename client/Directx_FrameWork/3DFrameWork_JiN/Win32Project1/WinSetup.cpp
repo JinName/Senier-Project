@@ -1,4 +1,5 @@
 #include "WinSetup.h"
+#include "Crypt.h"
 
 CWinSetup* g_pWinSetup = nullptr;
 
@@ -47,6 +48,8 @@ LRESULT WINAPI CWinSetup::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 			char* id = ConvertWCtoC(m_ID);
 			char* pw = ConvertWCtoC(m_PW);
+
+			g_pCrypt->Encrypt(pw);
 
 			SLOGIN login;
 			memset(&login, 0, sizeof(SLOGIN));

@@ -325,6 +325,10 @@ unsigned int WINAPI IOCPManager::SystemUsageThread(LPVOID lpParam)
 		cout << "CPU Usage : " << g_pSystemUsage->GetCpuUsage() << " %" << endl;
 		cout << "Memory Usage : " << g_pSystemUsage->GetMemoryUsage() << " MB" << endl;
 
+		char log[128];
+		sprintf(log, "CPU : %0.f % / Memory : %0.f MB", g_pSystemUsage->GetCpuUsage(), g_pSystemUsage->GetMemoryUsage());
+		g_pUsageLogger->file_write(LOGGER_LEVEL::info, log);
+
 		Sleep(1500);
 	}
 

@@ -2,6 +2,8 @@
 
 Logger* g_pLogger = nullptr;
 
+Logger* g_pUsageLogger = nullptr;
+
 Logger::Logger() : file_logger(nullptr)
 {
 	InitializeCriticalSection(&mCS);
@@ -12,12 +14,12 @@ Logger::~Logger()
 	DeleteCriticalSection(&mCS);
 }
 
-void Logger::Init(LOGGER_TYPE logger_type)
+void Logger::Init(LOGGER_TYPE logger_type, const std::string& _loggerName)
 {
 	switch (logger_type)
 	{
 	case LOGGER_TYPE::file:
-		set_file_logger();
+		set_file_logger(_loggerName);
 		break;
 	}
 }
@@ -44,9 +46,23 @@ bool Logger::set_file_logger()
 	return true;
 }
 
-bool Logger::set_file_logger(const std::string& loggerName, const spdlog::filename_t& fileName)
+bool Logger::set_file_logger(const std::string& _loggerName)
 {
-	file_logger = spdlog::basic_logger_mt(loggerName, fileName);
+	char filename[64];
+	struct tm* pTime;
+	time_t long_time;
+
+	time(&long_time);                     // 시간을 얻어와서
+	pTime = localtime(&long_time);        // local time으로 전환
+
+	// tm_year은 -1900된 값이고, tm_mon은 0부터 시작이다.
+	sprintf(filename, "logs/%02d%02d%02d_%s.txt",
+		pTime->tm_year - 100,
+		pTime->tm_mon + 1,
+		pTime->tm_mday,
+		_loggerName);
+
+	file_logger = spdlog::basic_logger_mt(_loggerName, filename);
 	spdlog::set_default_logger(file_logger);
 
 	return true;

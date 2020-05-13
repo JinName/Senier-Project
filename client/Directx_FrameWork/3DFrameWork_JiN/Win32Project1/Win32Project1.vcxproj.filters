@@ -97,6 +97,9 @@
     <Filter Include="Network\PacketManager">
       <UniqueIdentifier>{bb7e3810-b6f1-49b9-afb2-34c3245c38ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\Crypt">
+      <UniqueIdentifier>{e7e1a99e-171b-472d-a2f4-80a93ae4bb96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypt.cpp">
+      <Filter>Network\Crypt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypt.h">
+      <Filter>Network\Crypt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

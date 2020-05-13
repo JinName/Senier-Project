@@ -2,9 +2,11 @@
 
 GameDBManger* g_pGameDBManager = nullptr;
 
-bool GameDBManger::Login(const char* _id, const char* _pw)
+bool GameDBManger::Login(char* _id, char* _pw)
 {
 	char query[MAX_QUERY_LEN];
+
+	g_pCrypt->Decrypt(_pw);
 
 	sprintf_s(query, "select * from user_info where id = '%s' and pw = '%s'", _id, _pw);
 

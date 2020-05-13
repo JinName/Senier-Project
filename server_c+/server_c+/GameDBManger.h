@@ -1,5 +1,6 @@
 #pragma once
 #include "MYSQLManager.h"
+#include "Crypt.h"
 
 // GameDBManger
 // 게임에서 DB 관리를 위해 사용하는 클래스
@@ -11,7 +12,7 @@ public:
 	GameDBManger() {}
 	~GameDBManger() {}
 
-	bool	Login(const char* _id, const char* _pw);
+	bool	Login(char* _id, char* _pw);
 };
 
 //전역으로 사용하기 위해 extern 변수로 정의.

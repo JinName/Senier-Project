@@ -64,7 +64,7 @@ bool ClientSession::OnConnect(SOCKADDR_IN* addr)
 	// write log
 	char log[128];
 	sprintf(log, "Client Connected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
-	g_pLogger->file_write(LOGGER_LEVEL::info, log);
+	g_pConnLogger->file_write(LOGGER_LEVEL::info, log);
 
 	g_pSessionManager->IncreaseClientCount();
 

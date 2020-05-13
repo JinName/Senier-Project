@@ -1,7 +1,7 @@
 #include "WinSetup.h"
 #include "Network.h"
 #include "PacketManager.h"
-
+#include "Crypt.h"
 
 INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 {
@@ -10,6 +10,9 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 	g_pWinSetup = new CWinSetup(hInst);
 	g_pNetwork = new Network();
 	g_pPacketManager = new PacketManager();
+	g_pCrypt = new Crypt();
+
+	g_pCrypt->Init();
 
 	// run
 	g_pNetwork->Run();
@@ -20,6 +23,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 	
 	g_pPacketManager->SetStopFlag(true);
 
+	delete g_pCrypt;
 	delete g_pPacketManager;
 	delete g_pNetwork;
 	

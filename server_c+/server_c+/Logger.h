@@ -18,10 +18,10 @@ public:
 	Logger();
 	~Logger();
 
-	void Init(LOGGER_TYPE logger_type);
+	void Init(LOGGER_TYPE logger_type, const std::string& _loggerName);
 
 	bool set_file_logger();
-	bool set_file_logger(const std::string& loggerName, const spdlog::filename_t& fileName);
+	bool set_file_logger(const std::string& loggerName);
 	bool file_write(LOGGER_LEVEL level, const char* msg);
 
 	void console_write(LOGGER_LEVEL level, const char* msg);
@@ -34,7 +34,9 @@ private:
 	CRITICAL_SECTION mCS;
 };
 
-extern Logger* g_pLogger;
+extern Logger* g_pConnLogger;
+
+extern Logger* g_pUsageLogger;
 
 
 //spdlog::info("spdlogger...");

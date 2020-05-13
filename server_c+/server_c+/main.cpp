@@ -18,13 +18,15 @@ int main()
 	g_pSystemUsage->Init();
 
 	/// Global Managers initialize
-	g_pLogger = new Logger;
+	g_pConnLogger = new Logger;
+	g_pUsageLogger = new Logger;
 	g_pCrypt = new Crypt;
 	g_pSessionManager = new SessionManager;
 	g_pIocpManager = new IOCPManager;
 	g_pGameDBManager = new GameDBManger;
 
-	g_pLogger->Init(LOGGER_TYPE::file);
+	g_pConnLogger->Init(LOGGER_TYPE::file, "connect_log");
+	g_pUsageLogger->Init(LOGGER_TYPE::file, "usage_log");
 	g_pCrypt->Init();
 	g_pGameDBManager->Init();
 	PacketManager::GetInstance()->Init();
@@ -75,7 +77,8 @@ int main()
 	delete g_pIocpManager;
 	delete g_pSessionManager;
 	delete g_pCrypt;
-	delete g_pLogger;
+	delete g_pConnLogger;
+	delete g_pUsageLogger;
 	delete g_pSystemUsage;
 
 	timeEndPeriod(1);
