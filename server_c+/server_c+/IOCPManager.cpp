@@ -244,12 +244,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		if (ret == 0 || dwBytesTransferred == 0)			// dwBytesTransferred == 0 : 전송받은 데이터가 없음
 		{
 			cout << "Recive Data is zero..." << endl;
-			//if (overlapped != nullptr)
-			//{
-			//	overlapped->mIOType = IOTYPE::IO_DISCONNECT;
-			//}
-			//client->DisConnect();
-			//g_pSessionManager->DeleteClientSession(client);
+
 			DisconnectCompletion(client, overlapped, dwBytesTransferred);
 
 			continue;

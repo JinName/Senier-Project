@@ -31,9 +31,6 @@ bool MatchManager::PushBackClient(ClientSession* client)
 		return false;
 	}
 
-	// 같은 클라이언트가 중복해서 매칭패킷을 보낼경우
-	//std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
-
 	if (CheckExistClient(client))
 	{
 		cout << "[FAIL] : MatchManager > PushBackClient() > client already in match > return false" << endl;

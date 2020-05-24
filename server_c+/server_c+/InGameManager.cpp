@@ -294,14 +294,6 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 		room->SetPlayer(playerChar.mPlayerIndex, playerChar);
 
-		// 연산 처리 후 클라이언트에 플레이어 현재 정보에 대한 패킷 전송
-		//playerChar.mPosX = room->GetGameLogicManager()->GetPlayer(playerChar.mPlayerIndex)->GetPosition().x;
-		//playerChar.mPosY = room->GetGameLogicManager()->GetPlayer(playerChar.mPlayerIndex)->GetPosition().y;
-		//PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(0), (char*)&playerChar, sizeof(SCHARACTER), PROTOCOL::BRCAST_MOVE_RP);
-		//PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(1), (char*)&playerChar, sizeof(SCHARACTER), PROTOCOL::BRCAST_MOVE_RP);
-		//room->GetClientSession(0)->Send();
-		//room->GetClientSession(1)->Send();
-
 		break;
 	}
 
@@ -315,7 +307,6 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 		room->SetInitComplete(sInit.mPlayerIndex, sInit.mComplete);
 
-		/////////////// 디버그 지점 //////////////////////////
 		if (room->GetInitComplete(0) == true && room->GetInitComplete(1) == true)
 		{
 			//room->StartGameLogicThread();

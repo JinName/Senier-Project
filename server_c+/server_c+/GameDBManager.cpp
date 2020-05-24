@@ -31,7 +31,6 @@ bool GameDBManager::Login(ClientSession* _client, char* _id, char* _pw)
 	}	
 
 	// 필드 2번째 값인 is_login 이 true인지 확인
-	//sprintf(isLogin, "%s", row[2]);
 	if (strcmp(row[2], "1") == 0)
 	{
 		cout << "GameDBManager > Login() > ALREADY LOGIN.." << endl;

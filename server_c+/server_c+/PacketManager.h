@@ -69,5 +69,3 @@ private:
 	bool mStopFlag;
 };
 
-//PacketManager* TemplateSingleton<PacketManager>::m_pInstance = NULL;
-
