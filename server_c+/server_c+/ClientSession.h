@@ -66,6 +66,10 @@ private:
 	// game information
 	int				mRoomNum;		// -1 : not in game
 	int				mPlayerIndex;	// -1 : not in game
+
+	char			mID[MAX_ID_LEN];
+	bool			mIsLogin;
+
 public:
 	ClientSession(SOCKET sock);
 	~ClientSession() {}
@@ -96,5 +100,14 @@ public:
 
 	bool			SetSendOverlapped();
 	bool			SetSendOverlapped(char* buffer, int bufferSize);
+
+	// id
+	void			SetID(char* _id) { strcpy(mID, _id); }
+	char*			GetID() { return mID; }
+	void			CleanID() { memset(mID, 0, MAX_ID_LEN); }
+
+	// login
+	void			SetIsLogin(bool _isLogin) { mIsLogin = _isLogin; }
+	bool			GetIsLogin() { return mIsLogin; }
 };
 

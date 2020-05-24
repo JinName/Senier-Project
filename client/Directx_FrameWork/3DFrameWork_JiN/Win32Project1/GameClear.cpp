@@ -18,6 +18,10 @@ void CGameClear::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 
 void CGameClear::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 {
+	if (CInput::Get_Instance()->IsKeyPressed(DIK_SPACE))
+	{
+		m_bRestart = true;
+	}
 }
 
 void CGameClear::OnRender(LPDIRECT3DDEVICE9 _pDevice)

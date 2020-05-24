@@ -390,6 +390,15 @@ bool IOCPManager::DisconnectCompletion(ClientSession* client, SOVERLAPPED* overl
 		InGameManager::GetInstance()->OutGame(client->GetRoomNum());
 	}	
 
+	if (client->GetIsLogin())
+	{
+		if (MatchManager::GetInstance()->CheckExistClient(client))
+		{
+			MatchManager::GetInstance()->DeleteClient(client);
+		}
+		g_pGameDBManager->Logout(client);
+	}
+
 	// disconnet
 	client->DisConnect();
 	g_pSessionManager->DeleteClientSession(client);

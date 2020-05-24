@@ -160,5 +160,7 @@ public:
 	void Do_Right();
 	void Do_Jump();
 	void Do_Not_Jump();
+
+	void Set_CurrentDirection(int _iCurrentDirection) { currentDirection = _iCurrentDirection; }
 };
 

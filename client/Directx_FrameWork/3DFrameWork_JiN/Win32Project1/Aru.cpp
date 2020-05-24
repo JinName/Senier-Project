@@ -370,7 +370,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 {
 	isCrash_Tile();
-	//isCrash_Enemy();
+	isCrash_Enemy();
 	//isCrash_Potion();
 
 	Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
@@ -387,9 +387,9 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 	if (m_bIsPlayer)
 		Gravity();
 
-	//Attack_Cooltime();
-	//Skill_Update();
-	//Skill_Destory();
+	Attack_Cooltime();
+	Skill_Update();
+	Skill_Destory();
 	
 	Set_Animation();
 
@@ -506,7 +506,7 @@ VOID CAru::KeyInput(LPDIRECT3DDEVICE9 _pDevice)
 	{
 		if (CInput::Get_Instance()->IsKeyPressed(DIK_Z) == true)
 		{
-			//Do_Attack();
+			Do_Attack();
 			sChar.mAttack = true;
 			sChar.mCharState = CHARACTER_STATE::ATTACK;
 			m_bAnyKeyDown = true;

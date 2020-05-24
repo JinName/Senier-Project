@@ -47,11 +47,13 @@ enum class PROTOCOL
 	
 	// GAME START, END
 	GAMESTART_CM, GAMEEND_CM, INITCOMPLETE_RQ,
+	PLAYER_DIE_RQ,
 
 	// PLAY
 	P1_MOVE_RQ, P1_MOVE_RP, P2_MOVE_RQ, P2_MOVE_RP,
 	MOVE_RQ, MOVE_RP, BRCAST_MOVE_RP,
 	JUMP_RQ,
+	CRASH_RQ,
 
 	// UPDATE
 	UPDATE_NF
@@ -132,4 +134,16 @@ struct SLOGIN
 {
 	char mID[MAX_LEN_USER_INFO];
 	char mPW[MAX_LEN_USER_INFO];
+};
+
+// crash
+struct SCRASH
+{
+	int mPlayerIndex;
+};
+
+// player die
+struct SPLAYERDIE
+{
+	int mPlayerIndex;
 };

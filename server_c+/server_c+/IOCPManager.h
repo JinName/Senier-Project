@@ -6,6 +6,7 @@
 #include "MatchManager.h"
 #include "InGameManager.h"
 #include "SystemUsage.h"
+#include "GameDBManager.h"
 
 class IOCPManager
 {

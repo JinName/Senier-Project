@@ -18,10 +18,10 @@ public:
 	Logger();
 	~Logger();
 
-	void Init(LOGGER_TYPE logger_type, const std::string& _loggerName);
+	void Init(LOGGER_TYPE logger_type, const char* _loggerName);
 
 	bool set_file_logger();
-	bool set_file_logger(const std::string& loggerName);
+	bool set_file_logger(const char* loggerName);
 	bool file_write(LOGGER_LEVEL level, const char* msg);
 
 	void console_write(LOGGER_LEVEL level, const char* msg);

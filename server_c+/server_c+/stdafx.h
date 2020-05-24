@@ -22,6 +22,7 @@ using namespace std;
 #define MAX_MSG_LEN		256
 #define LOCAL_IP		"127.0.0.1"
 #define MAX_BUFSIZE		1024
+#define MAX_ID_LEN		16
 
 struct VECTOR2
 {

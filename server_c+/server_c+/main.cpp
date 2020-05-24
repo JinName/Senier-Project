@@ -5,7 +5,7 @@
 #include "PacketManager.h"
 #include "MatchManager.h"
 #include "InGameManager.h"
-#include "GameDBManger.h"
+#include "GameDBManager.h"
 #include "Crypt.h"
 #include "SystemUsage.h"
 
@@ -23,7 +23,7 @@ int main()
 	g_pCrypt = new Crypt;
 	g_pSessionManager = new SessionManager;
 	g_pIocpManager = new IOCPManager;
-	g_pGameDBManager = new GameDBManger;
+	g_pGameDBManager = new GameDBManager;
 
 	g_pConnLogger->Init(LOGGER_TYPE::file, "connect_log");
 	g_pUsageLogger->Init(LOGGER_TYPE::file, "usage_log");

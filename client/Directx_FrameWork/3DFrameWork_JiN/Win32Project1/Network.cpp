@@ -188,7 +188,9 @@ bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool 
 	memset(buffer, 0, MAX_BUFSIZE);
 
 	memcpy(buffer, (char*)&head, sizeof(SHEAD));
-	memcpy(buffer + sizeof(SHEAD), _data, _dataSize);
+
+	if (_data != NULL)
+		memcpy(buffer + sizeof(SHEAD), _data, _dataSize);
 
 	// 완성된 패킷 전송
 	if (SOCKET_ERROR == send(m_ClientSocket, buffer, bufferSize, 0))

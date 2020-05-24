@@ -29,13 +29,6 @@ void InGameRoom::Clean()
 
 void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
 {
-	//mPlayerInfo[_playerIndex].SetDirection(_charPacket.mDirectionX, 0.0f);
-
-	//if (_charPacket.mLeft)
-	//	mPlayerInfo[_playerIndex].Do_Left();
-	//else if (_charPacket.mRight)
-	//	mPlayerInfo[_playerIndex].Do_Right();
-
 	if (_charPacket.mLeft)
 		mGameLogicManager.GetPlayer(_playerIndex)->Do_Left();
 	else if (_charPacket.mRight)

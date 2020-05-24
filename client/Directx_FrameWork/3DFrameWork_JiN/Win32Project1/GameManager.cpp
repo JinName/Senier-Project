@@ -91,6 +91,15 @@ void CGameManager::Update()
 		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
+	else if (m_pGameBase->Get_GameScene_Num() == GAMECLEAR && m_pGameBase->Get_Change_Restart())
+	{
+		m_pGameBase->Cleanup();
+		delete m_pGameBase;
+
+		m_pGameBase = new CTitle;
+		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->InitD3D(m_hWnd);
+	}
 }
 
 void CGameManager::Render()
@@ -131,6 +140,20 @@ bool CGameManager::GameOver()
 	return true;
 }
 
+bool CGameManager::GameClear()
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	m_iPlayerIndex = -1;
+	m_pGameBase->Set_GameClear(true);
+
+	return true;
+}
+
 bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 {
 	if (m_pGameBase == NULL)
@@ -156,9 +179,29 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 	{
 		player->Do_Stand();
 	}
+	
+	if (_sCharPacket.mAttack == true)
+	{
+		player->Do_Attack();
+	}
 
-	//player->Set_Direction(_sCharPacket.mDirectionX, 0.0f);
-	//player->Set_Animation((int)_sCharPacket.mCharState);
+	return true;
+}
+
+bool CGameManager::SetPlayerState(SCRASH _sCrash)
+{
+	if (m_pGameBase == NULL)
+	{
+		cout << "GameBase is nullptr.." << endl;
+		return false;
+	}
+
+	CStage* stage = (CStage*)m_pGameBase;
+	CAru* player = stage->GetCharacter(_sCrash.mPlayerIndex);
+
+	player->Set_Active_Collision(false);
+
+	return true;
 }
 
 bool CGameManager::SetPlayerPosition(SCHARACTER _sCharPacket)

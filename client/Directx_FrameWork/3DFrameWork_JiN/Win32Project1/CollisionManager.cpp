@@ -175,3 +175,59 @@ void CCollisionManager::Charater_Potion_Check(CAru &_aru, list<CPotion> &_Potion
 		}
 	}
 }
+
+void CCollisionManager::Character_EnemyAttack_Check(int _iPlayerIndex, CAru& _aru, list<CFireBall*>& _FireBall_List)
+{
+	std::list<CFireBall*>::iterator fire_begin_iter = _FireBall_List.begin();
+	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.end();
+
+	if ((&_aru)->Get_Active_Collision())
+	{
+		while (fire_begin_iter != fire_end_iter)
+		{
+			if (m_boxCollider.isIntersect((*fire_begin_iter)->Get_Collider(), (&_aru)->Get_Collider()))
+			{
+				// 플레이어 충돌
+				(&_aru)->Set_Active_Collision(false);
+				(*fire_begin_iter)->Set_isCollision(true);
+
+				if ((*fire_begin_iter)->Get_Position().x < (&_aru)->Get_Position().x)
+					(&_aru)->Set_CurrentDirection(-1);
+				else if ((*fire_begin_iter)->Get_Position().x > (&_aru)->Get_Position().x)
+					(&_aru)->Set_CurrentDirection(1);
+
+				// 충돌했음을 상대 플레이어에게 알림
+				SCRASH sCrash;
+				memset(&sCrash, 0, sizeof(SCRASH));
+				sCrash.mPlayerIndex = _iPlayerIndex;
+
+				g_pNetwork->SendPacket(PROTOCOL::CRASH_RQ, (char*)&sCrash, sizeof(SCRASH), false);
+			}
+			++fire_begin_iter;
+		}
+	}
+}
+
+void CCollisionManager::CharAttack_Enemy_Check(CAru& _aru, list<CFireBall*>& _FireBall_List)
+{
+	std::list<CFireBall*>::iterator fire_begin_iter = _FireBall_List.begin();
+	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.end();
+
+	if ((&_aru)->Get_Active_Collision())
+	{
+		while (fire_begin_iter != fire_end_iter)
+		{
+			if (m_boxCollider.isIntersect((*fire_begin_iter)->Get_Collider(), (&_aru)->Get_Collider()))
+			{
+				if ((*fire_begin_iter)->Get_Position().x < (&_aru)->Get_Position().x)
+					(&_aru)->Set_CurrentDirection(-1);
+				else if ((*fire_begin_iter)->Get_Position().x > (&_aru)->Get_Position().x)
+					(&_aru)->Set_CurrentDirection(1);
+
+				// 플레이어 충돌
+				(*fire_begin_iter)->Set_isCollision(true);
+			}
+			++fire_begin_iter;
+		}
+	}
+}

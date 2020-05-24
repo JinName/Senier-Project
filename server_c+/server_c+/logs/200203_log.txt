@@ -1,4 +1,0 @@
-[2020-02-03 03:27:09.751] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 55566
-[2020-02-03 03:27:12.323] [basic_logger] [info] Client Connected IP = 127.0.0.1 / PORT = 55568
-[2020-02-03 03:27:33.854] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 55568
-[2020-02-03 03:27:34.497] [basic_logger] [info] Client Disconnected IP = 127.0.0.1 / PORT = 55566

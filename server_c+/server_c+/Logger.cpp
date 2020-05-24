@@ -1,6 +1,6 @@
 #include "Logger.h"
 
-Logger* g_pLogger = nullptr;
+Logger* g_pConnLogger = nullptr;
 
 Logger* g_pUsageLogger = nullptr;
 
@@ -14,7 +14,7 @@ Logger::~Logger()
 	DeleteCriticalSection(&mCS);
 }
 
-void Logger::Init(LOGGER_TYPE logger_type, const std::string& _loggerName)
+void Logger::Init(LOGGER_TYPE logger_type, const char* _loggerName)
 {
 	switch (logger_type)
 	{
@@ -46,7 +46,7 @@ bool Logger::set_file_logger()
 	return true;
 }
 
-bool Logger::set_file_logger(const std::string& _loggerName)
+bool Logger::set_file_logger(const char* _loggerName)
 {
 	char filename[64];
 	struct tm* pTime;

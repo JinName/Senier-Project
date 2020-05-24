@@ -112,7 +112,20 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		memset(&end, 0, sizeof(SGAMEEND));
 		memcpy(&end, recvBuffer + sizeof(SHEAD), sizeof(SGAMEEND));
 
-		g_pGameManager->GameOver();
+		if (g_pNetwork->GetPlayerIndex() == 0)
+		{
+			if (end.mGameEndState == GAMEEND_STATE::P1_WIN)
+				g_pGameManager->GameClear();
+			else
+				g_pGameManager->GameOver();
+		}
+		else if (g_pNetwork->GetPlayerIndex() == 1)
+		{
+			if (end.mGameEndState == GAMEEND_STATE::P2_WIN)
+				g_pGameManager->GameClear();
+			else
+				g_pGameManager->GameOver();
+		}	
 
 		break;
 	}
@@ -131,6 +144,17 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 	case PROTOCOL::LOGIN_OK:
 	{
 		g_pWinSetup->Init();
+
+		break;
+	}
+
+	case PROTOCOL::CRASH_RQ:
+	{
+		SCRASH crashPlayer;
+		memset(&crashPlayer, 0, sizeof(SCRASH));
+		memcpy(&crashPlayer, recvBuffer + sizeof(SHEAD), sizeof(SCRASH));
+
+		g_pGameManager->SetPlayerState(crashPlayer);
 
 		break;
 	}

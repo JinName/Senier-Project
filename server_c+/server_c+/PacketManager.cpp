@@ -1,7 +1,7 @@
 #include "PacketManager.h"
 #include "MatchManager.h"
 #include "InGameManager.h"
-#include "GameDBManger.h"
+#include "GameDBManager.h"
 
 PacketManager::PacketManager() : mStopFlag(false)
 {
@@ -166,7 +166,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 		memset(&login, 0, sizeof(SLOGIN));
 		memcpy(&login, pack.mBuffer + sizeof(SHEAD), sizeof(SLOGIN));
 
-		bool loginResult = g_pGameDBManager->Login(login.mID, login.mPW);
+		bool loginResult = g_pGameDBManager->Login(pack.mSession, login.mID, login.mPW);
 
 		// 성공시 LOGIN_OK, 실패시 LOGIN_DN 전송
 		if (loginResult)
@@ -185,13 +185,6 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::MOVE_RQ:
 	{
-		// 1. MOVE_RQ 를 보낸 클라이언트에 대한 처리
-		// 1-1. 서버 내에 각 플레이어 위치연산
-		// 1-2. 클라이언트에 이동 허가 패킷 전송 (MOVE_RP)
-
-		// 2. 다른 클라이언트에서의 처리
-		// 2-1. 현재 접속 중인 다른 클라이언트로 MOVE_RQ 를 요청한 플레이어의 상태 브로드캐스팅
-
 		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
 
 		if (enemyPlayer == nullptr)
@@ -205,5 +198,50 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 		break;
 	}
+
+	case PROTOCOL::CRASH_RQ:
+	{
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+
+		if (enemyPlayer == nullptr)
+		{
+			cout << "enemy player is null.." << endl;
+			break;
+		}
+
+		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCRASH));
+		enemyPlayer->Send();
+
+		break;
+	}
+
+	case PROTOCOL::PLAYER_DIE_RQ:
+	{
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+
+		if (enemyPlayer == nullptr)
+		{
+			cout << "enemy player is null.." << endl;
+			break;
+		}
+
+		SPLAYERDIE sDie;
+		memset(&sDie, 0, sizeof(SPLAYERDIE));
+		memcpy(&sDie, pack.mBuffer + sizeof(SHEAD), sizeof(SPLAYERDIE));
+
+		SGAMEEND sGameEnd;
+		memset(&sGameEnd, 0, sizeof(SGAMEEND));
+
+		if (sDie.mPlayerIndex == 0)
+			sGameEnd.mGameEndState = GAMEEND_STATE::P2_WIN;
+		else if(sDie.mPlayerIndex == 1)
+			sGameEnd.mGameEndState = GAMEEND_STATE::P1_WIN;
+
+		PacketManager::GetInstance()->MakeSendPacket(enemyPlayer, (char*)&sGameEnd, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+		enemyPlayer->Send();
+
+		break;
+	}
+
 	}
 }

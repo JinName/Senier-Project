@@ -2,6 +2,7 @@
 #include "Header.h"
 #include "Sprite.h"
 #include "GameBase.h"
+#include "DirectInput.h"
 
 class CGameClear : public CGameBase
 {

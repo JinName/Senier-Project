@@ -69,6 +69,17 @@ bool MatchManager::CheckExistClient(ClientSession* client)
 	return true;
 }
 
+bool MatchManager::DeleteClient(ClientSession* client)
+{
+	std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
+
+	mMatchWaitList.erase(iter);
+
+	cout << "[INFO] : MatchManager > DeleteClient() > delete clientsession from wait list.." << endl;
+
+	return false;
+}
+
 void MatchManager::ProcessMatchList()
 {
 	// 대기 리스트에 두명 이상이 존재할 경우

@@ -2,11 +2,13 @@
 #include "IOCPManager.h"
 #include "SessionManager.h"
 
-ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock), mRoomNum(-1)
+ClientSession::ClientSession(SOCKET sock) : mIsConnected(false), mSocket(sock), mRoomNum(-1), mIsLogin(false)
 {
 	memset(&mClientAddr, 0, sizeof(SOCKADDR_IN));	// use memset to initialize sockaddr_in value
 	memset(&mRecvOverlapped, 0, sizeof(SOVERLAPPED));
 	memset(&mSendOverlapped, 0, sizeof(SOVERLAPPED));
+
+	memset(mID, 0, MAX_ID_LEN);
 }
 
 /*
@@ -160,7 +162,7 @@ bool ClientSession::DisConnect()
 	// write log
 	char log[128];
 	sprintf(log, "Client Disconnected IP = %s / PORT = %d", inet_ntoa(mClientAddr.sin_addr), ntohs(mClientAddr.sin_port));
-	g_pLogger->file_write(LOGGER_LEVEL::info, log);
+	g_pConnLogger->file_write(LOGGER_LEVEL::info, log);
 
 	g_pSessionManager->DecreaseClientCount();
 

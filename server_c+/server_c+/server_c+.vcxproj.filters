@@ -144,14 +144,14 @@
     <ClCompile Include="MYSQLManager.cpp">
       <Filter>Network\MYSQLManager</Filter>
     </ClCompile>
-    <ClCompile Include="GameDBManger.cpp">
-      <Filter>Network\MYSQLManager\GameDBManager</Filter>
-    </ClCompile>
     <ClCompile Include="Crypt.cpp">
       <Filter>Crypt</Filter>
     </ClCompile>
     <ClCompile Include="SystemUsage.cpp">
       <Filter>SystemUsage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDBManager.cpp">
+      <Filter>Network\MYSQLManager\GameDBManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -227,22 +227,22 @@
     <ClInclude Include="MYSQLManager.h">
       <Filter>Network\MYSQLManager</Filter>
     </ClInclude>
-    <ClInclude Include="GameDBManger.h">
-      <Filter>Network\MYSQLManager\GameDBManager</Filter>
-    </ClInclude>
     <ClInclude Include="Crypt.h">
       <Filter>Crypt</Filter>
     </ClInclude>
     <ClInclude Include="SystemUsage.h">
       <Filter>SystemUsage</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <ClInclude Include="GameDBManager.h">
+      <Filter>Network\MYSQLManager\GameDBManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -18,11 +18,17 @@ bool CStage::GameClear()
 
 bool CStage::GameOver()
 {
-	if (m_Player[0].Get_HP() == 0)
-		return true;
+	if (m_Player[m_iPlayerIndex].Get_HP() == 0 ||
+		m_Player[m_iPlayerIndex].Get_Position().y > WND_HEIGHT + m_fBunziHeight)
+	{
+		SPLAYERDIE sDie;
+		memset(&sDie, 0, sizeof(SPLAYERDIE));
+		sDie.mPlayerIndex = m_iPlayerIndex;
 
-	if (m_Player[0].Get_Position().y > WND_HEIGHT + m_fBunziHeight)
+		g_pNetwork->SendPacket(PROTOCOL::PLAYER_DIE_RQ, (char*)&sDie, sizeof(SPLAYERDIE), false);
+
 		return true;
+	}
 
 	return false;
 }
@@ -198,6 +204,19 @@ void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 
 	// 매 프래임 마다 충돌체크할 것들
 	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[m_iPlayerIndex]);
+
+	if (m_iPlayerIndex == 0)
+	{
+		m_CollisionMngr.Character_EnemyAttack_Check(m_iPlayerIndex, m_Player[m_iPlayerIndex], m_Player[1].Get_FireBall_List());
+		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[1], m_Player[m_iPlayerIndex].Get_FireBall_List());
+	}
+	else if (m_iPlayerIndex == 1)
+	{
+		m_CollisionMngr.Character_EnemyAttack_Check(m_iPlayerIndex, m_Player[m_iPlayerIndex], m_Player[0].Get_FireBall_List());
+		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[0], m_Player[m_iPlayerIndex].Get_FireBall_List());
+	}
+
+	
 	//m_CollisionMngr.CharAttack_Monster_Check(m_Player[0].Get_FireBall_List(), m_Monster_List);
 	//m_CollisionMngr.Charater_Monster_Check(m_Player[0], m_Monster_List);
 	//m_CollisionMngr.Charater_Potion_Check(m_Player[0], m_Potion_List);
