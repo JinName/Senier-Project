@@ -83,6 +83,7 @@ private:
 	bool m_bTransfered;
 	
 	int m_iPlayerIndex;
+
 public:
 	CAru();
 	~CAru();

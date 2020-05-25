@@ -12,19 +12,19 @@ void CAru::Set_Animation()
 {
 	if (m_bAttacking == false)
 	{
-		if (m_vDirection.x == 0.0f && m_vDirection.y == 0.0f)
+		if (m_vDirection.x == 0.0000f && m_vDirection.y == 0.0000f)
 		{
 			m_iAnimate_Num = 0;
 		}
-		else if (m_vDirection.y < 0.0f)
+		else if (m_vDirection.y < 0.0000f)
 		{
 			m_iAnimate_Num = 1;
 		}
-		else if (m_vDirection.y > 0.0f)
+		else if (m_vDirection.y > 0.0000f)
 		{
 			m_iAnimate_Num = 2;
 		}
-		else if (m_vDirection.x > 0.0f || m_vDirection.x < 0.0f)
+		else if (m_vDirection.x > 0.0000f || m_vDirection.x < 0.0000f)
 		{
 			m_iAnimate_Num = 3;
 		}
@@ -48,19 +48,19 @@ void CAru::Set_Animation(int _iAnimate_Num)
 	switch (_iAnimate_Num)
 	{
 	case STAND:
-		m_vDirection = { 0.0f, 0.0f };
+		m_vDirection = { 0.0000f, 0.0000f };
 		m_b_isRunning = false;
 		m_Run_Particle_Sprite.Reset_Sprite();
 		break;
 
 	case LEFT:
-		m_vDirection.x = -1.0f;
+		m_vDirection.x = -1.0000f;
 		m_b_isRunning = true;
 		currentDirection = -1;
 		break;
 
 	case RIGHT:
-		m_vDirection.x = 1.0f;
+		m_vDirection.x = 1.0000f;
 		m_b_isRunning = true;
 		currentDirection = 1;
 		break;
@@ -119,8 +119,8 @@ void CAru::Jump()
 			{
 				//m_fOld_Pos_y = m_vPos.y;
 				m_bCollision_is_Possible = false;
-				m_fGravity_Accel = 0.0f;
-				velocity = 0.0f;
+				m_fGravity_Accel = 0.0000f;
+				velocity = 0.0000f;
 				m_bOld_Check = true;
 			}
 			m_vPos.y -= m_fJump_Power;
@@ -138,14 +138,14 @@ void CAru::Gravity()
 
 	if (!isVertical)
 	{
-		velocity += 0.0098f * (float)TempTime / 60.0f * 2.0f;
+		velocity += 0.0098f * (float)TempTime / 60.0000f * 2.0000f;
 		m_fGravity_Accel = velocity * (float)TempTime * m_fCharacter_mass;
 		m_vPos.y = m_vPos.y + m_fGravity_Accel;
 	}
 	else
 	{
-		m_fGravity_Accel = 0.0f;
-		velocity = 0.0f;
+		m_fGravity_Accel = 0.0000f;
+		velocity = 0.0000f;
 	}
 }
 
@@ -186,12 +186,12 @@ void CAru::isCrash_Enemy()
 		}
 		// 밀려남
 		m_vPos.x = m_vPos.x + -currentDirection * m_fCollision_Power;
-		m_fCollision_Power -= 1.0f;
+		m_fCollision_Power -= 1.0000f;
 		// 어느정도 밀려나면 몬스터와 충돌 가능 상태로 전환
 		if (m_fCollision_Power < 0)
 		{
 			m_bAfter_Collision_Setting = false;
-			m_fCollision_Power = 10.0f;
+			m_fCollision_Power = 10.0000f;
 			m_bActive_Collision = true;
 		}
 	}
@@ -302,11 +302,11 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_iJump = 0;
 	m_fSpeed = 3.0f;
 	m_fJump_Power = 4.5f;
-	m_fGravity_Accel = 0.0f;
+	m_fGravity_Accel = 0.0000f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
-	m_fCharacter_mass = 4.0f;
-	m_fCollision_Power = 15.0f; // 충돌시 밀려나는 힘
+	m_fCharacter_mass = 4.0000f;
+	m_fCollision_Power = 15.0000f; // 충돌시 밀려나는 힘
 
 	isVertical = false; // 수직 충돌
 	isHorizontal = false; // 수평 충돌
@@ -331,7 +331,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_bCollision_is_Possible = true; // 점프 중일때 false
 	m_b_isRunning = false;
 	m_bJump = false;
-	m_fOld_Pos_y = 0.0f;
+	m_fOld_Pos_y = 0.0000f;
 	m_bOld_Check = false;
 
 	// 마지막 움직인 방향 ( 좌우 스프라이트 반전용 )
@@ -341,12 +341,12 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_iAnimate_Num = 0;
 
 	dwOldtime = GetTickCount();
-	velocity = 0.0f;
+	velocity = 0.0000f;
 
 	//FireBall Cooltime
-	m_fAttack_Cooltime = 1.0f;
+	m_fAttack_Cooltime = 1.0000f;
 	m_bAttack_Lock = false;
-	m_fBefore_Clock = 0.0f;
+	m_fBefore_Clock = 0.0000f;
 
 	// 캐릭터 스탠드 스프라이트
 	m_sprite[STAND].Create_Sprite(_pDevice, L"2D_Sprites\\Aru_stand_8peaces.bmp", 512, 64, 8, D3DCOLOR_XRGB(0, 170, 255));
@@ -363,7 +363,7 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 
 	m_bAnyKeyDown = false;
 	m_bTransfered = false;
-	//memset(&m_sCharPacket, 0, sizeof(SCHARACTER));
+
 	m_iPlayerIndex = g_pNetwork->GetPlayerIndex();
 }
 
@@ -382,10 +382,12 @@ void CAru::Update(LPDIRECT3DDEVICE9 _pDevice)
 
 		if (m_bIsPlayer)
 			Jump();
+		
 	}
 
 	if (m_bIsPlayer)
 		Gravity();
+
 
 	Attack_Cooltime();
 	Skill_Update();
@@ -566,22 +568,24 @@ void CAru::Do_Attack()
 
 void CAru::Do_Left()
 {
+	m_vDirection.x = -1.0f;
 	if (m_bIsPlayer)
 	{
-		m_vPos.x -= m_fSpeed;
+		m_vPos.x += m_vDirection.x * m_fSpeed;
 	}
-	m_vDirection.x = -1.0f;
+	
 	m_b_isRunning = true;
 	currentDirection = -1;
 }
 
 void CAru::Do_Right()
 {
+	m_vDirection.x = 1.0f;
 	if (m_bIsPlayer)
 	{
-		m_vPos.x += m_fSpeed;
+		m_vPos.x += m_vDirection.x * m_fSpeed;
 	}
-	m_vDirection.x = 1.0f;
+	
 	m_b_isRunning = true;
 	currentDirection = 1;
 }

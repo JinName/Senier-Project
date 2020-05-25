@@ -69,7 +69,7 @@ void CFireBall::Init(LPDIRECT3DDEVICE9 _pDevice, D3DXVECTOR3 _vPos, int _iDirect
 	m_vPos = _vPos;
 	m_iDirection = _iDirection;
 	m_fDamage = 3.0f;
-	m_fSpeed = 10.0f;
+	m_fSpeed = 7.0f;
 	m_b_is_Collision = false;
 	m_bHit_Ani = false;
 	m_bCollision_is_Possible = true;
