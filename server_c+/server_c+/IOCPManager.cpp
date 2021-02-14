@@ -339,8 +339,20 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 		return false;
 	}
 
-	// 완료된 recv 에 대한 처리 부분 ////////////////////////
-	PacketManager::GetInstance()->Enqueue(client, overlapped->mBuffer);
+	// 1. 들어온 버퍼 사이즈만큼 링버퍼 크기 수정
+	client->CompleteRecv(dwBytesTransferred);
+
+	// 2. 완전한 패킷인지 확인
+	// 2-1. 완전한 패킷이면, 데이터 처리 진행
+	// 2-2. 완전한 패킷이 아니면, 데이터 처리 보류하고 다시 Recv 상태로 넘어감
+	ClientPacket pack;
+
+	pack.mSession = client;
+	bool popResult = client->PopBuffer(pack.mBuffer);	
+
+	// 완료된 pop data 에 대한 처리 부분 ////////////////////
+	if (popResult)
+		PacketManager::GetInstance()->Enqueue(pack);
 	/////////////////////////////////////////////////////////
 
 	return client->Recv();

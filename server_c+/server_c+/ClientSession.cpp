@@ -92,10 +92,18 @@ bool ClientSession::Recv()
 	if (!IsConnected())
 		return false;	
 
+	if (mRingBuffer.GetAvailableBufferSize() == 0)
+	{
+		cout << "[return false] : ClientSession >> Recv() / less buffer size" << endl;
+		return false;
+	}
+
 	DWORD flags = 0;
 	DWORD recvBytes = 0;
-	mRecvOverlapped.mWSABuf.buf = mRecvOverlapped.mBuffer;
-	mRecvOverlapped.mWSABuf.len = MAX_BUFSIZE;
+	//mRecvOverlapped.mWSABuf.buf = mRecvOverlapped.mBuffer;
+	//mRecvOverlapped.mWSABuf.len = MAX_BUFSIZE;
+	mRecvOverlapped.mWSABuf.buf = mRingBuffer.GetWritablePointer();
+	mRecvOverlapped.mWSABuf.len = mRingBuffer.GetAvailableBufferSize();
 	mRecvOverlapped.mIOType = IOTYPE::IO_RECV;	
 
 	// WSARecv : WSA_IO_PENDING - success message
@@ -191,6 +199,47 @@ bool ClientSession::SetSendOverlapped(char* buffer, int bufferSize)
 	memcpy(mSendOverlapped.mBuffer, buffer, bufferSize);
 	mSendOverlapped.mWSABuf.len = MAX_BUFSIZE;
 	mSendOverlapped.mWSABuf.buf = mSendOverlapped.mBuffer;
+
+	return true;
+}
+
+void ClientSession::CompleteRecv(DWORD _dataSize)
+{
+	mRingBuffer.CommitDataSize(_dataSize);
+}
+
+bool ClientSession::PopBuffer(char* _outBuffer)
+{
+	// head data peek 을 위한 임시 배열
+	char tempHead[sizeof(SHEAD)];
+	memset(tempHead, 0, sizeof(SHEAD));
+
+	// peek : Head 길이 만큼 Peek 해서 Pop 해야하는 데이터 길이 확인
+	bool peekResult = mRingBuffer.Peek(tempHead, sizeof(SHEAD));
+
+	// exception
+	// 링버퍼에 데이터가 Head 길이만큼 들어와있지 않으면
+	// return false;
+	if (peekResult == false)
+	{
+		cout << "[return false] ClientSession >> PopBuffer() : buffer len < request peek len" << endl;
+		return false;
+	}
+
+	// packSize : Pop() 해야하는 길이
+	DWORD packSize = PacketManager::GetInstance()->GetTotalPacketSize(tempHead, sizeof(SHEAD));
+
+	// pop : 실질적인 데이터를 Pop 함
+	bool popResult = mRingBuffer.Pop(_outBuffer, packSize);
+	
+	// exception
+	// Pop() 해야하는 데이터 길이만큼 링버퍼에 존재하지 않을 경우
+	// return false;
+	if (popResult == false)
+	{
+		cout << "[return false] ClientSession >> PopBuffer() : buffer len < request pop len" << endl;
+		return false;
+	}
 
 	return true;
 }

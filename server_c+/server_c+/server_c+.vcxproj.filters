@@ -82,6 +82,9 @@
     <Filter Include="SystemUsage">
       <UniqueIdentifier>{042f94e9-ce75-4b8b-895c-8e5cf0b54b0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network\SessionManager\ClientSession\CircularBuffer">
+      <UniqueIdentifier>{94321eab-e326-47c0-af12-5b372e9d2ec5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -152,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="GameDBManager.cpp">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularBuffer.cpp">
+      <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="GameDBManager.h">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer.h">
+      <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

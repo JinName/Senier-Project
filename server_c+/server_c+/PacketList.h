@@ -93,7 +93,7 @@ struct SMATCH
 	bool mInMatch;
 };
 
-struct SGAMESTART
+struct SGAMESTART // 12bit
 {
 	bool mStart;
 	int mPlayerIndex;	// 0 : 1p, 1 : 2p

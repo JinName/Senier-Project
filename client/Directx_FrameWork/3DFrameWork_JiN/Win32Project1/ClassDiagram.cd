@@ -1,0 +1,445 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TemplateSingleton&lt;T&gt;">
+    <Position X="25.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQIACAAAAAABAAAAAAAAAACAAQEQAQ=</HashCode>
+      <FileName>TemplateSingleton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCamera" Collapsed="true">
+    <Position X="24.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAABAAAAAIAAAAAAAgAAAAAAAAAAQEIAAAAAYBAAAA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CInput" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EoUCIBAAAUAAAEAAAIAACAIAEAIAgAgAACAABAAEEAA=</HashCode>
+      <FileName>DirectInput.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CLight" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAQAQAAAAAAAEAAAAIQ=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMaterial" Collapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAAFAAAAAAAAAAAACAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMeshes" Collapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAIAAAAEAAAAAAAAABAQAAAAAAAAAABAAABAgAAA=</HashCode>
+      <FileName>Meshes.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSprite" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAQMAQAiAAAEAEAAUAFAAAwAAAAABQJcQgEIAAAQ=</HashCode>
+      <FileName>Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTexture" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAEIAAAAAAAAAAAIAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CVertex" Collapsed="true">
+    <Position X="24.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAACEAAAAAAAAAICAAAAAAAAAAAAAAAAABAAAAg=</HashCode>
+      <FileName>Vertex.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CWinSetup" Collapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAgAAAACAAAJACAEAgEAAAAgAAAAiAAIAOQAAAAAI=</HashCode>
+      <FileName>WinSetup.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CD3DSetup" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQCAoAAAKAAAAAAAAgAAwAAAAAAAAwAABEAIEGAAAQ=</HashCode>
+      <FileName>D3DSetup.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameManager" Collapsed="true">
+    <Position X="19.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgBAAACQCAYAAIAgAAAAAAAAAAgEAEBAACEEAAAQ=</HashCode>
+      <FileName>GameManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCollisionManager" Collapsed="true">
+    <Position X="26.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAAAABAAABAAAAkAAAACAAAAAAQAACAAACAAAAAAA=</HashCode>
+      <FileName>CollisionManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="C2DBoxCollider" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAIAAAAAAAIABAAAAAAAAACCAAAAAACAAAAAgA=</HashCode>
+      <FileName>2DBoxCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMapManager" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgAAAAggABAABAAAAgQAACAAAIBAAwAAAAAQBAQAIA=</HashCode>
+      <FileName>MapManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CUIManager" Collapsed="true">
+    <Position X="23" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAABQAAAAAAAAIAABACAAAAQAA=</HashCode>
+      <FileName>UIManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CButtonManager" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAABAAAAAAAAAAAABAAAEAAAAADACAAAAQAA=</HashCode>
+      <FileName>ButtonManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBasicButton" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAQAAAAAAAAAAAAAAEAAAgAAAAAABCABAGAEAAQAA=</HashCode>
+      <FileName>BasicButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameBase" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAaAEAAAAQAAAQAKEAIAAAQgAAIAgwAEACBIAEAIAA=</HashCode>
+      <FileName>GameBase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CStage" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICgAABAAEAAAAACgAEAAEAIFAEABQAUDEAIIEQAAA=</HashCode>
+      <FileName>Stage.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTitle" Collapsed="true">
+    <Position X="7.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAiAAAAAAAAAAIAAAAAAAAAAAAQAACAAIAEAIAA=</HashCode>
+      <FileName>Title.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameOver" Collapsed="true">
+    <Position X="0.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAQAAAAAAAAAAACIAAAQAAAAAIAEAAAA=</HashCode>
+      <FileName>GameOver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CGameClear" Collapsed="true">
+    <Position X="3" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAIAAAAAAACAAAAAAAAAAAAAAAQAAAAAIAEAAAA=</HashCode>
+      <FileName>GameClear.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CEntity" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAQgAAoAAAAABAAAEAAAAEAAggIAAABA=</HashCode>
+      <FileName>Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTile" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAgAAIAAAEAAAgAAAAAAAAABACCQCAQBA=</HashCode>
+      <FileName>Tile.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CBackground" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAAAAAAAAAAAgAAAAAAAAABACABAAQAA=</HashCode>
+      <FileName>Background.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CCharacter" Collapsed="true">
+    <Position X="15.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEQAgAAAAAAAAAAAAAAAAAAAAAABBCAAAAQAA=</HashCode>
+      <FileName>Character.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CTiger" Collapsed="true">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tiger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CAru" Collapsed="true">
+    <Position X="17" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEU1AAhKQk4pEsEQEPMgEwWgAKgCaAMQJDwKiRKQUgQ=</HashCode>
+      <FileName>Aru.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CFireBall" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAgAAoBBAAEAEAAACAAAEQoBAiQQCEQAA=</HashCode>
+      <FileName>FireBall.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CHealth" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAIAEAAAgEAAAQAAAABACAAAIQAA=</HashCode>
+      <FileName>Health.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CMonster" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAJAgCCYBAAAEAAgggABQAEgIFACQAJAQAA=</HashCode>
+      <FileName>Monster.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CPotion" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACQIAAAAAgABIBAAAAAAgAACAAAAAAFACQAAAQAA=</HashCode>
+      <FileName>Potion.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Network">
+    <Position X="19.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQAAAEAAQAEAAAAAAAAIRAAAAAACAAAAIDCAQAUAo=</HashCode>
+      <FileName>Network.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PacketManager">
+    <Position X="21.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEBAACAAAAAAAAAAogAABAAACIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Crypt" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQAAAAAAAAAAAEEQAAAAAAAAAAAAAAAAIIACAAAAQAA=</HashCode>
+      <FileName>Crypt.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Position" Collapsed="true">
+    <Position X="21.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAABcAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Header.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CUSTOMVERTEX" Collapsed="true">
+    <Position X="19.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAABgAQAAAAA=</HashCode>
+      <FileName>Header.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sOverlappedSocket" Collapsed="true">
+    <Position X="11.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAEAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>NetworkHeader.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="VECTOR2" Collapsed="true">
+    <Position X="21.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>NetworkHeader.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="VECTOR3" Collapsed="true">
+    <Position X="23" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>NetworkHeader.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sPacket_Head" Collapsed="true">
+    <Position X="8.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAQAAAAAAQAAAAAAAIAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="sPacket_Tail" Collapsed="true">
+    <Position X="4.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SCHAT" Collapsed="true">
+    <Position X="24.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SMATCH" Collapsed="true">
+    <Position X="26.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SGAMESTART" Collapsed="true">
+    <Position X="21.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SGAMEEND" Collapsed="true">
+    <Position X="19.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SCHARACTER" Collapsed="true">
+    <Position X="23" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQAAAAAEAAAAgAAAgAAAAAAABAAABEAAAIAgEAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SINITCOMPLETE" Collapsed="true">
+    <Position X="23" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SLOGIN" Collapsed="true">
+    <Position X="24.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SCRASH" Collapsed="true">
+    <Position X="26.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SPLAYERDIE" Collapsed="true">
+    <Position X="19.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="TILE_STYLE" Collapsed="true">
+    <Position X="12.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tile.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="SOVERLAPPED" Collapsed="true">
+    <Position X="11.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>NetworkHeader.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="SHEAD" Collapsed="true">
+    <Position X="8.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="STAIL" Collapsed="true">
+    <Position X="4.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="__unnamed_enum_001c_1" Collapsed="true">
+    <Position X="21.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAQAAAAAEAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GameBase.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_0044_1" Collapsed="true">
+    <Position X="12.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAEAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Tile.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_0004_1" Collapsed="true">
+    <Position X="19.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAggAAAAAAgAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Aru.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="IOTYPE" Collapsed="true">
+    <Position X="26.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAACAAAEAAAAAAAAAAAAAgAAAAAAAAAAAABAAAgAA=</HashCode>
+      <FileName>NetworkHeader.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PROTOCOL" Collapsed="true">
+    <Position X="19.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EADIAAAEAAIIAAAAAQCADAAAAIIhAAIMIAAAAEAAAwA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CHARACTER_STATE" Collapsed="true">
+    <Position X="23" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAggAAAAAAgAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GAMEEND_STATE" Collapsed="true">
+    <Position X="24.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAEAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PacketList.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

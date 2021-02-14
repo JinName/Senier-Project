@@ -28,15 +28,13 @@ void PacketManager::Clean()
 	DeleteCriticalSection(&mCS);
 }
 
-bool PacketManager::Enqueue(ClientSession* client, char* buffer)
+bool PacketManager::Enqueue(ClientPacket pack)
 {
-	if (buffer == nullptr)
+	if (pack.mSession == nullptr)
 	{
-		cout << "Enqueue : buffer is null" << endl;
+		cout << "Enqueue : session is null" << endl;
 		return false;
 	}
-
-	ClientPacket pack(client, buffer);
 
 	EnterCS();
 	mBufferQueue.push(pack);
@@ -45,9 +43,10 @@ bool PacketManager::Enqueue(ClientSession* client, char* buffer)
 	return true;
 }
 
-bool PacketManager::Dequeue()
+bool PacketManager::Dequeue(ClientPacket& pack)
 {
-
+	pack = mBufferQueue.front();
+	mBufferQueue.pop();
 
 	return true;
 }
@@ -64,16 +63,16 @@ void PacketManager::ProcessAllQueue()
 			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
 			EnterCS();
 
-			ClientPacket pack = mBufferQueue.front();
-			mBufferQueue.pop();	
+			ClientPacket pack;
+			Dequeue(pack);
+
+			LeaveCS();
 
 			// 패킷 헤드 확인
 			PROTOCOL protocol = ParsingPacket(pack);
 
 			// 프로토콜에 따른 패킷 처리
 			ProcessPacket(protocol, pack);
-
-			LeaveCS();
 		}
 
 		if (mStopFlag) break;
@@ -88,6 +87,7 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 		return PROTOCOL::NONE;
 	}
 
+	// HEAD 확인
 	SHEAD head;
 	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
@@ -244,4 +244,40 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	}
 
 	}
+}
+
+bool PacketManager::CheckAvailablePacket(char* buffer, DWORD dataBufferSize)
+{
+	if (dataBufferSize < sizeof(SHEAD))
+	{
+		cout << "unavailable packet, less than head" << endl;
+		return false;
+	}
+
+	SHEAD head;
+	memset(&head, 0, sizeof(SHEAD));
+	memcpy(&head, buffer, sizeof(SHEAD));
+
+	if (dataBufferSize < head.mPacketSize)
+	{
+		cout << "unavailable packet, less size" << endl;
+		return false;
+	}
+
+	return true;
+}
+
+DWORD PacketManager::GetTotalPacketSize(char* buffer, DWORD dataBufferSize)
+{
+	if (dataBufferSize < sizeof(SHEAD))
+	{
+		cout << "unavailable packet, less than head" << endl;
+		return 0;
+	}
+
+	SHEAD head;
+	memset(&head, 0, sizeof(SHEAD));
+	memcpy(&head, buffer, sizeof(SHEAD));
+
+	return head.mPacketSize;
 }

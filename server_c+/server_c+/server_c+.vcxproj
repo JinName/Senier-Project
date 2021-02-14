@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="ClientSession.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Crypt.cpp" />
@@ -174,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="CircularBuffer.h" />
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Crypt.h" />

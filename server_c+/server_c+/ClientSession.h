@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdafx.h"
+#include "CircularBuffer.h"
 
 class ClientSession;
 class SessionManager;
@@ -69,6 +70,9 @@ private:
 
 	char			mID[MAX_ID_LEN];
 	bool			mIsLogin;
+	
+	// circular buffer
+	CircularBuffer	mRingBuffer;
 
 public:
 	ClientSession(SOCKET sock);
@@ -109,5 +113,9 @@ public:
 	// login
 	void			SetIsLogin(bool _isLogin) { mIsLogin = _isLogin; }
 	bool			GetIsLogin() { return mIsLogin; }
+
+	// ring buffer
+	void			CompleteRecv(DWORD _dataSize);
+	bool			PopBuffer(char* _outBuffer);
 };
 

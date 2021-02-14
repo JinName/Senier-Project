@@ -7,6 +7,11 @@
 
 // class InGameRoom
 
+struct GameRoom
+{
+	SOCKET sock[2];
+};
+
 // 유저가 대전하는 방 내의 정보를 담는 클래스
 // 해당 룸의 번호(int mRoomNum)
 // 어떤 클라이언트가 접속해있는지(ClientSession* mPlayer1, mPlayer2)

@@ -9,10 +9,15 @@
 
 struct ClientPacket
 {
-	ClientPacket(ClientSession* client, char* buffer) : mSession(client), mBuffer(buffer) {}
+	ClientPacket() : mSession(nullptr) { memset(mBuffer, 0, MAX_BUFSIZE); }
+	ClientPacket(ClientSession* client, char* buffer, DWORD bufferSize) : mSession(client)
+	{
+		memset(mBuffer, 0, MAX_BUFSIZE);
+		memcpy(mBuffer, buffer, bufferSize);
+	}
 
 	ClientSession* mSession;
-	char* mBuffer;
+	char mBuffer[MAX_BUFSIZE];
 };
 
 /*
@@ -36,8 +41,8 @@ public:
 	// 해당 클래스는 싱글톤, 또는 전역으로 사용될 목적이기에
 	// thread-safe 하게 설계되어야한다.
 	// 따라서 CRITICAL_SECTION 등의 처리가 필수적이다.
-	bool Enqueue(ClientSession* client, char* buffer);		// 패킷을 Queue 안에 저장
-	bool Dequeue();					// 패킷을 Queue 에서 삭제
+	bool Enqueue(ClientPacket pack);		// 패킷을 Queue 안에 저장
+	bool Dequeue(ClientPacket& pack);					// 패킷을 Queue 에서 삭제
 
 	// 패킷처리
 	void ProcessAllQueue();		// 모든 패킷이 Queue 에서 전부 빠질 때까지 패킷처리를 계속함
@@ -47,6 +52,8 @@ public:
 
 	// 패킷분석
 	PROTOCOL ParsingPacket(ClientPacket pack);		// HEAD 를 분리하여 패킷 정보를 분석 -> 어떤 프로토콜을 실행해야하는지 판단	
+	bool CheckAvailablePacket(char* buffer, DWORD dataBufferSize);	// HEAD 를 분리하여 패킷사이즈가 정상적인지 확인
+	DWORD GetTotalPacketSize(char* buffer, DWORD dataBufferSize);
 
 	// 프로토콜에 따른 패킷 처리
 	void ProcessPacket(PROTOCOL protocol, ClientPacket pack);
