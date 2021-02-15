@@ -171,6 +171,8 @@ void CWinSetup::MsgLoop()
 				g_pGameManager->Update();
 				if (g_pGameManager != NULL)
 					g_pGameManager->Render();
+
+				Sleep(16);
 			}			
 		}
 	}

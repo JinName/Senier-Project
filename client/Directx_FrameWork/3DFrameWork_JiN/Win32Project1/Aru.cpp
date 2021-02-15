@@ -300,8 +300,8 @@ void CAru::Init(LPDIRECT3DDEVICE9 _pDevice)
 	m_iHP = 3;
 	m_bHP_isFull = true;
 	m_iJump = 0;
-	m_fSpeed = 3.0f;
-	m_fJump_Power = 4.5f;
+	m_fSpeed = 5.0f;
+	m_fJump_Power = 10.0f;
 	m_fGravity_Accel = 0.0000f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량

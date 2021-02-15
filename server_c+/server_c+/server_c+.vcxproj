@@ -154,6 +154,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Crypt.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FpsDelayChecker.cpp" />
     <ClCompile Include="GameDBManager.cpp" />
     <ClCompile Include="GameLogicManager.cpp" />
     <ClCompile Include="InGameManager.cpp" />
@@ -172,6 +173,8 @@
     <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="SystemUsage.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="UpdateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Crypt.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="FpsDelayChecker.h" />
     <ClInclude Include="GameDBManager.h" />
     <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GameLogicManager.h" />
@@ -202,12 +206,11 @@
     <ClInclude Include="SystemUsage.h" />
     <ClInclude Include="TemplateSingleton.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="UpdateManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

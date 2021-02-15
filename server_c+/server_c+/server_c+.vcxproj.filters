@@ -19,9 +19,6 @@
     <Filter Include="Network\NetworkHeader">
       <UniqueIdentifier>{ced61fc6-5203-4a07-926a-bfacb9f6bd34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Logger">
-      <UniqueIdentifier>{ab9331ba-a78b-4603-b106-766ee70a4e13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network\SessionManager">
       <UniqueIdentifier>{e0ee5d6a-0e53-48da-bf83-8e5619e9682d}</UniqueIdentifier>
     </Filter>
@@ -79,11 +76,26 @@
     <Filter Include="Crypt">
       <UniqueIdentifier>{6d8d2a29-85bd-46cc-b9eb-abfdb756c155}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SystemUsage">
-      <UniqueIdentifier>{042f94e9-ce75-4b8b-895c-8e5cf0b54b0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network\SessionManager\ClientSession\CircularBuffer">
       <UniqueIdentifier>{94321eab-e326-47c0-af12-5b372e9d2ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\UpdateManager">
+      <UniqueIdentifier>{0fb433cc-8558-43e4-b136-c0f1f479e552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{23ae3f06-8d83-4167-8925-2f28cf55cb11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Logger">
+      <UniqueIdentifier>{ab9331ba-a78b-4603-b106-766ee70a4e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\SystemUsage">
+      <UniqueIdentifier>{042f94e9-ce75-4b8b-895c-8e5cf0b54b0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\FpsDelayChecker">
+      <UniqueIdentifier>{69b9511c-2759-4b30-99f3-3945edd7febf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\Timer">
+      <UniqueIdentifier>{e320ba32-b475-4d54-84d2-a05f02726829}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +106,7 @@
       <Filter>GameLogicManager</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>Logger</Filter>
+      <Filter>Utility\Logger</Filter>
     </ClCompile>
     <ClCompile Include="SessionManager.cpp">
       <Filter>Network\SessionManager</Filter>
@@ -151,13 +163,22 @@
       <Filter>Crypt</Filter>
     </ClCompile>
     <ClCompile Include="SystemUsage.cpp">
-      <Filter>SystemUsage</Filter>
+      <Filter>Utility\SystemUsage</Filter>
     </ClCompile>
     <ClCompile Include="GameDBManager.cpp">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
     </ClCompile>
     <ClCompile Include="CircularBuffer.cpp">
       <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateManager.cpp">
+      <Filter>Network\UpdateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FpsDelayChecker.cpp">
+      <Filter>Utility\FpsDelayChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utility\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +195,7 @@
       <Filter>Network\NetworkHeader</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>Logger</Filter>
+      <Filter>Utility\Logger</Filter>
     </ClInclude>
     <ClInclude Include="SessionManager.h">
       <Filter>Network\SessionManager</Filter>
@@ -237,7 +258,7 @@
       <Filter>Crypt</Filter>
     </ClInclude>
     <ClInclude Include="SystemUsage.h">
-      <Filter>SystemUsage</Filter>
+      <Filter>Utility\SystemUsage</Filter>
     </ClInclude>
     <ClInclude Include="GameDBManager.h">
       <Filter>Network\MYSQLManager\GameDBManager</Filter>
@@ -245,13 +266,19 @@
     <ClInclude Include="CircularBuffer.h">
       <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="UpdateManager.h">
+      <Filter>Network\UpdateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="FpsDelayChecker.h">
+      <Filter>Utility\FpsDelayChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utility\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
