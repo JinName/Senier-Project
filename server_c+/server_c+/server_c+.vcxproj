@@ -174,7 +174,7 @@
     <ClCompile Include="SystemUsage.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="UpdateManager.cpp" />
+    <ClCompile Include="ClientSyncManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
@@ -207,7 +207,7 @@
     <ClInclude Include="TemplateSingleton.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="UpdateManager.h" />
+    <ClInclude Include="ClientSyncManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc" />

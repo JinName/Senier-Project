@@ -1,6 +1,9 @@
 #include "Timer.h"
 
 Timer::Timer()
+	:
+	m_iStartClock(0),
+	m_iEndClock(0)
 {
 }
 

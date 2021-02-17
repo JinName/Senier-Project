@@ -26,7 +26,7 @@ void Entity::SetCollider(float _width, float _height, bool _centered_rect)
 }
 
 void Entity::SetCollider(float _width, float _height, bool _centered_rect, RECT _detail_rect)
-{
+{          
 	if (_centered_rect)
 	{
 		m_rCollider.left = m_vPos.x - (_width / 2.0f);

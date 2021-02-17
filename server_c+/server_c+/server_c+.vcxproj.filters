@@ -171,14 +171,14 @@
     <ClCompile Include="CircularBuffer.cpp">
       <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="UpdateManager.cpp">
-      <Filter>Network\UpdateManager</Filter>
-    </ClCompile>
     <ClCompile Include="FpsDelayChecker.cpp">
       <Filter>Utility\FpsDelayChecker</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Utility\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientSyncManager.cpp">
+      <Filter>Network\UpdateManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,14 +266,14 @@
     <ClInclude Include="CircularBuffer.h">
       <Filter>Network\SessionManager\ClientSession\CircularBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="UpdateManager.h">
-      <Filter>Network\UpdateManager</Filter>
-    </ClInclude>
     <ClInclude Include="FpsDelayChecker.h">
       <Filter>Utility\FpsDelayChecker</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Utility\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSyncManager.h">
+      <Filter>Network\UpdateManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
