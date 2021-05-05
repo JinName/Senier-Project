@@ -15,9 +15,9 @@ private:
 	PROCESS_MEMORY_COUNTERS_EX m_Pmc;
 
 	// for read cpu usage
-	ULARGE_INTEGER m_lastCPU, m_lastSysCPU, m_lastUserCPU;
-	int m_iNumProcessors;
-	HANDLE m_hSelf;
+	ULARGE_INTEGER m_LastCPU, m_LastSysCPU, m_LastUserCPU;
+	int m_NumProcessors;
+	HANDLE m_Handle;
 };
 
 extern SystemUsage* g_pSystemUsage;

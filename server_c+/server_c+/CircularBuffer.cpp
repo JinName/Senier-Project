@@ -3,68 +3,85 @@
 
 CircularBuffer::CircularBuffer()
 {
-	memset(m_cBuffer, 0, RINGBUF_SIZE);
+	memset(m_Buffer, 0, RINGBUF_SIZE);
 
-	m_cpBufferEnd = m_cBuffer + RINGBUF_SIZE;
+	m_pBufferEnd = m_Buffer + RINGBUF_SIZE;
 
-	m_cpPrimaryPointer = m_cBuffer;
-	m_dwPrimarySize = 0;
+	m_pPrimaryCursor = m_Buffer;
+	m_PrimarySize = 0;
 
-	m_cpSecondPointer = nullptr;
-	m_dwSecondSize = 0;
+	m_pSecondCursor = nullptr;
+	m_SecondSize = 0;
 }
 
 CircularBuffer::~CircularBuffer()
 {
-	m_cpBufferEnd = nullptr;
+	m_pBufferEnd = nullptr;
 
-	m_cpPrimaryPointer = nullptr;
-	m_dwPrimarySize = 0;
+	m_pPrimaryCursor = nullptr;
+	m_PrimarySize = 0;
 
-	m_cpSecondPointer = nullptr;
-	m_dwSecondSize = 0;
+	m_pSecondCursor = nullptr;
+	m_SecondSize = 0;
 
-	memset(m_cBuffer, 0, RINGBUF_SIZE);
+	memset(m_Buffer, 0, RINGBUF_SIZE);
 }
 
 /// private functions ////////////////////////////////////////////////////////
+
+/// <summary>
+/// 두번째 커서를 버퍼의 시작지점으로 이동시킨다.
+/// </summary>
 void CircularBuffer::allocateSecondPointer()
 {
-	m_cpSecondPointer = m_cBuffer;
+	m_pSecondCursor = m_Buffer;
 }
 
+/// <summary>
+/// 첫번째 커서부터 쌓인 데이터 끝지점에서 버퍼의 끝지점 까지 남은 공간을 반환한다.
+/// </summary>
+/// <returns>	size_t	</returns>
 size_t CircularBuffer::getAvailablePrimaryBufferSize()
 {
-	return (m_cpBufferEnd - (m_cpPrimaryPointer + m_dwPrimarySize));
+	return (m_pBufferEnd - (m_pPrimaryCursor + m_PrimarySize));
 }
 
+/// <summary>
+/// 두번째 커서부터 쌓인 데이터 끝지점에서 첫번째 커서까지 남은 공간을 반환한다.
+/// </summary>
+/// <returns>	size_t	</returns>
 size_t CircularBuffer::getAvailableSecondBufferSize()
 {
-	if (m_cpSecondPointer == nullptr)
+	if (m_pSecondCursor == nullptr)
 	{
 		return 0;
 	}
 	else
 	{
-		return (m_cpPrimaryPointer - (m_cpSecondPointer + m_dwSecondSize));
+		return (m_pPrimaryCursor - (m_pSecondCursor + m_SecondSize));
 	}
 }
 
-size_t CircularBuffer::getBeforePrimaryBufferSize()
-{
-	return m_cpPrimaryPointer - m_cBuffer;
-}
 //////////////////////////////////////////////////////////////////////////////////
 
+/// <summary>
+/// 현재 삽입 가능한 버퍼내의 공간을 계산하여 반환.
+/// 공간을 계산하며 커서의 위치에 따라 삽입 지점을 조절한다.
+/// GetWritablePointer() 이전에 선행되어야 하는 함수이다.
+/// </summary>
+/// <returns>	size_t	</returns>
 size_t CircularBuffer::GetAvailableBufferSize()
 {
-	if (m_cpSecondPointer != nullptr)
+	if (m_pSecondCursor != nullptr)
 	{
 		return getAvailableSecondBufferSize();
 	}
 	else
 	{
-		if (getBeforePrimaryBufferSize() > getAvailablePrimaryBufferSize())
+		// Primary Buffer 의 여유공간이 MAX_PACKET_SIZE 보다 작을 경우
+		// Second Pointer 에 전체 버퍼의 첫 지점을 할당하여
+		// Second Pointer 부터 데이터를 삽입하도록 함
+		if (MAX_PACKET_SIZE > getAvailablePrimaryBufferSize())
 		{
 			allocateSecondPointer();
 			return getAvailableSecondBufferSize();
@@ -76,132 +93,83 @@ size_t CircularBuffer::GetAvailableBufferSize()
 	}
 }
 
+/// <summary>
+/// 버퍼 삽입 가능한 지점을 반환.
+/// GetAvailableBufferSize() 함수가 선행되어야 한다.
+/// </summary>
+/// <returns>	char*	</returns>
 char* CircularBuffer::GetWritablePointer()
 {
-	if (m_cpSecondPointer != nullptr)
+	if (m_pSecondCursor != nullptr)
 	{
-		return m_cpSecondPointer + m_dwSecondSize;
+		return m_pSecondCursor + m_SecondSize;
 	}
 	else
 	{
-		return m_cpPrimaryPointer + m_dwPrimarySize;
+		return m_pPrimaryCursor + m_PrimarySize;
 	}
 }
 
-char* CircularBuffer::GetBufferStartPointer()
-{
-	if (m_dwPrimarySize > 0)
-	{
-		return m_cpPrimaryPointer;
-	}
-	else
-	{
-		return m_cpSecondPointer;
-	}
-}
-
-size_t CircularBuffer::GetBufferStartDataSize()
-{
-	if (m_dwPrimarySize > 0)
-	{
-		return m_dwPrimarySize;
-	}
-	else
-	{
-		return m_dwSecondSize;
-	}
-}
-
+/// <summary>
+/// 현재 버퍼내에 데이터가 차지하고 있는 공간을 반환한다.
+/// </summary>
+/// <returns>	size_t	</returns>
 size_t CircularBuffer::GetWritedDataSize()
 {
-	return m_dwPrimarySize + m_dwSecondSize;
+	return m_PrimarySize + m_SecondSize;
 }
 
-void CircularBuffer::CommitDataSize(size_t _len)
+/// <summary>
+/// Recv() 로 버퍼가 도착한 이후 삽입된 데이터 길이만큼을 업데이트한다.
+/// </summary>
+/// <param name="len">	현재 삽입된 데이터의 길이	</param>
+void CircularBuffer::CommitDataSize(size_t len)
 {
-	if (m_cpSecondPointer != nullptr)
+	if (m_pSecondCursor != nullptr)
 	{
-		m_dwSecondSize += _len;
+		m_SecondSize += len;
 	}
 	else
 	{
-		m_dwPrimarySize += _len;
+		m_PrimarySize += len;
 	}
 }
 
-void CircularBuffer::RemoveData(size_t _len)
+/// <summary>
+/// Peek() : 버퍼 내의 데이터에서 Head 만을 확인하여 Pop 해야하는 데이터의 길이를 확인한다.
+/// </summary>
+/// <param name="outBuffer">	Peek 결과 값	</param>
+/// <param name="len">			Peek 할 길이	</param>
+/// <returns>					bool type		</returns>
+bool CircularBuffer::Peek(char* outBuffer, size_t len)
 {
-	size_t cnt = _len;
-
-	// Primary Buffer 에서 삭제하는 경우
-	if (m_dwPrimarySize > 0)
+	if (GetWritedDataSize() < len)
 	{
-		size_t removeSize = (cnt > m_dwPrimarySize) ? m_dwPrimarySize : cnt;
-		m_dwPrimarySize -= removeSize;
-		m_cpPrimaryPointer += removeSize;
-		cnt -= removeSize;
-	}
-
-	// Primary Buffer 에서 삭제 후 Second Buffer 에서 마저 삭제해야 하는 경우
-	if (cnt > 0 && m_dwSecondSize > 0)
-	{
-		size_t removeSize = (cnt > m_dwSecondSize) ? m_dwSecondSize : cnt;
-		m_dwSecondSize -= removeSize;
-		m_cpSecondPointer += removeSize;
-		cnt -= removeSize;
-	}
-
-	// 삭제 후 Primary Buffer 는 비어있고, Second Buffer 에 데이터가 남아있을 경우
-	// Second Buffer Data -> Primary Buffer
-	if (m_dwPrimarySize == 0)
-	{
-		if (m_dwSecondSize > 0)
-		{
-			if (m_cpSecondPointer != m_cBuffer)
-				memmove(m_cBuffer, m_cpSecondPointer, m_dwSecondSize);
-
-			m_cpPrimaryPointer = m_cBuffer;
-			m_dwPrimarySize = m_dwSecondSize;
-
-			m_cpSecondPointer = nullptr;
-			m_dwSecondSize = 0;
-		}
-		else
-		{
-			m_cpSecondPointer = nullptr;
-			m_dwSecondSize = 0;
-
-			m_cpPrimaryPointer = m_cBuffer;
-			m_dwPrimarySize = 0;
-		}
-	}
-}
-
-bool CircularBuffer::Peek(char* _outBuffer, size_t _len)
-{
-	if (GetWritedDataSize() < _len)
+		// 에러가 발생한 클래스, 함수, 원인 등을 출력
+		printError(this, __func__, "writed buffer size less than require");
 		return false;
+	}
 
-	size_t cnt = _len;
+	size_t cnt = len;
 
-	// Primary Buffer 에서 Pop 하는 경우
-	if (m_dwPrimarySize > 0)
+	// Primary Buffer 에서 Peek 하는 경우
+	if (m_PrimarySize > 0)
 	{
-		size_t peekSize = (cnt > m_dwPrimarySize) ? m_dwPrimarySize : cnt;
+		size_t peekSize = (cnt > m_PrimarySize) ? m_PrimarySize : cnt;
 
 		// 버퍼 복사
-		memcpy(_outBuffer, m_cpPrimaryPointer, peekSize);
+		memcpy(outBuffer, m_pPrimaryCursor, peekSize);
 
 		cnt -= peekSize;
 	}
 
-	// Primary Buffer 에서 삭제 후 Second Buffer 에서 마저 삭제해야 하는 경우
-	if (cnt > 0 && m_dwSecondSize > 0)
+	// Primary Buffer 에서 Peek 이후 Second Buffer 에서 마저 Peek 해야 하는 경우
+	if (cnt > 0 && m_SecondSize > 0)
 	{
-		size_t peekSize = (cnt > m_dwSecondSize) ? m_dwSecondSize : cnt;
+		size_t peekSize = (cnt > m_SecondSize) ? m_SecondSize : cnt;
 
 		// 버퍼 복사
-		memcpy(_outBuffer + (_len - cnt), m_cpSecondPointer, peekSize);
+		memcpy(outBuffer + (len - cnt), m_pSecondCursor, peekSize);
 
 		cnt -= peekSize;
 	}
@@ -209,68 +177,83 @@ bool CircularBuffer::Peek(char* _outBuffer, size_t _len)
 	return true;
 }
 
-bool CircularBuffer::Pop(char* _outBuffer, size_t _len)
+/// <summary>
+/// Pop() : 버퍼에서 원하는 길이만큼 데이터를 추출하고 삭제한다.
+/// </summary>
+/// <param name="outBuffer">	Pop 결과 값		</param>
+/// <param name="len">			Pop 할 길이		</param>
+/// <returns>					bool type		</returns>
+bool CircularBuffer::Pop(char* outBuffer, size_t len)
 {
-	if (GetWritedDataSize() < _len)
+	// Pop 하려는 데이터 길이가 버퍼에 담겨있는 데이터 길이보다 클 경우,
+	// return false;
+	if (GetWritedDataSize() < len)
+	{
+		// 에러가 발생한 클래스, 함수, 원인 등을 출력
+		printError(this, __func__, "writed buffer size less than require");
 		return false;
+	}		
 
-	size_t cnt = _len;
+	size_t cnt = len;
 
 	// Primary Buffer 에서 Pop 하는 경우
-	if (m_dwPrimarySize > 0)
+	if (m_PrimarySize > 0)
 	{
-		size_t popSize = (cnt > m_dwPrimarySize) ? m_dwPrimarySize : cnt;
+		size_t popSize = (cnt > m_PrimarySize) ? m_PrimarySize : cnt;
 
 		// 버퍼 복사
-		memcpy(_outBuffer, m_cpPrimaryPointer, popSize);
+		memcpy(outBuffer, m_pPrimaryCursor, popSize);
 
 		// 내용 삭제
-		memset(m_cpPrimaryPointer, 0, popSize);
+		memset(m_pPrimaryCursor, 0, popSize);
 
-		m_dwPrimarySize -= popSize;
-		m_cpPrimaryPointer += popSize;
+		m_PrimarySize -= popSize;
+		m_pPrimaryCursor += popSize;
 		cnt -= popSize;
 	}
 
-	// Primary Buffer 에서 삭제 후 Second Buffer 에서 마저 삭제해야 하는 경우
-	if (cnt > 0 && m_dwSecondSize > 0)
+	// Primary Buffer 에서 Pop 이후 Second Buffer 에서 마저 Pop 해야 하는 경우
+	if (cnt > 0 && m_SecondSize > 0)
 	{
-		size_t popSize = (cnt > m_dwSecondSize) ? m_dwSecondSize : cnt;
+		size_t popSize = (cnt > m_SecondSize) ? m_SecondSize : cnt;
 
 		// 버퍼 복사
-		memcpy(_outBuffer + (_len - cnt), m_cpSecondPointer, popSize);
+		memcpy(outBuffer + (len - cnt), m_pSecondCursor, popSize);
 
 		// 내용 삭제
-		memset(m_cpSecondPointer, 0, popSize);
+		memset(m_pSecondCursor, 0, popSize);
 
-		m_dwSecondSize -= popSize;
-		m_cpSecondPointer += popSize;
+		m_SecondSize -= popSize;
+		m_pSecondCursor += popSize;
 		cnt -= popSize;
 	}
 
-	// 삭제 후 Primary Buffer 는 비어있고, Second Buffer 에 데이터가 남아있을 경우
-	// Second Buffer Data -> Primary Buffer
-	if (m_dwPrimarySize == 0)
+	// Pop 이후 Primary Buffer 는 비어있고	
+	if (m_PrimarySize == 0)
 	{
-		if (m_dwSecondSize > 0)
+		// Second Buffer 에 데이터가 남아있을 경우
+		if (m_SecondSize > 0)
 		{
-			if (m_cpSecondPointer != m_cBuffer)
-				memmove(m_cBuffer, m_cpSecondPointer, m_dwSecondSize);
+			// Second Buffer Data 를 시작지점으로 복사
+			if (m_pSecondCursor != m_Buffer)
+				memcpy(m_Buffer, m_pSecondCursor, m_SecondSize);
 
-			m_cpPrimaryPointer = m_cBuffer;
-			m_dwPrimarySize = m_dwSecondSize;
-
-			m_cpSecondPointer = nullptr;
-			m_dwSecondSize = 0;
+			// Primary Buffer Cursor 를 시작지점으로 변경
+			// + Primary Buffer 지점에 삽입되어있는 사이즈 변경
+			m_pPrimaryCursor = m_Buffer;
+			m_PrimarySize = m_SecondSize;
 		}
+		// Second Buffer 도 비어있는 경우
 		else
 		{
-			m_cpSecondPointer = nullptr;
-			m_dwSecondSize = 0;
-
-			m_cpPrimaryPointer = m_cBuffer;
-			m_dwPrimarySize = 0;
+			// Primary Buffer Cursor 를 시작지점으로 변경
+			m_pPrimaryCursor = m_Buffer;
+			m_PrimarySize = 0;
 		}
+
+		// Cursor 이동이 끝나면 Second Cursor 초기화
+		m_pSecondCursor = nullptr;
+		m_SecondSize = 0;
 	}
 
 	return true;

@@ -316,7 +316,7 @@ void Player::Check_Collision_is_Possible()
 //	if (m_FireBall_List.size() > 0)
 //	{
 //		for (list<CFireBall*>::iterator begin_iter = m_FireBall_List.begin();
-//			begin_iter != m_FireBall_List.end(); begin_iter++)
+//			begin_iter != m_FireBall_List.m_IsEnd(); begin_iter++)
 //		{
 //			(*begin_iter)->Update();
 //		}
@@ -328,7 +328,7 @@ void Player::Check_Collision_is_Possible()
 //	if (m_FireBall_List.size() > 0)
 //	{
 //		for (list<CFireBall*>::iterator begin_iter = m_FireBall_List.begin();
-//			begin_iter != m_FireBall_List.end(); begin_iter++)
+//			begin_iter != m_FireBall_List.m_IsEnd(); begin_iter++)
 //		{
 //			delete (*begin_iter);
 //		}
@@ -341,7 +341,7 @@ void Player::Check_Collision_is_Possible()
 //	if (m_FireBall_List.size() > 0)
 //	{
 //		for (list<CFireBall*>::iterator begin_iter = m_FireBall_List.begin();
-//			begin_iter != m_FireBall_List.end(); )
+//			begin_iter != m_FireBall_List.m_IsEnd(); )
 //		{
 //			if ((*begin_iter)->FireBall_Destroy_Check() == true)
 //			{
@@ -373,12 +373,12 @@ void Player::Init(int _iPlayerIndex)
 	m_iHP = 3;
 	m_bHP_isFull = true;
 	m_iJump = 0;
-	m_fSpeed = 4.5f;
+	m_fSpeed = 8.5f;
 	m_fJump_Power = 0.04f;
 	m_fGravity_Accel = 0.0f;
 	m_vDirection = { 0.0f, 0.0f };
 	// 캐릭 질량
-	m_fCharacter_mass = 0.25f;
+	m_fCharacter_mass = 1.50f;
 	m_fCollision_Power = 15.0f; // 충돌시 밀려나는 힘
 
 	isVertical = false; // 수직 충돌
@@ -434,7 +434,7 @@ void Player::Update()
 {
 	isCrash_Tile();
 	isCrash_Enemy();
-	isCrash_Potion();
+	//isCrash_Potion();
 
 	Check_Collision_is_Possible(); // 점프 시에 타일과 충돌 가능상태인지 확인
 

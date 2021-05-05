@@ -4,27 +4,27 @@ Logger* g_pConnLogger = nullptr;
 
 Logger* g_pUsageLogger = nullptr;
 
-Logger::Logger() : file_logger(nullptr)
+Logger::Logger() : m_FileLogger(nullptr)
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 Logger::~Logger()
 {
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
-void Logger::Init(LOGGER_TYPE logger_type, const char* _loggerName)
+void Logger::Init(LOGGER_TYPE loggerType, const char* loggerName)
 {
-	switch (logger_type)
+	switch (loggerType)
 	{
 	case LOGGER_TYPE::file:
-		set_file_logger(_loggerName);
+		SetFileLogger(loggerName);
 		break;
 	}
 }
 
-bool Logger::set_file_logger()
+bool Logger::SetFileLogger()
 {
 	char filename[64];
 	struct tm* pTime;
@@ -40,13 +40,13 @@ bool Logger::set_file_logger()
 		pTime->tm_mday);
 
 	// setting file logger
-	file_logger = spdlog::basic_logger_mt("basic_logger", filename);
-	spdlog::set_default_logger(file_logger);
+	m_FileLogger = spdlog::basic_logger_mt("basic_logger", filename);
+	spdlog::set_default_logger(m_FileLogger);
 
 	return true;
 }
 
-bool Logger::set_file_logger(const char* _loggerName)
+bool Logger::SetFileLogger(const char* loggerName)
 {
 	char filename[64];
 	struct tm* pTime;
@@ -60,17 +60,17 @@ bool Logger::set_file_logger(const char* _loggerName)
 		pTime->tm_year - 100,
 		pTime->tm_mon + 1,
 		pTime->tm_mday,
-		_loggerName);
+		loggerName);
 
-	file_logger = spdlog::basic_logger_mt(_loggerName, filename);
-	spdlog::set_default_logger(file_logger);
+	m_FileLogger = spdlog::basic_logger_mt(loggerName, filename);
+	spdlog::set_default_logger(m_FileLogger);
 
 	return true;
 }
 
-bool Logger::file_write(LOGGER_LEVEL level, const char* msg)
+bool Logger::FileWrite(LOGGER_LEVEL level, const char* msg)
 {
-	if (file_logger == nullptr)
+	if (m_FileLogger == nullptr)
 	{
 		printf("file logger is nullptr...\n");
 		return false;
@@ -80,28 +80,28 @@ bool Logger::file_write(LOGGER_LEVEL level, const char* msg)
 	switch (level)
 	{
 	case LOGGER_LEVEL::info:
-		file_logger->flush_on(spdlog::level::info);
-		file_logger->info(msg);
+		m_FileLogger->flush_on(spdlog::level::info);
+		m_FileLogger->info(msg);
 		break;
 
 	case LOGGER_LEVEL::debug:
-		file_logger->flush_on(spdlog::level::debug);
-		file_logger->debug(msg);
+		m_FileLogger->flush_on(spdlog::level::debug);
+		m_FileLogger->debug(msg);
 		break;
 
 	case LOGGER_LEVEL::error:
-		file_logger->flush_on(spdlog::level::err);
-		file_logger->error(msg);
+		m_FileLogger->flush_on(spdlog::level::err);
+		m_FileLogger->error(msg);
 		break;
 	}
 	
-	file_logger->flush();
+	m_FileLogger->flush();
 	LeaveCS();
 
 	return true;
 }
 
-void Logger::console_write(LOGGER_LEVEL level, const char* msg)
+void Logger::ConsoleWrite(LOGGER_LEVEL level, const char* msg)
 {
 	switch (level)
 	{

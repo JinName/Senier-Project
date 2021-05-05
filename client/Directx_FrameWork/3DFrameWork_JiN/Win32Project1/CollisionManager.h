@@ -33,7 +33,7 @@ public:
 	void Charater_Potion_Check(CAru &_aru, list<CPotion> &_Potion_List);
 
 	// 플레이어 - 적공격 충돌 : 캐릭터 체력 감소(-1)
-	void Character_EnemyAttack_Check(int _iPlayerIndex, CAru& _aru, list<CFireBall*>& _FireBall_List);
+	void Character_EnemyAttack_Check(int playerIndex, CAru& _aru, list<CFireBall*>& _FireBall_List);
 
 	// 플레이어 공격 - 적 캐릭터 충돌
 	void CharAttack_Enemy_Check(CAru& _aru, list<CFireBall*>& _FireBall_List);

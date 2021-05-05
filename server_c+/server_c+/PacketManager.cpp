@@ -3,41 +3,43 @@
 #include "InGameManager.h"
 #include "GameDBManager.h"
 
-PacketManager::PacketManager() : mStopFlag(false)
+PacketManager* g_pPacketManager = nullptr;
+
+PacketManager::PacketManager() : m_IsStop(false)
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 PacketManager::~PacketManager()
 {
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 void PacketManager::Init()
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 void PacketManager::Clean()
 {
-	while (!mBufferQueue.empty())
+	while (!m_BufferQueue.empty())
 	{
-		mBufferQueue.pop();
+		m_BufferQueue.pop();
 	}
 
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 bool PacketManager::Enqueue(ClientPacket pack)
 {
-	if (pack.mSession == nullptr)
+	if (pack.m_Session == nullptr)
 	{
 		cout << "Enqueue : session is null" << endl;
 		return false;
 	}
 
 	EnterCS();
-	mBufferQueue.push(pack);
+	m_BufferQueue.push(pack);
 	LeaveCS();
 
 	return true;
@@ -45,8 +47,8 @@ bool PacketManager::Enqueue(ClientPacket pack)
 
 bool PacketManager::Dequeue(ClientPacket& pack)
 {
-	pack = mBufferQueue.front();
-	mBufferQueue.pop();
+	pack = m_BufferQueue.front();
+	m_BufferQueue.pop();
 
 	return true;
 }
@@ -56,9 +58,9 @@ void PacketManager::ProcessAllQueue()
 	// 패킷큐가 전부 처리될 때까지 반복
 	while (true)
 	{
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 
-		if (!mBufferQueue.empty())
+		if (!m_BufferQueue.empty())
 		{
 			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
 			EnterCS();
@@ -75,13 +77,13 @@ void PacketManager::ProcessAllQueue()
 			ProcessPacket(protocol, pack);
 		}
 
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 	}
 }
 
 PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 {
-	if (pack.mBuffer == nullptr)
+	if (pack.m_Buffer == nullptr)
 	{
 		cout << "parsing buffer is nullptr... return PROTOCOL::NONE" << endl;
 		return PROTOCOL::NONE;
@@ -90,16 +92,16 @@ PROTOCOL PacketManager::ParsingPacket(ClientPacket pack)
 	// HEAD 확인
 	SHEAD head;
 	memset(&head, 0, sizeof(SHEAD));
-	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
+	memcpy(&head, pack.m_Buffer, sizeof(SHEAD));
 
-	if (head.mTransferToInGame)
+	if (head.m_IsTransferToInGame)
 	{
 		InGameManager::GetInstance()->Enqueue(pack);
 
 		return PROTOCOL::TRANFERED;
 	}
 
-	return (PROTOCOL)head.mCmd;
+	return (PROTOCOL)head.m_Cmd;
 }
 
 bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD dataBufferSize, PROTOCOL protocol)
@@ -115,9 +117,9 @@ bool PacketManager::MakeSendPacket(ClientSession* client, char* data, DWORD data
 
 	// set header
 	SHEAD head;
-	head.mCmd = (unsigned char)protocol;
-	head.mPacketSize = sizeof(SHEAD) + dataBufferSize;
-	head.mTransferToInGame = false;
+	head.m_Cmd = (unsigned char)protocol;
+	head.m_PacketSize = sizeof(SHEAD) + dataBufferSize;
+	head.m_IsTransferToInGame = false;
 
 	memcpy(p, (char*)&head, sizeof(SHEAD));
 	memcpy(p + sizeof(SHEAD), data, dataBufferSize);
@@ -143,8 +145,8 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 		SCHAT chat;
 		memset(&chat, 0, sizeof(SCHAT));
-		memcpy(&chat, pack.mBuffer + sizeof(SHEAD), sizeof(SCHAT));
-		cout << "Message From Client : " << chat.buf << endl;
+		memcpy(&chat, pack.m_Buffer + sizeof(SHEAD), sizeof(SCHAT));
+		cout << "Message From Client : " << chat.m_Buffer << endl;
 		break;
 	}
 
@@ -152,10 +154,10 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 		SMATCH match;
 		memset(&match, 0, sizeof(SMATCH));
-		memcpy(&match, pack.mBuffer + sizeof(SHEAD), sizeof(SMATCH));
-		if (match.mInMatch == true)
+		memcpy(&match, pack.m_Buffer + sizeof(SHEAD), sizeof(SMATCH));
+		if (match.m_IsMatch == true)
 		{
-			MatchManager::GetInstance()->PushBackClient(pack.mSession);
+			MatchManager::GetInstance()->PushBackClient(pack.m_Session);
 		}
 
 		break;
@@ -164,20 +166,20 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 		SLOGIN login;
 		memset(&login, 0, sizeof(SLOGIN));
-		memcpy(&login, pack.mBuffer + sizeof(SHEAD), sizeof(SLOGIN));
+		memcpy(&login, pack.m_Buffer + sizeof(SHEAD), sizeof(SLOGIN));
 
-		bool loginResult = g_pGameDBManager->Login(pack.mSession, login.mID, login.mPW);
+		bool loginResult = g_pGameDBManager->Login(pack.m_Session, login.m_ID, login.m_PW);
 
 		// 성공시 LOGIN_OK, 실패시 LOGIN_DN 전송
 		if (loginResult)
 		{
-			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_OK);
-			pack.mSession->Send();
+			g_pPacketManager->MakeSendPacket(pack.m_Session, NULL, 0, PROTOCOL::LOGIN_OK);
+			pack.m_Session->Send();
 		}
 		else
 		{
-			PacketManager::GetInstance()->MakeSendPacket(pack.mSession, NULL, 0, PROTOCOL::LOGIN_DN);
-			pack.mSession->Send();
+			g_pPacketManager->MakeSendPacket(pack.m_Session, NULL, 0, PROTOCOL::LOGIN_DN);
+			pack.m_Session->Send();
 		}
 
 		break;
@@ -185,7 +187,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::MOVE_RQ:
 	{
-		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.m_Session);
 
 		if (enemyPlayer == nullptr)
 		{
@@ -193,7 +195,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 			break;
 		}
 
-		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCHARACTER));
+		enemyPlayer->SetSendOverlapped(pack.m_Buffer, sizeof(SHEAD) + sizeof(SCHARACTER));
 		enemyPlayer->Send();
 
 		break;
@@ -201,7 +203,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::CRASH_RQ:
 	{
-		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.m_Session);
 
 		if (enemyPlayer == nullptr)
 		{
@@ -209,7 +211,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 			break;
 		}
 
-		enemyPlayer->SetSendOverlapped(pack.mBuffer, sizeof(SHEAD) + sizeof(SCRASH));
+		enemyPlayer->SetSendOverlapped(pack.m_Buffer, sizeof(SHEAD) + sizeof(SCRASH));
 		enemyPlayer->Send();
 
 		break;
@@ -217,7 +219,7 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 	case PROTOCOL::PLAYER_DIE_RQ:
 	{
-		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.mSession);
+		ClientSession* enemyPlayer = InGameManager::GetInstance()->GetEnemyClient(pack.m_Session);
 
 		if (enemyPlayer == nullptr)
 		{
@@ -227,17 +229,17 @@ void PacketManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 
 		SPLAYERDIE sDie;
 		memset(&sDie, 0, sizeof(SPLAYERDIE));
-		memcpy(&sDie, pack.mBuffer + sizeof(SHEAD), sizeof(SPLAYERDIE));
+		memcpy(&sDie, pack.m_Buffer + sizeof(SHEAD), sizeof(SPLAYERDIE));
 
 		SGAMEEND sGameEnd;
 		memset(&sGameEnd, 0, sizeof(SGAMEEND));
 
-		if (sDie.mPlayerIndex == 0)
-			sGameEnd.mGameEndState = GAMEEND_STATE::P2_WIN;
-		else if(sDie.mPlayerIndex == 1)
-			sGameEnd.mGameEndState = GAMEEND_STATE::P1_WIN;
+		if (sDie.m_PlayerIndex == 0)
+			sGameEnd.m_GameEndState = GAMEEND_STATE::P2_WIN;
+		else if(sDie.m_PlayerIndex == 1)
+			sGameEnd.m_GameEndState = GAMEEND_STATE::P1_WIN;
 
-		PacketManager::GetInstance()->MakeSendPacket(enemyPlayer, (char*)&sGameEnd, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+		g_pPacketManager->MakeSendPacket(enemyPlayer, (char*)&sGameEnd, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
 		enemyPlayer->Send();
 
 		break;
@@ -258,7 +260,7 @@ bool PacketManager::CheckAvailablePacket(char* buffer, DWORD dataBufferSize)
 	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, buffer, sizeof(SHEAD));
 
-	if (dataBufferSize < head.mPacketSize)
+	if (dataBufferSize < head.m_PacketSize)
 	{
 		cout << "unavailable packet, less size" << endl;
 		return false;
@@ -279,5 +281,5 @@ DWORD PacketManager::GetTotalPacketSize(char* buffer, DWORD dataBufferSize)
 	memset(&head, 0, sizeof(SHEAD));
 	memcpy(&head, buffer, sizeof(SHEAD));
 
-	return head.mPacketSize;
+	return head.m_PacketSize;
 }

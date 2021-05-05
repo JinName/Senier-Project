@@ -1,28 +1,28 @@
 #include "InGameManager.h"
 
-InGameManager::InGameManager() : mRoomCount(0), mLastRoomNum(0), mStopFlag(false)
+InGameManager::InGameManager() : m_RoomCount(0), m_LastRoomNum(0), m_IsStop(false)
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 InGameManager::~InGameManager()
 {
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 void InGameManager::Init()
 {
-	mRoomCount = 0;
-	mLastRoomNum = 0;
+	m_RoomCount = 0;
+	m_LastRoomNum = 0;
 
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 void InGameManager::Clean()
 {
-	mInGameRoomList.clear();
+	m_InGameRoomList.clear();
 
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
@@ -34,37 +34,37 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 	}
 
 	// into GameRoom
-	InGameRoom* inGameRoom = new InGameRoom(player1, player2, mLastRoomNum + 1);
+	InGameRoom* inGameRoom = new InGameRoom(player1, player2, m_LastRoomNum + 1);
 
 	// init
 	inGameRoom->Init();	
 
-	mInGameRoomList.push_back(inGameRoom);
+	m_InGameRoomList.push_back(inGameRoom);
 
-	++mLastRoomNum;
-	++mRoomCount;
+	++m_LastRoomNum;
+	++m_RoomCount;
 
 	// send gamestart packet to client
 	// setting player 1
 	SGAMESTART player1_Gamestart;
 	memset(&player1_Gamestart, 0, sizeof(SGAMESTART));
-	player1_Gamestart.mStart = true;
-	player1_Gamestart.mPlayerIndex = 0; // 1p
-	player1_Gamestart.mStartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
-	player1_Gamestart.mStartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
+	player1_Gamestart.m_IsStart = true;
+	player1_Gamestart.m_PlayerIndex = 0; // 1p
+	player1_Gamestart.m_StartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
+	player1_Gamestart.m_StartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
 	player1->SetPlayerIndex(0);
 
 	// setting player 2
 	SGAMESTART player2_Gamestart;
 	memset(&player2_Gamestart, 0, sizeof(SGAMESTART));
-	player2_Gamestart.mStart = true;
-	player2_Gamestart.mPlayerIndex = 1; // 2p
-	player2_Gamestart.mStartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
-	player2_Gamestart.mStartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
+	player2_Gamestart.m_IsStart = true;
+	player2_Gamestart.m_PlayerIndex = 1; // 2p
+	player2_Gamestart.m_StartPosition[0] = inGameRoom->GetGameLogicManager()->GetPlayer(0)->GetPosition();
+	player2_Gamestart.m_StartPosition[1] = inGameRoom->GetGameLogicManager()->GetPlayer(1)->GetPosition();
 	player2->SetPlayerIndex(1);
 
-	bool player1_result = PacketManager::GetInstance()->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
-	bool player2_result = PacketManager::GetInstance()->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+	bool player1_result = g_pPacketManager->MakeSendPacket(player1, (char*)&player1_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
+	bool player2_result = g_pPacketManager->MakeSendPacket(player2, (char*)&player2_Gamestart, sizeof(SGAMESTART), PROTOCOL::GAMESTART_CM);
 
 	if (player1_result && player2_result)
 	{
@@ -73,14 +73,12 @@ bool InGameManager::InGame(ClientSession* player1, ClientSession* player2)
 		player2->Send();
 	}
 
-	//inGameRoom->StartGameLogicThread();
-
 	return true;
 }
 
 bool InGameManager::GameEnd(int roomNum, GAMEEND_STATE endState)
 {
-	if (roomNum > mLastRoomNum)
+	if (roomNum > m_LastRoomNum)
 	{
 		cout << "wrong room number.." << endl;
 		return false;
@@ -90,13 +88,13 @@ bool InGameManager::GameEnd(int roomNum, GAMEEND_STATE endState)
 	InGameRoom* room = SearchRoom(roomNum);
 
 	// 게임 종료 원인을 패킷으로 전송
-	SGAMEEND end;
-	end.mGameEndState = endState;
+	SGAMEEND m_IsEnd;
+	m_IsEnd.m_GameEndState = endState;
 
-	PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(0), (char*)&end, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+	g_pPacketManager->MakeSendPacket(room->GetClientSession(0), (char*)&m_IsEnd, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
 	room->GetClientSession(0)->Send();
 
-	PacketManager::GetInstance()->MakeSendPacket(room->GetClientSession(1), (char*)&end, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
+	g_pPacketManager->MakeSendPacket(room->GetClientSession(1), (char*)&m_IsEnd, sizeof(SGAMEEND), PROTOCOL::GAMEEND_CM);
 	room->GetClientSession(1)->Send();
 
 	return true;
@@ -104,7 +102,7 @@ bool InGameManager::GameEnd(int roomNum, GAMEEND_STATE endState)
 
 bool InGameManager::OutGame(int roomNum)
 {
-	if (roomNum > mLastRoomNum)
+	if (roomNum > m_LastRoomNum)
 	{
 		cout << "wrong room number.." << endl;
 		return false;
@@ -127,23 +125,23 @@ bool InGameManager::OutGame(int roomNum)
 	if (room != nullptr)
 		delete room;
 
-	--mRoomCount;
+	--m_RoomCount;
 
 	return true;
 }
 
 InGameRoom* InGameManager::SearchRoom(int roomNum)
 {
-	if (roomNum > mLastRoomNum)
+	if (roomNum > m_LastRoomNum)
 	{
 		cout << "wrong room number.." << endl;
-		return false;
+		return nullptr;
 	}
 
 	InGameRoom* room = nullptr;
 
-	std::list<InGameRoom*>::iterator begin_iter = mInGameRoomList.begin();
-	std::list<InGameRoom*>::iterator end_iter = mInGameRoomList.end();
+	std::list<InGameRoom*>::iterator begin_iter = m_InGameRoomList.begin();
+	std::list<InGameRoom*>::iterator end_iter = m_InGameRoomList.m_IsEnd();
 
 	while (begin_iter != end_iter)
 	{
@@ -161,14 +159,14 @@ InGameRoom* InGameManager::SearchRoom(int roomNum)
 
 bool InGameManager::DeleteRoomInList(int roomNum)
 {
-	std::list<InGameRoom*>::iterator begin_iter = mInGameRoomList.begin();
-	std::list<InGameRoom*>::iterator end_iter = mInGameRoomList.end();
+	std::list<InGameRoom*>::iterator begin_iter = m_InGameRoomList.begin();
+	std::list<InGameRoom*>::iterator end_iter = m_InGameRoomList.m_IsEnd();
 
 	while (begin_iter != end_iter)
 	{
 		if ((*begin_iter)->GetRoomNum() == roomNum)
 		{
-			begin_iter = mInGameRoomList.erase(begin_iter);
+			begin_iter = m_InGameRoomList.erase(begin_iter);
 
 			break;
 		}
@@ -215,25 +213,25 @@ SCHARACTER InGameManager::SetPlayer(ClientSession* player, SCHARACTER charPacket
 {
 	InGameRoom* room = SearchRoom(player->GetRoomNum());
 
-	room->SetPlayer(charPacket.mPlayerIndex, charPacket);
+	room->SetPlayer(charPacket.m_PlayerIndex, charPacket);
 
-	//charPacket.mDirectionX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetDirection().x;
-	//charPacket.mPosX = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().x;
-	//charPacket.mPosY = room->GetPlayerInfo(charPacket.mPlayerIndex).GetVector3().y;
+	//charPacket.m_DirectionX = room->GetPlayerInfo(charPacket.m_PlayerIndex).GetDirection().x;
+	//charPacket.m_PosX = room->GetPlayerInfo(charPacket.m_PlayerIndex).GetVector3().x;
+	//charPacket.m_PosY = room->GetPlayerInfo(charPacket.m_PlayerIndex).GetVector3().y;
 
 	return charPacket;
 }
 
 bool InGameManager::Enqueue(ClientPacket clientPacket)
 {
-	mInGameBufferQueue.push(clientPacket);
+	m_InGameBufferQueue.push(clientPacket);
 
 	return true;
 }
 
 bool InGameManager::Dequeue()
 {
-	mInGameBufferQueue.pop();
+	m_InGameBufferQueue.pop();
 
 	return true;
 }
@@ -242,32 +240,32 @@ void InGameManager::ProcessAllQueue()
 {
 	while (true)
 	{
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 
-		if (!mInGameBufferQueue.empty())
+		if (!m_InGameBufferQueue.empty())
 		{
 			// 먼저 처리되어야할 패킷을 꺼낸 후 삭제
 			EnterCS();
 
-			ClientPacket pack = mInGameBufferQueue.front();
-			mInGameBufferQueue.pop();
+			ClientPacket pack = m_InGameBufferQueue.front();
+			m_InGameBufferQueue.pop();
+
+			LeaveCS();
 
 			// 패킷 헤드 확인
 			PROTOCOL protocol = ParsingPacket(pack);
 
 			// 프로토콜에 따른 패킷 처리
-			ProcessPacket(protocol, pack);
-
-			LeaveCS();
+			ProcessPacket(protocol, pack);			
 		}
 
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 	}
 }
 
 PROTOCOL InGameManager::ParsingPacket(ClientPacket pack)
 {
-	if (pack.mBuffer == nullptr)
+	if (pack.m_Buffer == nullptr)
 	{
 		cout << "parsing buffer is nullptr... return PROTOCOL::NONE" << endl;
 		return PROTOCOL::NONE;
@@ -275,9 +273,9 @@ PROTOCOL InGameManager::ParsingPacket(ClientPacket pack)
 
 	SHEAD head;
 	memset(&head, 0, sizeof(SHEAD));
-	memcpy(&head, pack.mBuffer, sizeof(SHEAD));
+	memcpy(&head, pack.m_Buffer, sizeof(SHEAD));
 
-	return (PROTOCOL)head.mCmd;
+	return (PROTOCOL)head.m_Cmd;
 }
 
 void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
@@ -288,11 +286,11 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 		SCHARACTER playerChar;
 		memset(&playerChar, 0, sizeof(SCHARACTER));
-		memcpy(&playerChar, pack.mBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+		memcpy(&playerChar, pack.m_Buffer + sizeof(SHEAD), sizeof(SCHARACTER));
 
-		InGameRoom* room = SearchRoom(pack.mSession->GetRoomNum());
+		InGameRoom* room = SearchRoom(pack.m_Session->GetRoomNum());
 
-		room->SetPlayer(playerChar.mPlayerIndex, playerChar);
+		room->SetPlayer(playerChar.m_PlayerIndex, playerChar);
 
 		break;
 	}
@@ -301,15 +299,15 @@ void InGameManager::ProcessPacket(PROTOCOL protocol, ClientPacket pack)
 	{
 		SINITCOMPLETE sInit;
 		memset(&sInit, 0, sizeof(SINITCOMPLETE));
-		memcpy(&sInit, pack.mBuffer + sizeof(SHEAD), sizeof(SINITCOMPLETE));
+		memcpy(&sInit, pack.m_Buffer + sizeof(SHEAD), sizeof(SINITCOMPLETE));
 
-		InGameRoom* room = SearchRoom(pack.mSession->GetRoomNum());
+		InGameRoom* room = SearchRoom(pack.m_Session->GetRoomNum());
 
-		room->SetInitComplete(sInit.mPlayerIndex, sInit.mComplete);
+		room->SetInitComplete(sInit.m_PlayerIndex, sInit.m_IsComplete);
 
 		if (room->GetInitComplete(0) == true && room->GetInitComplete(1) == true)
 		{
-			//room->StartGameLogicThread();
+			room->StartGameLogicThread();
 		}
 
 		break;

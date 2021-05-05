@@ -23,7 +23,7 @@ protected:
 public:
 	static T* GetInstance()
 	{
-		if (m_pInstance == NULL)
+		if (m_pInstance == nullptr)
 			m_pInstance = new T;
 		//atexit(DestroyInstance);
 
@@ -34,7 +34,7 @@ public:
 		if (m_pInstance)
 		{
 			delete m_pInstance;
-			m_pInstance = NULL;
+			m_pInstance = nullptr;
 		}
 	}
 
@@ -46,4 +46,4 @@ private:
 };
 
 template < typename T >
-T* TemplateSingleton<T>::m_pInstance = NULL;
+T* TemplateSingleton<T>::m_pInstance = nullptr;

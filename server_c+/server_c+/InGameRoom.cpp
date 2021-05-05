@@ -1,14 +1,14 @@
 #include "InGameRoom.h"
 
 InGameRoom::InGameRoom(ClientSession* _player1, ClientSession* _player2, int _roomNum)
-	: mRoomNum(_roomNum), mStopFlag(false)
+	: m_RoomNum(_roomNum), m_IsStop(false), m_DelayChecker(UPDATE_FPS)
 {
-	mClient[0] = _player1;
-	mClient[1] = _player2;
+	m_Client[0] = _player1;
+	m_Client[1] = _player2;
 
 	for (int i = 0; i < 2; ++i)
 	{
-		mClient[i]->SetRoomNum(_roomNum);
+		m_Client[i]->SetRoomNum(_roomNum);
 	}
 }
 
@@ -19,23 +19,23 @@ InGameRoom::~InGameRoom()
 void InGameRoom::Init()
 {
 	// 게임 로직 매니저 초기화
-	mGameLogicManager.Init(mClient[0], mClient[1]);
+	m_GameLogicManager.Init(m_Client[0], m_Client[1]);
 }
 
 void InGameRoom::Clean()
 {
-	mGameLogicManager.Clean();
+	m_GameLogicManager.Clean();
 }
 
 void InGameRoom::SetPlayer(int _playerIndex, SCHARACTER _charPacket)
 {
-	if (_charPacket.mLeft)
-		mGameLogicManager.GetPlayer(_playerIndex)->Do_Left();
-	else if (_charPacket.mRight)
-		mGameLogicManager.GetPlayer(_playerIndex)->Do_Right();
+	if (_charPacket.m_IsLeft)
+		m_GameLogicManager.GetPlayer(_playerIndex)->Do_Left();
+	else if (_charPacket.m_IsRight)
+		m_GameLogicManager.GetPlayer(_playerIndex)->Do_Right();
 
-	if (_charPacket.mKeyDownSpace)
-		mGameLogicManager.GetPlayer(_playerIndex)->Do_Jump();
+	if (_charPacket.m_IsKeyDownSpace)
+		m_GameLogicManager.GetPlayer(_playerIndex)->Do_Jump();
 }
 
 bool InGameRoom::StartGameLogicThread()
@@ -72,10 +72,16 @@ void InGameRoom::Update()
 {
 	while (true)
 	{
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 
-		mGameLogicManager.Update();
+		m_DelayChecker.StartCodeRuntimeCheck();
 
-		if (mStopFlag) break;
+		m_GameLogicManager.Update();
+
+		m_DelayChecker.EndCodeRuntimeCheck();
+
+		m_DelayChecker.DoDelay();
+
+		if (m_IsStop) break;
 	}	
 }

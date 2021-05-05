@@ -35,12 +35,12 @@ typedef struct sOverlappedSocket : public OVERLAPPED
 	sOverlappedSocket()
 	{
 		// init
-		memset(mBuffer, 0, MAX_BUFSIZE);
-		memset(&mWSABuf, 0, sizeof(WSABUF));
+		memset(m_Buffer, 0, MAX_BUFSIZE);
+		memset(&m_WSABuf, 0, sizeof(WSABUF));
 	}
-	IOTYPE					mIOType;
-	WSABUF					mWSABuf;
-	char					mBuffer[MAX_BUFSIZE];
+	IOTYPE					m_IOType;
+	WSABUF					m_WSABuf;
+	char					m_Buffer[MAX_BUFSIZE];
 } SOVERLAPPED;
 
 // client session class
@@ -56,29 +56,29 @@ typedef struct sOverlappedSocket : public OVERLAPPED
 class ClientSession
 {
 private:
-	bool			mIsConnected;	// for get info what client is connected
-	SOCKET			mSocket;		// client socket
+	bool			m_IsConnected;	// for get info what client is connected
+	SOCKET			m_Socket;		// client socket
 
-	SOCKADDR_IN		mClientAddr;	// client address
+	SOCKADDR_IN		m_ClientAddr;	// client address
 
-	SOVERLAPPED		mRecvOverlapped;// overlapped for recv
-	SOVERLAPPED		mSendOverlapped;// overlapped for send
+	SOVERLAPPED		m_RecvOverlapped;// overlapped for recv
+	SOVERLAPPED		m_SendOverlapped;// overlapped for send
 
 	// game information
-	int				mRoomNum;		// -1 : not in game
-	int				mPlayerIndex;	// -1 : not in game
+	int				m_RoomNum;		// -1 : not in game
+	int				m_PlayerIndex;	// -1 : not in game
 
-	char			mID[MAX_ID_LEN];
-	bool			mIsLogin;
+	char			m_ID[MAX_ID_LEN];
+	bool			m_IsLogin;
 	
 	// circular buffer
-	CircularBuffer	mRingBuffer;
+	CircularBuffer	m_RingBuffer;
 
 public:
-	ClientSession(SOCKET sock);
+	ClientSession(SOCKET socket);
 	~ClientSession() {}
 
-	bool			OnConnect(SOCKADDR_IN* addr);			// do connect client	
+	bool			OnConnect(SOCKADDR_IN* address);			// do connect client	
 	bool			DisConnect();							// disconnect
 
 	// const function
@@ -90,32 +90,32 @@ public:
 	bool			Send();									// send data to client
 
 	// get ///////////////////////
-	SOCKET			GetSocket()			{ return mSocket; } // return socket
-	int				GetRoomNum()		{ return mRoomNum; }
+	SOCKET			GetSocket()			{ return m_Socket; } // return socket
+	int				GetRoomNum()		{ return m_RoomNum; }
 
-	SOVERLAPPED		GetRecvOverlapped() { return mRecvOverlapped; }
-	SOVERLAPPED		GetSendOverlapped() { return mSendOverlapped; }
+	SOVERLAPPED		GetRecvOverlapped() { return m_RecvOverlapped; }
+	SOVERLAPPED		GetSendOverlapped() { return m_SendOverlapped; }
 
-	char*			GetSendOverlappedBuffer() { return mSendOverlapped.mBuffer; }
+	char*			GetSendOverlappedBuffer() { return m_SendOverlapped.m_Buffer; }
 
 	// set ///////////////////////
-	void			SetRoomNum(int roomNum)			{ mRoomNum = roomNum; }
-	void			SetPlayerIndex(int playerIndex)	{ mPlayerIndex = playerIndex; }
+	void			SetRoomNum(int roomNum)			{ m_RoomNum = roomNum; }
+	void			SetPlayerIndex(int playerIndex)	{ m_PlayerIndex = playerIndex; }
 
 	bool			SetSendOverlapped();
 	bool			SetSendOverlapped(char* buffer, int bufferSize);
 
 	// id
-	void			SetID(char* _id) { strcpy(mID, _id); }
-	char*			GetID() { return mID; }
-	void			CleanID() { memset(mID, 0, MAX_ID_LEN); }
+	void			SetID(char* id) { strcpy(m_ID, id); }
+	char*			GetID() { return m_ID; }
+	void			CleanID() { memset(m_ID, 0, MAX_ID_LEN); }
 
 	// login
-	void			SetIsLogin(bool _isLogin) { mIsLogin = _isLogin; }
-	bool			GetIsLogin() { return mIsLogin; }
+	void			SetIsLogin(bool isLogin) { m_IsLogin = isLogin; }
+	bool			GetIsLogin() { return m_IsLogin; }
 
 	// ring buffer
-	void			CompleteRecv(DWORD _dataSize);
-	bool			PopBuffer(char* _outBuffer);
+	void			CompleteRecv(DWORD dataSize);
+	bool			PopBuffer(char* outBuffer);
 };
 

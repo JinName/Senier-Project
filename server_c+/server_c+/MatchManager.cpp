@@ -1,26 +1,26 @@
 #include "MatchManager.h"
 #include "InGameManager.h"
 
-MatchManager::MatchManager() : mStopFlag(false)
+MatchManager::MatchManager() : m_IsStop(false)
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 MatchManager::~MatchManager()
 {
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 void MatchManager::Init()
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 void MatchManager::Clean()
 {
-	mMatchWaitList.clear();
+	m_MatchWaitList.clear();
 
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 bool MatchManager::PushBackClient(ClientSession* client)
@@ -38,7 +38,7 @@ bool MatchManager::PushBackClient(ClientSession* client)
 	}
 
 	EnterCS();
-	mMatchWaitList.push_back(client);
+	m_MatchWaitList.push_back(client);
 	LeaveCS();
 
 	cout << "[SUCCESS] : MatchManager > PushBackClient()" << endl;
@@ -54,9 +54,9 @@ bool MatchManager::CheckExistClient(ClientSession* client)
 		return false;
 	}
 
-	std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
+	std::list<ClientSession*>::iterator iter = std::find(m_MatchWaitList.begin(), m_MatchWaitList.m_IsEnd(), client);
 
-	if (iter == mMatchWaitList.end())
+	if (iter == m_MatchWaitList.m_IsEnd())
 	{
 		cout << "[INFO] : MatchManager > CheckExistClient() > doesn't exist in match > return false" << endl;
 		return false;
@@ -68,9 +68,9 @@ bool MatchManager::CheckExistClient(ClientSession* client)
 
 bool MatchManager::DeleteClient(ClientSession* client)
 {
-	std::list<ClientSession*>::iterator iter = std::find(mMatchWaitList.begin(), mMatchWaitList.end(), client);
+	std::list<ClientSession*>::iterator iter = std::find(m_MatchWaitList.begin(), m_MatchWaitList.m_IsEnd(), client);
 
-	mMatchWaitList.erase(iter);
+	m_MatchWaitList.erase(iter);
 
 	cout << "[INFO] : MatchManager > DeleteClient() > delete clientsession from wait list.." << endl;
 
@@ -83,27 +83,27 @@ void MatchManager::ProcessMatchList()
 	// 먼저 들어온 순으로 앞에서부터 매칭 -> 게임시작
 	while (true)
 	{
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 
-		if (mMatchWaitList.size() >= 2)
+		if (m_MatchWaitList.size() >= 2)
 		{
 			// 자원 변경점을 thread-safe 하게 설계한다.
 			// start Critical Section
 			EnterCS();
 			// player 1
-			ClientSession* player1 = mMatchWaitList.front();
-			mMatchWaitList.pop_front();
+			ClientSession* player1 = m_MatchWaitList.front();
+			m_MatchWaitList.pop_front();
 
 			// player 2
-			ClientSession* player2 = mMatchWaitList.front();
-			mMatchWaitList.pop_front();
+			ClientSession* player2 = m_MatchWaitList.front();
+			m_MatchWaitList.pop_front();
 			LeaveCS();
-			// end Critical Section
+			// m_IsEnd Critical Section
 
 			// into GameRoom
 			InGameManager::GetInstance()->InGame(player1, player2);			
 		}
 
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 	}
 }

@@ -25,11 +25,13 @@ public:
 	bool		Init();
 
 	bool		Connect();
-	bool		isConnected();
+	bool		IsConnected();
 	bool		Disconnect();
 
-	MYSQL_RES*	GetSQLResult(const char* _sql);
-	bool		FreeSQLResult(MYSQL_RES* _res);
+	MYSQL_RES*	GetSQLResult(const char* sqlQuery);
+	bool		FreeSQLResult(MYSQL_RES* res);
+
+	void		NextSQLResult();
 
 protected:
 	MYSQL*		m_pConnection;		// MYSQL 함수 핸들용 포인터

@@ -18,20 +18,20 @@ public:
 	Logger();
 	~Logger();
 
-	void Init(LOGGER_TYPE logger_type, const char* _loggerName);
+	void Init(LOGGER_TYPE loggerType, const char* loggerName);
 
-	bool set_file_logger();
-	bool set_file_logger(const char* loggerName);
-	bool file_write(LOGGER_LEVEL level, const char* msg);
+	bool SetFileLogger();
+	bool SetFileLogger(const char* loggerName);
+	bool FileWrite(LOGGER_LEVEL level, const char* msg);
 
-	void console_write(LOGGER_LEVEL level, const char* msg);
+	void ConsoleWrite(LOGGER_LEVEL level, const char* msg);
 
-	void EnterCS() { EnterCriticalSection(&mCS); }
-	void LeaveCS() { LeaveCriticalSection(&mCS); }
+	void EnterCS() { EnterCriticalSection(&m_CS); }
+	void LeaveCS() { LeaveCriticalSection(&m_CS); }
 private:
-	std::shared_ptr<spdlog::logger> file_logger;
+	std::shared_ptr<spdlog::logger> m_FileLogger;
 
-	CRITICAL_SECTION mCS;
+	CRITICAL_SECTION m_CS;
 };
 
 extern Logger* g_pConnLogger;

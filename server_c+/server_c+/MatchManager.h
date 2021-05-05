@@ -27,26 +27,26 @@ public:
 	bool DeleteClient(ClientSession* client);
 
 	// return wait count
-	int GetWaitCount() { return mMatchWaitList.size(); }
+	int GetWaitCount() { return m_MatchWaitList.size(); }
 
 	// 매칭을 담당하는 Thread 내에서 돌아감
 	// Match List 내에 2명이상 대기중일 경우 매칭완료 후 게임 시작
 	void ProcessMatchList();
 
 	// 편의를 위한 CRITICAL_SECTION 함수
-	void EnterCS() { EnterCriticalSection(&mCS); }
-	void LeaveCS() { LeaveCriticalSection(&mCS); }
+	void EnterCS() { EnterCriticalSection(&m_CS); }
+	void LeaveCS() { LeaveCriticalSection(&m_CS); }
 
-	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
+	void SetIsStop(bool isStop) { m_IsStop = isStop; }
 private:
 	// 매칭 대기열을 담을 리스트
-	std::list<ClientSession*> mMatchWaitList;
+	std::list<ClientSession*> m_MatchWaitList;
 
 	// for thread-safe
-	CRITICAL_SECTION mCS;
+	CRITICAL_SECTION m_CS;
 
 	// while loop stop flag
-	bool mStopFlag;
+	bool m_IsStop;
 };
 
 MatchManager* TemplateSingleton<MatchManager>::m_pInstance = NULL;

@@ -24,12 +24,15 @@ int main()
 	g_pSessionManager = new SessionManager;
 	g_pIocpManager = new IOCPManager;
 	g_pGameDBManager = new GameDBManager;
+	g_pPacketManager = new PacketManager;
 
 	g_pConnLogger->Init(LOGGER_TYPE::file, "connect_log");
 	g_pUsageLogger->Init(LOGGER_TYPE::file, "usage_log");
 	g_pCrypt->Init();
 	g_pGameDBManager->Init();
-	PacketManager::GetInstance()->Init();
+	g_pPacketManager->Init();
+
+	//PacketManager::GetInstance()->Init();
 	MatchManager::GetInstance()->Init();
 	InGameManager::GetInstance()->Init();
 
@@ -47,6 +50,9 @@ int main()
 	if (g_pIocpManager->StartMatchProcessThread() == false)
 		return -1;
 
+	if (g_pIocpManager->StartInGameProcessThread() == false)
+		return -1;
+
 	if (g_pIocpManager->StartSystemUsageThread() == false)
 		return -1;
 
@@ -59,21 +65,26 @@ int main()
 
 	cout << "End IOCP Server..." << endl;
 
-	MatchManager::GetInstance()->SetStopFlag(true);
-	PacketManager::GetInstance()->SetStopFlag(true);
+	MatchManager::GetInstance()->SetIsStop(true);
+	//PacketManager::GetInstance()->SetIsStop(true);
+
+	g_pPacketManager->SetIsStop(true);
 
 	// clean
 	InGameManager::GetInstance()->Clean();
 	MatchManager::GetInstance()->Clean();
-	PacketManager::GetInstance()->Clean();
+	//PacketManager::GetInstance()->Clean();
 
+	g_pPacketManager->Clean();
 	g_pGameDBManager->Disconnect();
 	g_pCrypt->Clean();
 
 	// destroy singleton
 	InGameManager::GetInstance()->DestroyInstance();
 	MatchManager::GetInstance()->DestroyInstance();
-	PacketManager::GetInstance()->DestroyInstance();
+	//PacketManager::GetInstance()->DestroyInstance();
+
+	delete g_pPacketManager;
 	delete g_pIocpManager;
 	delete g_pSessionManager;
 	delete g_pCrypt;

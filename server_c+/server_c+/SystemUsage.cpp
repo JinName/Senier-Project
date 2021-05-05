@@ -8,15 +8,15 @@ bool SystemUsage::Init()
 	FILETIME ftime, fsys, fuser;
 
 	GetSystemInfo(&sysInfo);
-	m_iNumProcessors = sysInfo.dwNumberOfProcessors;
+	m_NumProcessors = sysInfo.dwNumberOfProcessors;
 
 	GetSystemTimeAsFileTime(&ftime);
-	memcpy(&m_lastCPU, &ftime, sizeof(FILETIME));
+	memcpy(&m_LastCPU, &ftime, sizeof(FILETIME));
 
-	m_hSelf = GetCurrentProcess();
-	GetProcessTimes(m_hSelf, &ftime, &ftime, &fsys, &fuser);
-	memcpy(&m_lastSysCPU, &fsys, sizeof(FILETIME));
-	memcpy(&m_lastUserCPU, &fuser, sizeof(FILETIME));
+	m_Handle = GetCurrentProcess();
+	GetProcessTimes(m_Handle, &ftime, &ftime, &fsys, &fuser);
+	memcpy(&m_LastSysCPU, &fsys, sizeof(FILETIME));
+	memcpy(&m_LastUserCPU, &fuser, sizeof(FILETIME));
 
 	return true;
 }
@@ -38,16 +38,16 @@ double SystemUsage::GetCpuUsage()
 	GetSystemTimeAsFileTime(&ftime);
 	memcpy(&now, &ftime, sizeof(FILETIME));
 
-	GetProcessTimes(m_hSelf, &ftime, &ftime, &fsys, &fuser);
+	GetProcessTimes(m_Handle, &ftime, &ftime, &fsys, &fuser);
 	memcpy(&sys, &fsys, sizeof(FILETIME));
 	memcpy(&user, &fuser, sizeof(FILETIME));
-	percent = (sys.QuadPart - m_lastSysCPU.QuadPart) +
-		(user.QuadPart - m_lastUserCPU.QuadPart);
-	percent /= (now.QuadPart - m_lastCPU.QuadPart);
-	percent /= m_iNumProcessors;
-	m_lastCPU = now;	
-	m_lastSysCPU = sys;
-	m_lastUserCPU = user;
+	percent = (sys.QuadPart - m_LastSysCPU.QuadPart) +
+		(user.QuadPart - m_LastUserCPU.QuadPart);
+	percent /= (now.QuadPart - m_LastCPU.QuadPart);
+	percent /= m_NumProcessors;
+	m_LastCPU = now;	
+	m_LastSysCPU = sys;
+	m_LastUserCPU = user;
 
 	return percent * 100;
 }

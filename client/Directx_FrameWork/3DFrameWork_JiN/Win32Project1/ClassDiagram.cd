@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="TemplateSingleton&lt;T&gt;">
-    <Position X="25.5" Y="10" Width="1.5" />
+  <Class Name="TemplateSingleton&lt;T&gt;" Collapsed="true">
+    <Position X="23" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQIACAAAAAABAAAAAAAAAACAAQEQAQ=</HashCode>
       <FileName>TemplateSingleton.h</FileName>
@@ -232,14 +232,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Network">
-    <Position X="19.5" Y="10" Width="1.5" />
+    <Position X="19.75" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQQAAAEAAQAEAAAAAAAAIRAAAAAACAAAAIDCAQAUAo=</HashCode>
       <FileName>Network.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PacketManager">
-    <Position X="21.25" Y="10" Width="1.5" />
+    <Position X="21.5" Y="11" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CEBAACAAAAAAAAAAogAABAAACIAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PacketManager.h</FileName>

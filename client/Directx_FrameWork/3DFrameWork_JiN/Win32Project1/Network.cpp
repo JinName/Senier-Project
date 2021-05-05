@@ -5,7 +5,7 @@ SOCKET Network::m_ClientSocket = NULL;
 
 Network* g_pNetwork = nullptr;
 
-Network::Network() : m_iPlayerIndex(-1)
+Network::Network() : m_PlayerIndex(-1)
 {
 }
 
@@ -33,14 +33,14 @@ void Network::Update()
 
 	//SCHAT sChat;
 	//memset(&sChat, 0, sizeof(SCHAT));
-	//sChat.mHead.mCmd = (UCHAR)PROTOCOL::TEST_CHAT;
+	//sChat.mHead.m_Cmd = (UCHAR)PROTOCOL::TEST_CHAT;
 	//sChat.mHead.mDataSize = sizeof(SCHAT);
 
 	//char msg[MAX_MSG_LEN] = "";
 	//while (true)
 	//{
-	//	//gets_s(sChat.buf, MAX_MSG_LEN);
-	//	gets_s(sChat.buf, MAX_MSG_LEN);
+	//	//gets_s(sChat.m_Buffer, MAX_MSG_LEN);
+	//	gets_s(sChat.m_Buffer, MAX_MSG_LEN);
 
 	//	// str copy
 	//	//memcpy_s(overlapped->mBuffer, MAX_BUFSIZE, (char*)&sChat, sizeof(sChat));
@@ -48,7 +48,7 @@ void Network::Update()
 
 	//	cout << overlapped->mBuffer << endl;
 
-	//	overlapped->mWSABuf.buf = overlapped->mBuffer;
+	//	overlapped->mWSABuf.m_Buffer = overlapped->mBuffer;
 	//	overlapped->mWSABuf.len = sizeof(overlapped->mBuffer);
 
 	//	if (SOCKET_ERROR == WSASend(m_ClientSocket, &overlapped->mWSABuf, 1, &sendBytes, flags, (LPOVERLAPPED)overlapped, NULL))
@@ -86,7 +86,7 @@ void Network::Set_TCPSocket()
 		perror("socket() error");
 }
 
-void Network::Connect(short _portNum)
+void Network::Connect(short portNum)
 {
 	cout << "connect()" << endl;
 
@@ -94,7 +94,7 @@ void Network::Connect(short _portNum)
 
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = inet_addr(SERVER_IP);
-	servAddr.sin_port = htons(_portNum);
+	servAddr.sin_port = htons(portNum);
 
 	if (connect(m_ClientSocket, (struct sockaddr*) & servAddr, sizeof(servAddr)) == SOCKET_ERROR)
 		perror("connect() error");
@@ -114,7 +114,7 @@ bool Network::StartRecvThread()
 	// create thread
 	DWORD dwThreadId;
 	// begin thread
-	HANDLE hRecvThread = (HANDLE)_beginthreadex(NULL, 0, RecvThread, NULL, 0, (unsigned int*)&dwThreadId);
+	HANDLE hRecvThread = (HANDLE)_beginthreadex(NULL, 0, recvThread, NULL, 0, (unsigned int*)&dwThreadId);
 
 	// except error - for create thread
 	if (hRecvThread == INVALID_HANDLE_VALUE)
@@ -134,7 +134,7 @@ bool Network::StartPacketProcessThread()
 	// create thread
 	DWORD dwThreadId;
 	// begin thread
-	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, PacketProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, packetProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
 
 	// except error - for create thread
 	if (hPacketThread == INVALID_HANDLE_VALUE)
@@ -173,24 +173,24 @@ bool Network::StartPacketProcessThread()
 //	closesocket(sock);
 //}
 
-bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool _inGame)
+bool Network::SendPacket(PROTOCOL protocol, char* data, DWORD dataSize, bool inGame)
 {
 	// [헤드] 구조체 생성
 	SHEAD head;
 	memset(&head, 0, sizeof(SHEAD));
-	head.mCmd = (unsigned char)_protocol;
-	head.mPacketSize = (DWORD)sizeof(SHEAD) + _dataSize;
-	head.mTransferToInGame = _inGame;
+	head.m_Cmd = (unsigned char)protocol;
+	head.m_PacketSize = (DWORD)sizeof(SHEAD) + dataSize;
+	head.m_IsTransferToInGame = inGame;
 
 	// [헤드] + [데이터] 조립
 	char buffer[MAX_BUFSIZE];
-	int bufferSize = head.mPacketSize;
+	int bufferSize = head.m_PacketSize;
 	memset(buffer, 0, MAX_BUFSIZE);
 
 	memcpy(buffer, (char*)&head, sizeof(SHEAD));
 
-	if (_data != NULL)
-		memcpy(buffer + sizeof(SHEAD), _data, _dataSize);
+	if (data != NULL)
+		memcpy(buffer + sizeof(SHEAD), data, dataSize);
 
 	// 완성된 패킷 전송
 	if (SOCKET_ERROR == send(m_ClientSocket, buffer, bufferSize, 0))
@@ -202,7 +202,7 @@ bool Network::SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool 
 	return true;
 }
 
-unsigned int WINAPI Network::RecvThread(LPVOID lpParam)
+unsigned int WINAPI Network::recvThread(LPVOID lpParam)
 {
 	while (true)
 	{
@@ -223,7 +223,7 @@ unsigned int WINAPI Network::RecvThread(LPVOID lpParam)
 	return 0;
 }
 
-unsigned int WINAPI Network::PacketProcessThread(LPVOID lpParam)
+unsigned int WINAPI Network::packetProcessThread(LPVOID lpParam)
 {
 	if (g_pPacketManager != nullptr)
 	{

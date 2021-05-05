@@ -20,7 +20,7 @@ void CCollisionManager::Init()
 void CCollisionManager::Update(list<RECT> &_Rect_List, CAru &_aru)
 {
 	std::list<RECT>::iterator begin_iter = _Rect_List.begin();
-	std::list<RECT>::iterator end_iter = _Rect_List.end();
+	std::list<RECT>::iterator end_iter = _Rect_List.m_IsEnd();
 	int count = 0;
 
 	for (int i = 0; i < _Rect_List.size(); i++)
@@ -108,10 +108,10 @@ void CCollisionManager::Charater_Tile_Check(CTile* _Tile_Array, int _Tile_Array_
 void CCollisionManager::CharAttack_Monster_Check(list<CFireBall*> &_FireBall_List, list<CMonster> &_Monster_List)
 {
 	std::list<CFireBall*>::iterator fire_begin_iter = _FireBall_List.begin();
-	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.end();
+	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.m_IsEnd();
 
 	std::list<CMonster>::iterator Monster_begin_iter = _Monster_List.begin();
-	std::list<CMonster>::iterator Monster_end_iter = _Monster_List.end();
+	std::list<CMonster>::iterator Monster_end_iter = _Monster_List.m_IsEnd();
 
 	while (Monster_begin_iter != Monster_end_iter)
 	{
@@ -140,7 +140,7 @@ void CCollisionManager::CharAttack_Monster_Check(list<CFireBall*> &_FireBall_Lis
 void CCollisionManager::Charater_Monster_Check(CAru &_aru, list<CMonster> &_Monster_List)
 {
 	std::list<CMonster>::iterator Monster_begin_iter = _Monster_List.begin();
-	std::list<CMonster>::iterator Monster_end_iter = _Monster_List.end();
+	std::list<CMonster>::iterator Monster_end_iter = _Monster_List.m_IsEnd();
 
 	if ((&_aru)->Get_Active_Collision())
 	{
@@ -159,7 +159,7 @@ void CCollisionManager::Charater_Monster_Check(CAru &_aru, list<CMonster> &_Mons
 void CCollisionManager::Charater_Potion_Check(CAru &_aru, list<CPotion> &_Potion_List)
 {
 	std::list<CPotion>::iterator Potion_begin_iter = _Potion_List.begin();
-	std::list<CPotion>::iterator Potion_end_iter = _Potion_List.end();
+	std::list<CPotion>::iterator Potion_end_iter = _Potion_List.m_IsEnd();
 
 	if ((&_aru)->Get_HP_isFull() == false)
 	{
@@ -176,10 +176,10 @@ void CCollisionManager::Charater_Potion_Check(CAru &_aru, list<CPotion> &_Potion
 	}
 }
 
-void CCollisionManager::Character_EnemyAttack_Check(int _iPlayerIndex, CAru& _aru, list<CFireBall*>& _FireBall_List)
+void CCollisionManager::Character_EnemyAttack_Check(int playerIndex, CAru& _aru, list<CFireBall*>& _FireBall_List)
 {
 	std::list<CFireBall*>::iterator fire_begin_iter = _FireBall_List.begin();
-	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.end();
+	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.m_IsEnd();
 
 	if ((&_aru)->Get_Active_Collision())
 	{
@@ -199,9 +199,9 @@ void CCollisionManager::Character_EnemyAttack_Check(int _iPlayerIndex, CAru& _ar
 				// 충돌했음을 상대 플레이어에게 알림
 				SCRASH sCrash;
 				memset(&sCrash, 0, sizeof(SCRASH));
-				sCrash.mPlayerIndex = _iPlayerIndex;
+				sCrash.mPlayerIndex = playerIndex;
 
-				g_pNetwork->SendPacket(PROTOCOL::CRASH_RQ, (char*)&sCrash, sizeof(SCRASH), false);
+				g_pNetwm_PlayerIndexket(PROTOCOL::CRASH_RQ, (char*)&sCrash, sizeof(SCRASH), false);
 			}
 			++fire_begin_iter;
 		}
@@ -211,7 +211,7 @@ void CCollisionManager::Character_EnemyAttack_Check(int _iPlayerIndex, CAru& _ar
 void CCollisionManager::CharAttack_Enemy_Check(CAru& _aru, list<CFireBall*>& _FireBall_List)
 {
 	std::list<CFireBall*>::iterator fire_begin_iter = _FireBall_List.begin();
-	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.end();
+	std::list<CFireBall*>::iterator fire_end_iter = _FireBall_List.m_IsEnd();
 
 	if ((&_aru)->Get_Active_Collision())
 	{

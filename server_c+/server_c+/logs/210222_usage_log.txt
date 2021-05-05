@@ -1,0 +1,2 @@
+[2021-02-22 17:02:26.784] [usage_log] [info] CPU : 2.38 % / Memory : 6.37 MB
+[2021-02-22 17:02:28.285] [usage_log] [info] CPU : 16.90 % / Memory : 6.38 MB

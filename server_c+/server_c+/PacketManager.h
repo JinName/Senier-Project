@@ -9,27 +9,28 @@
 
 struct ClientPacket
 {
-	ClientPacket() : mSession(nullptr) { memset(mBuffer, 0, MAX_BUFSIZE); }
-	ClientPacket(ClientSession* client, char* buffer, DWORD bufferSize) : mSession(client)
+	ClientPacket() : m_Session(nullptr) { memset(m_Buffer, 0, MAX_BUFSIZE); }
+	ClientPacket(ClientSession* client, char* buffer, DWORD bufferSize) : m_Session(client)
 	{
-		memset(mBuffer, 0, MAX_BUFSIZE);
-		memcpy(mBuffer, buffer, bufferSize);
+		memset(m_Buffer, 0, MAX_BUFSIZE);
+		memcpy(m_Buffer, buffer, bufferSize);
 	}
 
-	ClientSession* mSession;
-	char mBuffer[MAX_BUFSIZE];
+	ClientSession* m_Session;
+	char m_Buffer[MAX_BUFSIZE];
 };
 
 /*
 클래스명 : PacketManager
-기능 : WorkerThread 에서 받은 패킷을 해당 클래스내 Queue 에 저장하고,
+기능 : workerThread 에서 받은 패킷을 해당 클래스내 Queue 에 저장하고,
 	   이 클래스내에 저장된 패킷을 별도의 스레드에서 처리하며,
 	   패킷 정보에 따른 처리로직을 포함함.
 
-흐름 : WorkerThread -> PacketQueue -> ProcessPacketThread
+흐름 : workerThread -> PacketQueue -> ProcessPacketThread
 */
 // PacketManager Is-A Singleton : PacketManager 은 Singleton 형태이다.
-class PacketManager : public TemplateSingleton<PacketManager>
+// 2021-03-10 : singleton -> extern 형태로 변경
+class PacketManager
 {
 public:
 	PacketManager();
@@ -42,7 +43,7 @@ public:
 	// thread-safe 하게 설계되어야한다.
 	// 따라서 CRITICAL_SECTION 등의 처리가 필수적이다.
 	bool Enqueue(ClientPacket pack);		// 패킷을 Queue 안에 저장
-	bool Dequeue(ClientPacket& pack);					// 패킷을 Queue 에서 삭제
+	bool Dequeue(ClientPacket& pack);		// 패킷을 Queue 에서 삭제
 
 	// 패킷처리
 	void ProcessAllQueue();		// 모든 패킷이 Queue 에서 전부 빠질 때까지 패킷처리를 계속함
@@ -59,20 +60,21 @@ public:
 	void ProcessPacket(PROTOCOL protocol, ClientPacket pack);
 
 	// 편의를 위한 CRITICAL_SECTION 함수
-	void EnterCS() { EnterCriticalSection(&mCS); }
-	void LeaveCS() { LeaveCriticalSection(&mCS); }
+	void EnterCS() { EnterCriticalSection(&m_CS); }
+	void LeaveCS() { LeaveCriticalSection(&m_CS); }
 
-	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
+	void SetIsStop(bool isStop) { m_IsStop = isStop; }
 private:
 	// PacketManager Have-A Queue
 	// 패킷처리 클래스에서는 패킷을 저장할 별도의 큐를 가진다.
 	// 클라이언트에서 보낸 패킷을 쌓아두고, 별도의 ProcessPacketThread 를 통해 패킷정보를 처리한다.
-	queue<ClientPacket> mBufferQueue;
+	queue<ClientPacket> m_BufferQueue;
 
 	// for thread-safe
-	CRITICAL_SECTION mCS;
+	CRITICAL_SECTION m_CS;
 
 	// while loop stop flag
-	bool mStopFlag;
+	bool m_IsStop;
 };
 
+extern PacketManager* g_pPacketManager;

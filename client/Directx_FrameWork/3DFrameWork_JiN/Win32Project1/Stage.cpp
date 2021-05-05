@@ -18,12 +18,12 @@ bool CStage::GameClear()
 
 bool CStage::GameOver()
 {
-	if (m_Player[m_iPlayerIndex].Get_HP() == 0 ||
-		m_Player[m_iPlayerIndex].Get_Position().y > WND_HEIGHT + m_fBunziHeight)
+	if (m_Player[m_PlayerIndex].Get_HP() == 0 ||
+		m_Player[m_PlayerIndex].Get_Position().y > WND_HEIGHT + m_fBunziHeight)
 	{
 		SPLAYERDIE sDie;
 		memset(&sDie, 0, sizeof(SPLAYERDIE));
-		sDie.mPlayerIndex = m_iPlayerIndex;
+		sDie.m_PlayerIndex = m_PlayerIndex;
 
 		g_pNetwork->SendPacket(PROTOCOL::PLAYER_DIE_RQ, (char*)&sDie, sizeof(SPLAYERDIE), false);
 
@@ -55,7 +55,7 @@ void CStage::Update_Monster()
 	if (m_Monster_List.size() > 0)
 	{
 		for (list<CMonster>::iterator begin_iter = m_Monster_List.begin();
-			begin_iter != m_Monster_List.end(); )
+			begin_iter != m_Monster_List.m_IsEnd(); )
 		{
 			begin_iter->Update();
 
@@ -74,7 +74,7 @@ void CStage::Render_Monster()
 	if (m_Monster_List.size() > 0)
 	{
 		for (list<CMonster>::iterator begin_iter = m_Monster_List.begin();
-			begin_iter != m_Monster_List.end(); begin_iter++)
+			begin_iter != m_Monster_List.m_IsEnd(); begin_iter++)
 		{
 			begin_iter->Render();
 		}
@@ -86,7 +86,7 @@ void CStage::Clean_Monster()
 	if (m_Monster_List.size() > 0)
 	{
 		for (list<CMonster>::iterator begin_iter = m_Monster_List.begin();
-			begin_iter != m_Monster_List.end(); begin_iter++)
+			begin_iter != m_Monster_List.m_IsEnd(); begin_iter++)
 		{
 			begin_iter->Clean();
 		}
@@ -114,7 +114,7 @@ void CStage::Update_Potion()
 	if (m_Potion_List.size() > 0)
 	{
 		for (list<CPotion>::iterator begin_iter = m_Potion_List.begin();
-			begin_iter != m_Potion_List.end(); )
+			begin_iter != m_Potion_List.m_IsEnd(); )
 		{
 			begin_iter->Update();
 
@@ -133,7 +133,7 @@ void CStage::Render_Potion()
 	if (m_Potion_List.size() > 0)
 	{
 		for (list<CPotion>::iterator begin_iter = m_Potion_List.begin();
-			begin_iter != m_Potion_List.end(); begin_iter++)
+			begin_iter != m_Potion_List.m_IsEnd(); begin_iter++)
 		{
 			begin_iter->Render();
 		}
@@ -145,7 +145,7 @@ void CStage::Clean_Potion()
 	if (m_Potion_List.size() > 0)
 	{
 		for (list<CPotion>::iterator begin_iter = m_Potion_List.begin();
-			begin_iter != m_Potion_List.end(); begin_iter++)
+			begin_iter != m_Potion_List.m_IsEnd(); begin_iter++)
 		{
 			begin_iter->Clean();
 		}
@@ -175,10 +175,10 @@ void CStage::OnInit(LPDIRECT3DDEVICE9 _pDevice)
 	m_Player[0].Init(_pDevice);
 	m_Player[1].Init(_pDevice);
 	//m_Player[1].Set_Position(400.0f, 100.0f, 0.0f);
-	m_Player[m_iPlayerIndex].SetIsPlayer(true);
+	m_Player[m_PlayerIndex].SetIsPlayer(true);
 
 	// ui initialize
-	m_UIMnger.Init(_pDevice, m_Player[m_iPlayerIndex].Get_HP());
+	m_UIMnger.Init(_pDevice, m_Player[m_PlayerIndex].Get_HP());
 }
 
 void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
@@ -200,20 +200,20 @@ void CStage::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 	//	cout << endl;
 
 	// UI 업데이트
-	m_UIMnger.Update(m_Player[m_iPlayerIndex].Get_HP());
+	m_UIMnger.Update(m_Player[m_PlayerIndex].Get_HP());
 
 	// 매 프래임 마다 충돌체크할 것들
-	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[m_iPlayerIndex]);
+	m_CollisionMngr.Charater_Tile_Check(m_MapMngr.Get_TileArray(), 8, m_Player[m_PlayerIndex]);
 
-	if (m_iPlayerIndex == 0)
+	if (m_PlayerIndex == 0)
 	{
-		m_CollisionMngr.Character_EnemyAttack_Check(m_iPlayerIndex, m_Player[m_iPlayerIndex], m_Player[1].Get_FireBall_List());
-		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[1], m_Player[m_iPlayerIndex].Get_FireBall_List());
+		m_CollisionMngr.Character_EnemyAttack_Check(m_PlayerIndex, m_Player[m_PlayerIndex], m_Player[1].Get_FireBall_List());
+		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[1], m_Player[m_PlayerIndex].Get_FireBall_List());
 	}
-	else if (m_iPlayerIndex == 1)
+	else if (m_PlayerIndex == 1)
 	{
-		m_CollisionMngr.Character_EnemyAttack_Check(m_iPlayerIndex, m_Player[m_iPlayerIndex], m_Player[0].Get_FireBall_List());
-		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[0], m_Player[m_iPlayerIndex].Get_FireBall_List());
+		m_CollisionMngr.Character_EnemyAttack_Check(m_PlayerIndex, m_Player[m_PlayerIndex], m_Player[0].Get_FireBall_List());
+		m_CollisionMngr.CharAttack_Enemy_Check(m_Player[0], m_Player[m_PlayerIndex].Get_FireBall_List());
 	}
 
 	

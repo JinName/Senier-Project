@@ -45,7 +45,7 @@ void CTitle::OnUpdate(LPDIRECT3DDEVICE9 _pDevice)
 			// 보내려는 구조체 생성, 값 설정
 			SMATCH match;
 			memset(&match, 0, sizeof(SMATCH));
-			match.mInMatch = true;
+			match.m_IsMatch = true;
 
 			// 서버에 패킷전송
 			g_pNetwork->SendPacket(PROTOCOL::MATCH_RQ, (char*)&match, sizeof(SMATCH), false);

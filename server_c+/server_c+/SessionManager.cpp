@@ -2,9 +2,9 @@
 
 SessionManager* g_pSessionManager = nullptr;
 
-SessionManager::SessionManager() : mClientCount(0)
+SessionManager::SessionManager() : m_ClientCount(0)
 {
-	InitializeCriticalSection(&CS);
+	InitializeCriticalSection(&m_CS);
 }
 
 SessionManager::~SessionManager()
@@ -13,15 +13,15 @@ SessionManager::~SessionManager()
 
 /*
 함수명 : CreateClientSession()
-인자값 : SOCKET sock
+인자값 : SOCKET socket
 기능 : clientsession을 만들고 관리 객체에 등록함.
 */
-ClientSession* SessionManager::CreateClientSession(SOCKET sock)
+ClientSession* SessionManager::CreateClientSession(SOCKET socket)
 {
-	ClientSession* client = new ClientSession(sock);
+	ClientSession* client = new ClientSession(socket);
 
 	cout << "create ClientSession.." << endl;
-	mClientList.insert(ClientList::value_type(sock, client));
+	m_ClientList.insert(ClientList::value_type(socket, client));
 	return client;
 }
 
@@ -32,7 +32,7 @@ ClientSession* SessionManager::CreateClientSession(SOCKET sock)
 */
 void SessionManager::DeleteClientSession(ClientSession* client)
 {
-	mClientList.erase(client->GetSocket());
+	m_ClientList.erase(client->GetSocket());
 
 	delete client;
 
@@ -47,12 +47,12 @@ void SessionManager::DeleteClientSession(ClientSession* client)
 */
 int SessionManager::IncreaseClientCount()
 {
-	EnterCriticalSection(&CS);
-	mClientCount++;
+	EnterCriticalSection(&m_CS);
+	m_ClientCount++;
 	cout << "client count increase.." << endl;
-	LeaveCriticalSection(&CS);
+	LeaveCriticalSection(&m_CS);
 
-	return mClientCount;
+	return m_ClientCount;
 }
 
 /*
@@ -63,10 +63,10 @@ int SessionManager::IncreaseClientCount()
 */
 int SessionManager::DecreaseClientCount()
 {
-	EnterCriticalSection(&CS);
-	mClientCount--;
+	EnterCriticalSection(&m_CS);
+	m_ClientCount--;
 	cout << "client count decrease.." << endl;
-	LeaveCriticalSection(&CS);
+	LeaveCriticalSection(&m_CS);
 
-	return mClientCount;
+	return m_ClientCount;
 }

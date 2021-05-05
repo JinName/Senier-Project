@@ -4,19 +4,19 @@
 
 PacketManager* g_pPacketManager = nullptr;
 
-PacketManager::PacketManager() : mStopFlag(false)
+PacketManager::PacketManager() : m_IsStop(false)
 {
-	InitializeCriticalSection(&mCS);
+	InitializeCriticalSection(&m_CS);
 }
 
 PacketManager::~PacketManager()
 {
-	while (!mRecvBufferQueue.empty())
+	while (!m_RecvBufferQueue.empty())
 	{
-		mRecvBufferQueue.pop();
+		m_RecvBufferQueue.pop();
 	}
 	
-	DeleteCriticalSection(&mCS);
+	DeleteCriticalSection(&m_CS);
 }
 
 bool PacketManager::Enqueue(char* recvBuffer)
@@ -27,7 +27,7 @@ bool PacketManager::Enqueue(char* recvBuffer)
 		return false;
 	}
 	EnterCS();
-	mRecvBufferQueue.push(recvBuffer);
+	m_RecvBufferQueue.push(recvBuffer);
 	LeaveCS();
 
 	return true;
@@ -37,19 +37,19 @@ void PacketManager::ProcessAllQueue()
 {
 	while (true)
 	{
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 
-		if (!mRecvBufferQueue.empty())
+		if (!m_RecvBufferQueue.empty())
 		{
 			EnterCS();
-			char* buffer = mRecvBufferQueue.front();
-			mRecvBufferQueue.pop();
+			char* buffer = m_RecvBufferQueue.front();
+			m_RecvBufferQueue.pop();
 			LeaveCS();		
 
 			bool result = ProcessPacket(buffer);
 		}
 
-		if (mStopFlag) break;
+		if (m_IsStop) break;
 	}
 }
 
@@ -62,7 +62,7 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 	SHEAD head;
 	memcpy(&head, recvBuffer, sizeof(SHEAD));
-	PROTOCOL protocol = (PROTOCOL)head.mCmd;
+	PROTOCOL protocol = (PROTOCOL)head.m_Cmd;
 
 	switch (protocol)
 	{
@@ -73,12 +73,12 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 		memcpy(&gamestart, recvBuffer + sizeof(SHEAD), sizeof(SGAMESTART));
 		int datasize = sizeof(recvBuffer);
 
-		g_pNetwork->SetPlayerIndex(gamestart.mPlayerIndex);
+		g_pNetwork->SetPlayerIndex(gamestart.m_PlayerIndex);
 
-		if (gamestart.mStart == true)
+		if (gamestart.m_IsStart == true)
 		{
-			g_pGameManager->GameStart(gamestart.mPlayerIndex);
-			g_pGameManager->SetStartPosition(gamestart.mStartPosition[0], gamestart.mStartPosition[1]);
+			g_pGameManager->GameStart(gamestart.m_PlayerIndex);
+			g_pGameManager->SetStartPosition(gamestart.m_StartPosition[0], gamestart.m_StartPosition[1]);
 		}
 
 		break;
@@ -108,20 +108,20 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 	case PROTOCOL::GAMEEND_CM:
 	{
-		SGAMEEND end;
-		memset(&end, 0, sizeof(SGAMEEND));
-		memcpy(&end, recvBuffer + sizeof(SHEAD), sizeof(SGAMEEND));
+		SGAMEEND m_IsEnd;
+		memset(&m_IsEnd, 0, sizeof(SGAMEEND));
+		memcpy(&m_IsEnd, recvBuffer + sizeof(SHEAD), sizeof(SGAMEEND));
 
 		if (g_pNetwork->GetPlayerIndex() == 0)
 		{
-			if (end.mGameEndState == GAMEEND_STATE::P1_WIN)
+			if (m_IsEnd.m_GameEndState == GAMEEND_STATE::P1_WIN)
 				g_pGameManager->GameClear();
 			else
 				g_pGameManager->GameOver();
 		}
 		else if (g_pNetwork->GetPlayerIndex() == 1)
 		{
-			if (end.mGameEndState == GAMEEND_STATE::P2_WIN)
+			if (m_IsEnd.m_GameEndState == GAMEEND_STATE::P2_WIN)
 				g_pGameManager->GameClear();
 			else
 				g_pGameManager->GameOver();
@@ -132,11 +132,12 @@ bool PacketManager::ProcessPacket(char* recvBuffer)
 
 	case PROTOCOL::UPDATE_NF:
 	{
-		SCHARACTER player;
-		memset(&player, 0, sizeof(SCHARACTER));
-		memcpy(&player, recvBuffer + sizeof(SHEAD), sizeof(SCHARACTER));
+		SINGAMEINFO info;
+		memset(&info, 0, sizeof(SINGAMEINFO));
+		memcpy(&info, recvBuffer + sizeof(SHEAD), sizeof(SINGAMEINFO));
 		
-		g_pGameManager->SetPlayerPosition(player);
+		g_pGameManager->SetPlayerPosition(info.m_CharInfo[0]);
+		g_pGameManager->SetPlayerPosition(info.m_CharInfo[1]);
 
 		break;
 	}

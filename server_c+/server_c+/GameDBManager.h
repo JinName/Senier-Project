@@ -14,8 +14,11 @@ public:
 	GameDBManager();
 	~GameDBManager() {}
 
-	bool	Login(ClientSession* _client, char* _id, char* _pw);
-	bool	Logout(ClientSession* _client);
+	bool	Login(ClientSession* client, char* id, char* password);
+	bool	Logout(ClientSession* client);
+	
+	bool	IncreaseWin(ClientSession* client);
+	bool	IncreaseLose(ClientSession* client);
 
 private:
 

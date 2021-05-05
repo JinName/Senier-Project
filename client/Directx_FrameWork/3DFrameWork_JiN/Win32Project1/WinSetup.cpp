@@ -53,8 +53,8 @@ LRESULT WINAPI CWinSetup::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 			SLOGIN login;
 			memset(&login, 0, sizeof(SLOGIN));
-			strcpy(login.mID, id);
-			strcpy(login.mPW, pw);
+			strcpy(login.m_ID, id);
+			strcpy(login.m_PW, pw);
 
 			g_pNetwork->SendPacket(PROTOCOL::LOGIN_RQ, (char*)&login, sizeof(SLOGIN), false);
 

@@ -2,7 +2,7 @@
 
 IOCPManager* g_pIocpManager = nullptr;
 
-IOCPManager::IOCPManager() : mCP(NULL), mThreadCount(2), mListenSocket(NULL)
+IOCPManager::IOCPManager() : m_CP(NULL), m_ThreadCount(2), m_ListenSocket(NULL)
 {
 }
 
@@ -18,8 +18,8 @@ bool IOCPManager::InitIOCPServer()
 	GetSystemInfo(&sysinfo);
 
 	// count of thread = core * 2
-	mThreadCount = sysinfo.dwNumberOfProcessors * 2;
-	cout << "Thread count : " << mThreadCount << endl;
+	m_ThreadCount = sysinfo.dwNumberOfProcessors * 2;
+	cout << "Thread count : " << m_ThreadCount << endl;
 
 	// initialize winsock
 	WSADATA wsa;
@@ -27,26 +27,26 @@ bool IOCPManager::InitIOCPServer()
 		return false;
 
 	// create completion port in first time
-	mCP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
+	m_CP = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, 0);
 
 	// except for create completion port
-	if (mCP == NULL)
+	if (m_CP == NULL)
 	{
 		cout << "Completion Port Create Fail..." << endl;
 		return false;
 	}
 
 	// create socket for listen
-	mListenSocket = WSASocket(PF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+	m_ListenSocket = WSASocket(PF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 
 	// except for create listening socket
-	if (mListenSocket == NULL)
+	if (m_ListenSocket == NULL)
 	{
 		cout << "Socket Create Fail..." << endl;
 		return false;
 	}
 
-	// server addr setting
+	// server address setting
 	SOCKADDR_IN serveraddr;
 	SecureZeroMemory(&serveraddr, sizeof(serveraddr));
 
@@ -56,10 +56,10 @@ bool IOCPManager::InitIOCPServer()
 
 	// setting socket options
 	int opt = 1;
-	setsockopt(mListenSocket, SOL_SOCKET, SO_REUSEADDR, (const char*)& opt, sizeof(int));
+	setsockopt(m_ListenSocket, SOL_SOCKET, SO_REUSEADDR, (const char*)& opt, sizeof(int));
 
 	// bind listening socket
-	if (SOCKET_ERROR == ::bind(mListenSocket, (SOCKADDR*)& serveraddr, sizeof(serveraddr)))
+	if (SOCKET_ERROR == ::bind(m_ListenSocket, (SOCKADDR*)& serveraddr, sizeof(serveraddr)))
 	{
 		cout << "bind() Fail..." << endl;
 		return false;
@@ -73,11 +73,11 @@ bool IOCPManager::InitIOCPServer()
 bool IOCPManager::StartIOCPThread()
 {
 	// create thread
-	for (int i = 0; i < mThreadCount; ++i)
+	for (int i = 0; i < m_ThreadCount; ++i)
 	{
 		DWORD dwThreadId;
 		// begin thread
-		HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, WorkerThread, (LPVOID)i, 0, (unsigned int*)& dwThreadId);
+		HANDLE hThread = (HANDLE)_beginthreadex(NULL, 0, workerThread, (LPVOID)i, 0, (unsigned int*)& dwThreadId);
 
 		// except error - for create thread
 		if (hThread == INVALID_HANDLE_VALUE)
@@ -98,7 +98,7 @@ bool IOCPManager::StartPacketProcessThread()
 	// create thread
 	DWORD dwThreadId;
 	// begin thread
-	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, PacketProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+	HANDLE hPacketThread = (HANDLE)_beginthreadex(NULL, 0, packetProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
 
 	// except error - for create thread
 	if (hPacketThread == INVALID_HANDLE_VALUE)
@@ -118,7 +118,7 @@ bool IOCPManager::StartMatchProcessThread()
 	// create thread
 	DWORD dwThreadId;
 	// begin thread
-	HANDLE hMatchThread = (HANDLE)_beginthreadex(NULL, 0, MatchProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
+	HANDLE hMatchThread = (HANDLE)_beginthreadex(NULL, 0, matchProcessThread, NULL, 0, (unsigned int*)&dwThreadId);
 
 	// except error - for create thread
 	if (hMatchThread == INVALID_HANDLE_VALUE)
@@ -154,7 +154,7 @@ bool IOCPManager::StartSystemUsageThread()
 	// create thread
 	DWORD dwThreadId;
 	// begin thread
-	HANDLE hSystemThread = (HANDLE)_beginthreadex(NULL, 0, SystemUsageThread, NULL, 0, (unsigned int*)&dwThreadId);
+	HANDLE hSystemThread = (HANDLE)_beginthreadex(NULL, 0, systemUsageThread, NULL, 0, (unsigned int*)&dwThreadId);
 
 	// except error - for create thread
 	if (hSystemThread == INVALID_HANDLE_VALUE)
@@ -170,7 +170,7 @@ bool IOCPManager::StartSystemUsageThread()
 bool IOCPManager::CloseIOCPServer()
 {
 	// close handle and socket
-	CloseHandle(mCP);
+	CloseHandle(m_CP);
 	WSACleanup();
 	return true;
 }
@@ -178,7 +178,7 @@ bool IOCPManager::CloseIOCPServer()
 bool IOCPManager::AcceptLoop()
 {
 	// listen()
-	if (SOCKET_ERROR == listen(mListenSocket, SOMAXCONN))
+	if (SOCKET_ERROR == listen(m_ListenSocket, SOMAXCONN))
 	{
 		cout << "listen() Fail..." << endl;
 		return false;
@@ -190,7 +190,7 @@ bool IOCPManager::AcceptLoop()
 	// accept loop
 	while (true)
 	{
-		SOCKET acceptedSock = WSAAccept(mListenSocket, (struct sockaddr*)&clientaddr, &addrlen, NULL, NULL);
+		SOCKET acceptedSock = WSAAccept(m_ListenSocket, (struct sockaddr*)&clientaddr, &addrlen, NULL, NULL);
 
 		if (acceptedSock == INVALID_SOCKET)
 		{
@@ -218,7 +218,7 @@ bool IOCPManager::AcceptLoop()
 	return true;
 }
 
-unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
+unsigned int WINAPI IOCPManager::workerThread(LPVOID lpParam)
 {
 	// 글로벌 객체에서 Completion Port Handle 가져옴 -> GetQueuedCompletionStatus() 에 활용
 	HANDLE hCP = g_pIocpManager->GetCPHandle();
@@ -245,7 +245,7 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		{
 			cout << "Recive Data is zero..." << endl;
 
-			DisconnectCompletion(client, overlapped, dwBytesTransferred);
+			disconnectCompletion(client, overlapped, dwBytesTransferred);
 
 			continue;
 		}
@@ -261,20 +261,20 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 		// dwBytesTransferred, overlapped 의 값을 받아와 해당 정보에 대한 처리 가능
 		bool completionOK = true;
 
-		switch (overlapped->mIOType)
+		switch (overlapped->m_IOType)
 		{
 		case IOTYPE::IO_SEND:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 SEND 일 경우 수행할 함수
-			completionOK = SendCompletion(client, overlapped, dwBytesTransferred);
+			completionOK = sendCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		case IOTYPE::IO_RECV:
 			// 넘겨받은 overlapped 구조체의 I/O type 이 RECV 일 경우 수행할 함수
-			completionOK = ReceiveCompletion(client, overlapped, dwBytesTransferred);
+			completionOK = receiveCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		case IOTYPE::IO_DISCONNECT:
-			completionOK = DisconnectCompletion(client, overlapped, dwBytesTransferred);
+			completionOK = disconnectCompletion(client, overlapped, dwBytesTransferred);
 			break;
 
 		default:
@@ -292,14 +292,14 @@ unsigned int WINAPI IOCPManager::WorkerThread(LPVOID lpParam)
 	return 0;
 }
 
-unsigned int WINAPI IOCPManager::PacketProcessThread(LPVOID lpParam)
+unsigned int WINAPI IOCPManager::packetProcessThread(LPVOID lpParam)
 {
-	PacketManager::GetInstance()->ProcessAllQueue();
+	g_pPacketManager->ProcessAllQueue();
 
 	return 0;
 }
 
-unsigned int WINAPI IOCPManager::MatchProcessThread(LPVOID lpParam)
+unsigned int WINAPI IOCPManager::matchProcessThread(LPVOID lpParam)
 {
 	MatchManager::GetInstance()->ProcessMatchList();
 	
@@ -313,7 +313,7 @@ unsigned int WINAPI IOCPManager::inGameProcessThread(LPVOID lpParam)
 	return 0;
 }
 
-unsigned int WINAPI IOCPManager::SystemUsageThread(LPVOID lpParam)
+unsigned int WINAPI IOCPManager::systemUsageThread(LPVOID lpParam)
 {
 	while (true)
 	{
@@ -322,7 +322,7 @@ unsigned int WINAPI IOCPManager::SystemUsageThread(LPVOID lpParam)
 
 		cout << "[INFO] Usage > " << log << endl;
 
-		g_pUsageLogger->file_write(LOGGER_LEVEL::info, log);
+		g_pUsageLogger->FileWrite(LOGGER_LEVEL::info, log);
 
 		Sleep(1500);
 	}
@@ -331,7 +331,7 @@ unsigned int WINAPI IOCPManager::SystemUsageThread(LPVOID lpParam)
 }
 
 
-bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
+bool IOCPManager::receiveCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
 	{
@@ -347,22 +347,22 @@ bool IOCPManager::ReceiveCompletion(ClientSession* client, SOVERLAPPED* overlapp
 	// 2-2. 완전한 패킷이 아니면, 데이터 처리 보류하고 다시 Recv 상태로 넘어감
 	ClientPacket pack;
 
-	pack.mSession = client;
-	bool popResult = client->PopBuffer(pack.mBuffer);	
+	pack.m_Session = client;
+	bool popResult = client->PopBuffer(pack.m_Buffer);	
 
 	// 완료된 pop data 에 대한 처리 부분 ////////////////////
 	if (popResult)
-		PacketManager::GetInstance()->Enqueue(pack);
+		g_pPacketManager->Enqueue(pack);
 	/////////////////////////////////////////////////////////
 
 	return client->Recv();
 }
 
-bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
+bool IOCPManager::sendCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
 	{
-		printf_s("SendCompletion client returned nullptr! \n");
+		printf_s("sendCompletion client returned nullptr! \n");
 		return false;
 	}
 	
@@ -371,7 +371,7 @@ bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped,
 	///////////////////////////////////////////////
 
 	// 전송 다 되었는지 확인
-	if (overlapped->mWSABuf.len != dwBytesTransferred)
+	if (overlapped->m_WSABuf.len != dwBytesTransferred)
 	{
 		cout << "send() isn't complete.." << endl;
 		return false;
@@ -380,11 +380,11 @@ bool IOCPManager::SendCompletion(ClientSession* client, SOVERLAPPED* overlapped,
 	return true;
 }
 
-bool IOCPManager::DisconnectCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
+bool IOCPManager::disconnectCompletion(ClientSession* client, SOVERLAPPED* overlapped, DWORD dwBytesTransferred)
 {
 	if (client == nullptr)
 	{
-		printf_s("DisconnectCompletion client returned nullptr! \n");
+		printf_s("disconnectCompletion client returned nullptr! \n");
 		return false;
 	}
 

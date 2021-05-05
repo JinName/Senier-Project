@@ -61,5 +61,5 @@ public:
 	virtual void OnRender(LPDIRECT3DDEVICE9 _pDevice);
 	virtual void OnCleanup(LPDIRECT3DDEVICE9 _pDevice);
 
-	CAru* GetCharacter(int _iPlayerIndex) { return &m_Player[_iPlayerIndex]; }
+	CAru* GetCharacter(int playerIndex) { return &m_Player[playerIndex]; }
 };

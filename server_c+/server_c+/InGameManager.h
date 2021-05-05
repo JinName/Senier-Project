@@ -31,8 +31,8 @@ public:
 
 	void ProcessPacket(PROTOCOL protocol, ClientPacket pack);
 
-	void EnterCS() { EnterCriticalSection(&mCS); }
-	void LeaveCS() { LeaveCriticalSection(&mCS); }
+	void EnterCS() { EnterCriticalSection(&m_CS); }
+	void LeaveCS() { LeaveCriticalSection(&m_CS); }
 
 	void Init();
 	void Clean();
@@ -50,18 +50,22 @@ public:
 	// 플레이어 정보를 받아서 변경 후 변경된 정보를 구조체에 담아 다시 반환
 	SCHARACTER SetPlayer(ClientSession* player, SCHARACTER charPacket);
 
-	void SetStopFlag(bool stopFlag) { mStopFlag = stopFlag; }
+	void SetIsStop(bool isStop) { m_IsStop = isStop; }
+
+	std::list<InGameRoom*>* GetRoomListPtr() { return &m_InGameRoomList; }
 private:
-	std::list<InGameRoom*> mInGameRoomList;
+	std::list<InGameRoom*> m_InGameRoomList;
+
+	std::vector<std::list<InGameRoom*>> m_ListVector;
 
 	// 게임 내에서 처리가 필요한 패킷의 경우 이 큐를 통해 처리
-	queue<ClientPacket> mInGameBufferQueue;
+	queue<ClientPacket> m_InGameBufferQueue;
 
-	int mRoomCount;
-	int mLastRoomNum;
+	int m_RoomCount;
+	int m_LastRoomNum;
 
-	CRITICAL_SECTION mCS;
+	CRITICAL_SECTION m_CS;
 
-	bool mStopFlag;
+	bool m_IsStop;
 };
 

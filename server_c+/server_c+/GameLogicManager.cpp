@@ -72,25 +72,27 @@ void GameLogicManager::SendPlayerState()
 	memset(&player1, 0, sizeof(SCHARACTER));
 	memset(&player2, 0, sizeof(SCHARACTER));
 
-	player1.mPlayerIndex = 0;
-	player1.mPosX = m_Player[0].GetPosition().x;
-	player1.mPosY = m_Player[0].GetPosition().y;
+	player1.m_PlayerIndex = 0;
+	player1.m_PosX = m_Player[0].GetPosition().x;
+	player1.m_PosY = m_Player[0].GetPosition().y;
 
-	player2.mPlayerIndex = 1;
-	player2.mPosX = m_Player[1].GetPosition().x;
-	player2.mPosY = m_Player[1].GetPosition().y;
+	player2.m_PlayerIndex = 1;
+	player2.m_PosX = m_Player[1].GetPosition().x;
+	player2.m_PosY = m_Player[1].GetPosition().y;
+
+	SINGAMEINFO info(player1, player2);
 
 	////////////
 	bool result = false;
-	result = PacketManager::GetInstance()->MakeSendPacket(m_Client[0], (char*)&player1, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
+	result = g_pPacketManager->MakeSendPacket(m_Client[0], (char*)&info, sizeof(SINGAMEINFO), PROTOCOL::UPDATE_NF);
 	m_Client[0]->Send();
 
-	result = PacketManager::GetInstance()->MakeSendPacket(m_Client[0], (char*)&player2, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
-	m_Client[0]->Send();
+	//result = PacketManager::GetInstance()->MakeSendPacket(m_Client[0], (char*)&player2, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
+	//m_Client[0]->Send();
 
-	result = PacketManager::GetInstance()->MakeSendPacket(m_Client[1], (char*)&player1, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
+	result = g_pPacketManager->MakeSendPacket(m_Client[1], (char*)&info, sizeof(SINGAMEINFO), PROTOCOL::UPDATE_NF);
 	m_Client[1]->Send();
 
-	result = PacketManager::GetInstance()->MakeSendPacket(m_Client[1], (char*)&player2, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
-	m_Client[1]->Send();
+	//result = PacketManager::GetInstance()->MakeSendPacket(m_Client[1], (char*)&player2, sizeof(SCHARACTER), PROTOCOL::UPDATE_NF);
+	//m_Client[1]->Send();
 }

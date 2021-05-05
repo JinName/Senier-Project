@@ -17,7 +17,7 @@ public:
 	void Set_TCPSocket();
 
 	// 연결 시도
-	void Connect(short _portNum);
+	void Connect(short portNum);
 
 	void Run();
 
@@ -27,22 +27,22 @@ public:
 
 	// get
 	SOCKET GetSocket() { return m_ClientSocket; }
-	int GetPlayerIndex() { return m_iPlayerIndex; }
+	int GetPlayerIndex() { return m_PlayerIndex; }
 
 	// set
-	void SetPlayerIndex(int _iPlayerIndex) { m_iPlayerIndex = _iPlayerIndex; }
+	void SetPlayerIndex(int playerIndex) { m_PlayerIndex = playerIndex; }
 
 	// 패킷 전송
-	bool SendPacket(PROTOCOL _protocol, char* _data, DWORD _dataSize, bool _inGame);
+	bool SendPacket(PROTOCOL protocol, char* data, DWORD dataSize, bool inGame);
 
 private:
 	WSADATA m_WsaData;
 	static SOCKET m_ClientSocket;
 
-	static unsigned int WINAPI RecvThread(LPVOID lpParam);
-	static unsigned int WINAPI PacketProcessThread(LPVOID lpParam);
+	static unsigned int WINAPI recvThread(LPVOID lpParam);
+	static unsigned int WINAPI packetProcessThread(LPVOID lpParam);
 
-	int m_iPlayerIndex;
+	int m_PlayerIndex;
 };
 
 extern Network* g_pNetwork;

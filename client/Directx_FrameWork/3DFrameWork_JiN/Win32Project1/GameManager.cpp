@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-CGameManager* g_pGameManager = NULL;
+CGameManager* g_pGameManager = nullptr;
 
 CGameManager::CGameManager()
 {
@@ -10,7 +10,7 @@ CGameManager::CGameManager()
 CGameManager::CGameManager(HINSTANCE _hInstance, HWND _hWnd)
 	:m_hWnd(_hWnd)
 	,m_hInstance(_hInstance)
-	,m_iPlayerIndex(-1)
+	,m_PlayerIndex(-1)
 {
 	m_pGameBase = new CTitle;
 	m_pGameBase->InitD3D(m_hWnd);
@@ -38,7 +38,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CStage;
-		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->Set_PlayerIndex(m_PlayerIndex);
 
 		for (int i = 0; i < 2; ++i)
 		{
@@ -56,8 +56,8 @@ void CGameManager::Update()
 
 		SINITCOMPLETE sInit;
 		memset(&sInit, 0, sizeof(SINITCOMPLETE));
-		sInit.mPlayerIndex = m_iPlayerIndex;
-		sInit.mComplete = true;
+		sInit.m_PlayerIndex = m_PlayerIndex;
+		sInit.m_IsComplete = true;
 		g_pNetwork->SendPacket(PROTOCOL::INITCOMPLETE_RQ, (char*)&sInit, sizeof(SINITCOMPLETE), true);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == TITLE && m_pGameBase->Get_Exit())
@@ -70,7 +70,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CGameOver;
-		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->Set_PlayerIndex(m_PlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == STAGE && m_pGameBase->Get_Change_Clear())
@@ -79,7 +79,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CGameClear;
-		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->Set_PlayerIndex(m_PlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == GAMEOVER && m_pGameBase->Get_Change_Restart())
@@ -88,7 +88,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CTitle;
-		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->Set_PlayerIndex(m_PlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 	else if (m_pGameBase->Get_GameScene_Num() == GAMECLEAR && m_pGameBase->Get_Change_Restart())
@@ -97,7 +97,7 @@ void CGameManager::Update()
 		delete m_pGameBase;
 
 		m_pGameBase = new CTitle;
-		m_pGameBase->Set_PlayerIndex(m_iPlayerIndex);
+		m_pGameBase->Set_PlayerIndex(m_PlayerIndex);
 		m_pGameBase->InitD3D(m_hWnd);
 	}
 }
@@ -112,15 +112,15 @@ void CGameManager::Cleanup()
 	m_pGameBase->Cleanup();
 }
 
-bool CGameManager::GameStart(int _iPlayerIndex)
+bool CGameManager::GameStart(int playerIndex)
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
-	m_iPlayerIndex = _iPlayerIndex;
+	m_PlayerIndex = playerIndex;
 	m_pGameBase->Set_GameStart(true);
 
 	return true;
@@ -128,13 +128,13 @@ bool CGameManager::GameStart(int _iPlayerIndex)
 
 bool CGameManager::GameOver()
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
-	m_iPlayerIndex = -1;
+	m_PlayerIndex = -1;
 	m_pGameBase->Set_GameOver(true);
 
 	return true;
@@ -142,13 +142,13 @@ bool CGameManager::GameOver()
 
 bool CGameManager::GameClear()
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
-	m_iPlayerIndex = -1;
+	m_PlayerIndex = -1;
 	m_pGameBase->Set_GameClear(true);
 
 	return true;
@@ -156,31 +156,31 @@ bool CGameManager::GameClear()
 
 bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
 	CStage* stage = (CStage*)m_pGameBase;
-	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
+	CAru* player = stage->GetCharacter(_sCharPacket.m_PlayerIndex);
 
-	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
+	player->Set_Position(_sCharPacket.m_PosX, _sCharPacket.m_PosY, 0.0f);
 
-	if (_sCharPacket.mLeft == true)
+	if (_sCharPacket.m_IsLeft == true)
 	{
 		player->Do_Left();
 	}
-	else if (_sCharPacket.mRight == true)
+	else if (_sCharPacket.m_IsRight == true)
 	{
 		player->Do_Right();
 	}
-	else if (_sCharPacket.mLeft == false && _sCharPacket.mRight == false)
+	else if (_sCharPacket.m_IsLeft == false && _sCharPacket.m_IsRight == false)
 	{
 		player->Do_Stand();
 	}
 	
-	if (_sCharPacket.mAttack == true)
+	if (_sCharPacket.m_IsAttack == true)
 	{
 		player->Do_Attack();
 	}
@@ -190,14 +190,14 @@ bool CGameManager::SetPlayerState(SCHARACTER _sCharPacket)
 
 bool CGameManager::SetPlayerState(SCRASH _sCrash)
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
 	CStage* stage = (CStage*)m_pGameBase;
-	CAru* player = stage->GetCharacter(_sCrash.mPlayerIndex);
+	CAru* player = stage->GetCharacter(_sCrash.m_PlayerIndex);
 
 	player->Set_Active_Collision(false);
 
@@ -206,16 +206,16 @@ bool CGameManager::SetPlayerState(SCRASH _sCrash)
 
 bool CGameManager::SetPlayerPosition(SCHARACTER _sCharPacket)
 {
-	if (m_pGameBase == NULL)
+	if (m_pGameBase == nullptr)
 	{
 		cout << "GameBase is nullptr.." << endl;
 		return false;
 	}
 
 	CStage* stage = (CStage*)m_pGameBase;
-	CAru* player = stage->GetCharacter(_sCharPacket.mPlayerIndex);
+	CAru* player = stage->GetCharacter(_sCharPacket.m_PlayerIndex);
 
-	player->Set_Position(_sCharPacket.mPosX, _sCharPacket.mPosY, 0.0f);
+	player->Set_Position(_sCharPacket.m_PosX, _sCharPacket.m_PosY, 0.0f);
 }
 
 void CGameManager::SetStartPosition(VECTOR3 _vPlayer1, VECTOR3 _vPlayer2)

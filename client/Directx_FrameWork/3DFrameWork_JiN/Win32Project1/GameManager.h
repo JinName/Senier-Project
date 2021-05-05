@@ -20,7 +20,7 @@ private:
 	HWND m_hWnd;
 	HINSTANCE m_hInstance;
 
-	int m_iPlayerIndex;
+	int m_PlayerIndex;
 	D3DXVECTOR3 m_vStartPosition[2];
 	
 public:
@@ -30,7 +30,7 @@ public:
 
 	void Initialize();
 
-	bool GameStart(int _iPlayerIndex);
+	bool GameStart(int playerIndex);
 	bool GameOver();
 	bool GameClear();
 

@@ -1,19 +1,19 @@
-#include "ClientSyncManager.h"
+#include "UpdateManager.h"
 
-ClientSyncManager* g_pClientSyncManager = nullptr;
+UpdateManager* g_pClientSyncManager = nullptr;
 
-ClientSyncManager::ClientSyncManager()
+UpdateManager::UpdateManager()
 	:
 	m_DelayChecker(SYNC_FPS),
 	m_bUpdateSwitch(false)
 {
 }
 
-ClientSyncManager::~ClientSyncManager()
+UpdateManager::~UpdateManager()
 {
 }
 
-bool ClientSyncManager::Synchronization()
+bool UpdateManager::Synchronization()
 {
 	// 동기화 코드 실행 시간 체크
 	m_DelayChecker.StartCodeRuntimeCheck();

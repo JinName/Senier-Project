@@ -27,7 +27,7 @@ public:
 	SessionManager();
 	~SessionManager();
 
-	ClientSession* CreateClientSession(SOCKET sock);
+	ClientSession* CreateClientSession(SOCKET socket);
 
 	void DeleteClientSession(ClientSession* client);
 
@@ -36,11 +36,11 @@ public:
 
 private:
 	typedef map<SOCKET, ClientSession*> ClientList;	// socket - clientsession mapping
-	ClientList mClientList;	// 클라이언트 리스트
+	ClientList m_ClientList;	// 클라이언트 리스트
 
-	int mClientCount;		// 클라이언트의 갯수
+	int m_ClientCount;		// 클라이언트의 갯수
 
-	CRITICAL_SECTION CS;	// 공유자원 접근제한을 위한 CRITICAL_SECTION
+	CRITICAL_SECTION m_CS;	// 공유자원 접근제한을 위한 CRITICAL_SECTION
 };
 
 //전역으로 사용하기 위해 extern 변수로 정의.

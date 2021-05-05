@@ -82,7 +82,7 @@ private:
 	bool m_bAnyKeyDown;
 	bool m_bTransfered;
 	
-	int m_iPlayerIndex;
+	int m_PlayerIndex;
 
 public:
 	CAru();

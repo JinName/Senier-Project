@@ -27,15 +27,15 @@ public:
 	void Clean();
 
 	// encrypt
-	bool Encrypt(char* _pStr);
+	bool Encrypt(char* pStr);
 
 	// decrypt
-	bool Decrypt(char* _pStr);
+	bool Decrypt(char* pStr);
 
 private:
-	HCRYPTKEY	m_hKey;
-	HCRYPTPROV	m_hProv;
-	HCRYPTHASH	m_hHash;
+	HCRYPTKEY	m_Key;
+	HCRYPTPROV	m_Prov;
+	HCRYPTHASH	m_Hash;
 };
 
 extern Crypt* g_pCrypt;

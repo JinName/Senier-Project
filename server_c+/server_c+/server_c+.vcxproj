@@ -172,15 +172,18 @@
     <ClCompile Include="StageForest.cpp" />
     <ClCompile Include="StageBase.cpp" />
     <ClCompile Include="SystemUsage.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="ClientSyncManager.cpp" />
+    <ClCompile Include="UpdateManager.cpp" />
+    <ClCompile Include="UpdateThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="CircularBuffer.h" />
     <ClInclude Include="ClientSession.h" />
     <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Crypt.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FpsDelayChecker.h" />
@@ -205,12 +208,17 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SystemUsage.h" />
     <ClInclude Include="TemplateSingleton.h" />
+    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="ClientSyncManager.h" />
+    <ClInclude Include="UpdateManager.h" />
+    <ClInclude Include="UpdateThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

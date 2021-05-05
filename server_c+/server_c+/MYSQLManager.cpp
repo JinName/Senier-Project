@@ -31,7 +31,7 @@ bool MYSQLManager::Connect()
 	return true;
 }
 
-bool MYSQLManager::isConnected()
+bool MYSQLManager::IsConnected()
 {
 	if (m_pConnection == NULL)
 		return false;
@@ -47,12 +47,12 @@ bool MYSQLManager::Disconnect()
 	return true;
 }
 
-MYSQL_RES* MYSQLManager::GetSQLResult(const char* _sql)
+MYSQL_RES* MYSQLManager::GetSQLResult(const char* sqlQuery)
 {
 	// mysql_query() : success -> return 0;
-	int query_stat = mysql_query(m_pConnection, _sql);
+	int queryStat = mysql_query(m_pConnection, sqlQuery);
 
-	if (query_stat != 0)
+	if (queryStat != 0)
 	{
 		fprintf(stderr, "mysql query error : %s\n", mysql_error(&m_ConnectInfo));
 
@@ -62,9 +62,18 @@ MYSQL_RES* MYSQLManager::GetSQLResult(const char* _sql)
 	return mysql_store_result(m_pConnection);
 }
 
-bool MYSQLManager::FreeSQLResult(MYSQL_RES* _res)
+bool MYSQLManager::FreeSQLResult(MYSQL_RES* res)
 {
-	mysql_free_result(_res);
+	mysql_free_result(res);
 
 	return true;
+}
+
+void MYSQLManager::NextSQLResult()
+{
+	while (true)
+	{
+		if (mysql_next_result(m_pConnection) == -1)
+			break;
+	}
 }

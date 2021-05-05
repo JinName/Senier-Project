@@ -97,6 +97,12 @@
     <Filter Include="Utility\Timer">
       <UniqueIdentifier>{e320ba32-b475-4d54-84d2-a05f02726829}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utility\ThreadPool">
+      <UniqueIdentifier>{ccca92ae-520d-4ec9-9290-60b9bd8206af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\UpdateManager\UpdateThreadPool">
+      <UniqueIdentifier>{f039798e-82f7-4755-897f-9a0c1e29cbe5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -177,8 +183,14 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Utility\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSyncManager.cpp">
+    <ClCompile Include="UpdateManager.cpp">
       <Filter>Network\UpdateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadPool.cpp">
+      <Filter>Utility\ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="UpdateThreadPool.cpp">
+      <Filter>Network\UpdateManager\UpdateThreadPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,13 +284,25 @@
     <ClInclude Include="Timer.h">
       <Filter>Utility\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="ClientSyncManager.h">
+    <ClInclude Include="UpdateManager.h">
       <Filter>Network\UpdateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool.h">
+      <Filter>Utility\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateThreadPool.h">
+      <Filter>Network\UpdateManager\UpdateThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonFunction.h">
+      <Filter>Network\NetworkHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="server_c+.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
